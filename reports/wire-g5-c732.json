@@ -1,0 +1,92 @@
+{
+  "packet": "g5-w4",
+  "chain": 732,
+  "run": 1571,
+  "base": "183f78fba4",
+  "scope": "Landing-ship ramp-open notification in the single-player frame path",
+  "rows": [
+    {
+      "native": "00749aa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landing_ship_ramp_step -> src/game_hosts_session_messages.cpp: HostSessionMessages::post_landing_ship_open_a6",
+      "reason": "Constructs the native 1Ch A6h notification from the retained session context after the live lander's ramp latch fires, then evaluates 0077C2A0's flags-4 gate with the bound mission game state and session mode; single-player drops this notification without serialization or a second ramp mutation."
+    },
+    {
+      "native": "00749ad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: A6h sender profile",
+      "reason": "The local flags-4 route has no incoming copy and does not reach the category ladder; the optional discarded D3h query would need the sender's original kind-5/player-slot predicates."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landfort_fire_frame_00745be0",
+      "reason": "Missing a retained secondary-effect choice/payload and a D1h sender-profile/routing adapter; the current host records the effect and sync instead of retaining that chosen definition."
+    },
+    {
+      "native": "007448b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort destruction and smoke bindings",
+      "reason": "Missing the D1h sender-profile/routing adapter at the actual destroyed-arm send callback; the inspected smoke-stop frame callback explicitly sends nothing."
+    },
+    {
+      "native": "004a4520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship land-at-pad message binding",
+      "reason": "Missing the real landing-troop manager, its locked traffic-record tree and per-ship troop-record producer required by the reconstructed launch body."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The literal body reads original absolute runtime globals 00F87574/78/7C; missing bindings to those live locations and a retained native command-target result."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: QueueClearBinding::notify_command_target and CompletionBinding::report_target_event",
+      "reason": "Missing a Seg62Host adapter to the real mission Lua channel/observed-entity ownership; both command call sites only record the target event."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: sunk-ship terrain-mask update",
+      "reason": "Missing native hull-shape mask/body views and the world-lock/manifold-clear provider; this path keeps only the aggregate sunk_terrain_mask_cleared flag."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_collide_mask_set_00c47f90",
+      "reason": "Missing the live native shape-mask owner and Cc13Dyn1Calls world-lock/manifold adapter needed by the shared setter tail."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine periscope collision record",
+      "reason": "Missing the live periscope shape-group view and Cc13Dyn1Calls world-lock/manifold adapter; the host currently records this change."
+    },
+    {
+      "native": "00c47ff0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_group_set_00c47ff0",
+      "reason": "Missing the live native shape-group owner and Cc13Dyn1Calls world-lock/manifold adapter needed by the shared setter tail."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00749AA0: base A6h, zero id/relay, delivery 1, profile 00CFF8D4; original ECX-message entry, new C++ context/host interface is not a drop-in ABI claim.",
+    "bsp.py show 0074AF50 --asm: CALL 0074A420 at 0074B080, CALL 00749AA0 at 0074B089, PUSH 4 at 0074B090, CALL 0077C2A0 at 0074B0A0.",
+    "bsp.py show 0077C2A0: exactly flags 4 returns outside host mode before enqueue/transport; no A6h receiver should run in this local path.",
+    "bsp.py ghidra bytes 00CFF8D4 --length 20, bsp.gpr /battlestationspacific.exe: 0074A1D0, 0075B480, 0075B4C0, 00749AD0, 004499C0."
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; all four CTests passed",
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph": "00749AA0 REACHABLE, one call at 10265A58 from HostSessionMessages::post_landing_ship_open_a6; path reaches landing_ship_ramp_step, controller_step, the fixed mission frame and WinMainCRTStartup",
+    "readiness_before": 10494,
+    "readiness_after": 10495,
+    "target_readiness": "00749AA0: state=wired, called=true, call_sites=1, callers_live=1",
+    "float_math_changed": false,
+    "runtime": "No game run; build, existing tests and built-executable entry reachability only."
+  },
+  "remaining": "Non-local A6h peer transport stays recorded; D1h land-fort senders and native shape filter ownership are left for later packets."
+}

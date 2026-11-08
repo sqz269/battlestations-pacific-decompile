@@ -14477,11 +14477,21 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
             ++ramp_lowers;
             const GameUnitRow* row = units.unit_row(u);
             log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d "
-                "landed_capture_power=%d (0074B080 0074A420; the 0A6h route 00749AA0 / "
-                "0077C2A0 is a record)", row != nullptr ? row->name.c_str() : "?",
+                "landed_capture_power=%d (0074B080 0074A420)",
+                row != nullptr ? row->name.c_str() : "?",
                 capture_clock, l->pad_1200,
                 u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
-            record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+            const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
+            if (messages != nullptr && message_game_state != nullptr
+                && messages->post_landing_ship_open_a6(
+                    static_cast<std::int32_t>(*message_game_state), session_mode)) {
+                // 0074AF50 sends this notification after its local ramp change;
+                // 0077C2A0 drops flags 4 in single player. No second ramp call.
+                done("LandingShip::construct_open_message", 0x00749aa0u);
+                done("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+            } else {
+                record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+            }
         }
         // Packet cc9_landing_unload_latch (section 106): every latch path reaches
         // 0074B0B0 and falls through to the ramp animation and the unload.

@@ -167,6 +167,14 @@ public:
     // 0074B570's AL, or false when the copy would not reach that handler.
     bool deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint16_t building_id,
                                 gameplay_seg41_cc13::LandingShipMessageHost& receiver) const;
+    // Goal 5 chain 732. 0074AF50 lowers the ramp at 0074B080, constructs
+    // LANDINGSHIP_OPEN with 00749AA0, then routes it with flags 4 at 0074B0A0.
+    // 0077C30D..0077C323 drops exactly flags 4 outside host mode: a local
+    // session neither serializes this message nor lowers the ramp again.
+    // Build the stack notification from this session's context and evaluate
+    // that gate using the live mission state/mode. True means the local send
+    // was handled; false leaves non-local transport to the caller's record.
+    bool post_landing_ship_open_a6(std::int32_t game_state, std::int32_t session_mode) const;
     // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
     // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
     // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local

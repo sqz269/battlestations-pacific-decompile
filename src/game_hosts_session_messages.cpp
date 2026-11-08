@@ -824,18 +824,24 @@ namespace {
 // it; neither runs a slot, so the table is only the stored profile.
 constexpr std::uint32_t kLandAtPadSlots_00cff908[5]{0x0074a1b0u, 0x00749e10u, 0x00749e40u,
                                                     0x00749df0u, 0x004499c0u};
-struct LandAtPadSenderProfile final : cc13_seg41::SessionMessageHost {
+// bsp.py ghidra bytes 00CFF8D4 --length 20, bsp.gpr /battlestationspacific.exe:
+// scalar delete, base header write/read, A6h IsType, the common final slot.
+constexpr std::uint32_t kLandingShipOpenSlots_00cff8d4[5]{0x0074a1d0u, 0x0075b480u,
+    0x0075b4c0u, 0x00749ad0u, 0x004499c0u};
+struct LandingShipSenderProfile final : cc13_seg41::SessionMessageHost {
     const std::uint32_t* vtable(std::uint32_t image_address) override {
-        if (image_address != 0x00cff908u)
-            throw std::logic_error("00749D90 stored an unexpected profile");
-        return kLandAtPadSlots_00cff908;
+        switch (image_address) {
+            case 0x00cff908u: return kLandAtPadSlots_00cff908;
+            case 0x00cff8d4u: return kLandingShipOpenSlots_00cff8d4;
+            default: throw std::logic_error("Landing ship sender stored an unexpected profile");
+        }
     }
-    // 00749D90 runs no header codec; 00749E10 / 00749E40 call 0075B480 /
-    // 0075B4C0 directly.
+    // Neither sender constructor runs a header codec. A5h's 00749E10 /
+    // 00749E40 call it directly; the local flags-4 A6h send never reaches it.
     void write_header_0075b480(const void*, NativeBitCursor*) override { unused(); }
     void read_header_0075b4c0(void*, NativeSessionReadStream&) override { unused(); }
     [[noreturn]] static void unused() {
-        throw std::logic_error("00749D90 has no header codec call");
+        throw std::logic_error("Landing ship constructor has no header codec call");
     }
 };
 struct LandAtPadReadProfile final : seg42::VtableBinding {
@@ -864,7 +870,7 @@ bool HostSessionMessages::deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint
     pad.id_174 = pad_id;
     EntityId174View building;
     building.id_174 = building_id;
-    LandAtPadSenderProfile sender_profile;
+    LandingShipSenderProfile sender_profile;
     seg42::StartLandingMessage sent{};
     static_assert(sizeof(seg42::StartLandingMessage) == 0x20);
     cc13_seg41::land_at_pad_construct_00749d90(reinterpret_cast<std::uint8_t*>(&sent),
@@ -901,6 +907,32 @@ bool HostSessionMessages::deliver_land_at_pad_a5(std::uint16_t pad_id, std::uint
     // them zero_1c / zero_1e for its zeroing stores).
     return gameplay_seg41_cc13::handle_message_0074b570(queued.h.base.type_10, queued.zero_1c,
                                                         queued.zero_1e, receiver);
+}
+
+bool HostSessionMessages::post_landing_ship_open_a6(std::int32_t game_state,
+    std::int32_t session_mode) const {
+    // Only the single-player sender is bound here. Preserve the existing
+    // record for host/client transport rather than manufacture a peer send.
+    if (session_mode != static_cast<std::int32_t>(SessionMode::kLocal)) return false;
+    const Image& image = *image_;
+    seg42::HeaderedMessage sent{};
+    LandingShipSenderProfile profile;
+    // bsp.py show 0074AF50: 0074B080 lowers the ramp BEFORE 00749AA0 and the
+    // flags-4 route at 0074B0A0. The native 1Ch message has no payload or owned
+    // subobjects. Keep its real constructor/context, not a synthesized header.
+    cc13_seg41::landing_ship_open_construct_00749aa0(
+        reinterpret_cast<std::uint8_t*>(&sent), image.session, profile);
+
+    SessionRouteInputs route;
+    route.session_object_present = image.current_game != nullptr;
+    route.game_state = game_state;
+    route.mode = static_cast<SessionMode>(session_mode);
+    route.flags_override = kRouteFlagToPeers;  // PUSH 4 at 0074B090
+    route.default_flags = default_route_flags_for_mode(route.mode);
+    // 0077C30D..0077C323 returns before any codec, queue, audit or transport
+    // mutation. Its earlier discarded IsType(D3h) query cannot mutate this A6h
+    // message. In particular, do not loop it back to 0074B570/0074A420.
+    return !route_session_message_0077c2a0(route).routed;
 }
 
 bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
