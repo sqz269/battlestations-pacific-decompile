@@ -5293,10 +5293,9 @@ void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot) {
 // row+E4h (StrafeTargetPointSelectPrec, in that store order), byte ref+41h = 1
 // (009CA786-009CA7A0); ref+64h..+70h = row+E8h..+F4h (009CA7A7-009CA7D2); 009FA260(ECX
 // = ref) (009CA7D7); 007B7870(ECX = [a+20h], [a+70h], (a+80h, a+84h, a+88h) by value)
-// (009CA80E). Whole body: cc9 models it inline in the strafe go-towards enter (the
-// "009CA866 -> 009CA780" site, game_hosts_units.cpp ~24450) with the pick on a stand-in seed and without the
-// 007B7870 tail.
-void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a) {
+// (009CA80E). Goal 5 chain 720 binds this body from the live strafe go-towards
+// enter in game_hosts_units_motion.cpp, with the loaded row and an eager pick.
+void bot_approach_strafe_rearm_target_point_009ca780(StrafeTargetRearmCalls& host, void* a) {
     void* const row = ptr_at(a, 0x14);
     void* const ref = ptr(a, 0x58);
     const float spread = at<float>(row, 0xE4);

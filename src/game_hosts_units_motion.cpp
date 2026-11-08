@@ -3,12 +3,137 @@
 #include "bsp/game_hosts_commands.hpp"   // goal 5 chain 645: commands_session_messages
 #include "bsp/game_startup_random.hpp"   // goal 5 chain 654: 00BD2FC0 on the shared stream
 #include "bsp/cc13_front3.hpp"           // goal 5 chain 657: 007DC830's PlaneFreeFlightStepHost
+#include "bsp/cc13_seg67b.hpp"
 
 namespace bsp::game {
 
 namespace {
 namespace s47_effects = bsp::gameplay_seg47_cc13;
 namespace s48_engines = bsp::gameplay_seg48_cc13;
+
+// 009CA780's read/write view, not a second approach owner. The row is the
+// selected level loaded by 00901610; the target, centre and rocket block come
+// from the running strafe approach. The callback publishes the row stores to
+// its existing typed reference before picking. Unread bytes have no meaning.
+struct StrafeRearmRefView {
+    std::uint8_t unread_00[0x18];
+    const GameUnitSlot* target_18;
+    std::uint8_t unread_1c[0x41 - 0x1c];
+    std::uint8_t dirty_41;
+    std::uint8_t unread_42[6];
+    std::array<float, 3> spread_48;
+    std::array<float, 3> centre_54;
+    std::uint8_t unread_60[4];
+    float section_chance_64;
+    float weight_68;
+    float weight_6c;
+    float weight_70;
+};
+struct StrafeRearmApproachView {
+    std::uint8_t unread_00[0x14];
+    const bsp::PilotBotParameters* row_14;
+    std::uint8_t unread_18[8];
+    bsp::OpportunisticRocketState* rocket_20;
+    std::uint8_t unread_24[0x58 - 0x24];
+    StrafeRearmRefView ref_58;
+};
+static_assert(offsetof(bsp::PilotBotParameters, strafe_target_point_select_prec_0f0) == 0xe4);
+static_assert(offsetof(bsp::PilotBotParameters, strafe_fueltank_weight_100) == 0xf4);
+static_assert(offsetof(StrafeRearmApproachView, row_14) == 0x14);
+static_assert(offsetof(StrafeRearmApproachView, rocket_20) == 0x20);
+static_assert(offsetof(StrafeRearmApproachView, ref_58) == 0x58);
+static_assert(offsetof(StrafeRearmRefView, target_18) == 0x18);
+static_assert(offsetof(StrafeRearmRefView, dirty_41) == 0x41);
+static_assert(offsetof(StrafeRearmRefView, spread_48) == 0x48);
+static_assert(offsetof(StrafeRearmRefView, centre_54) == 0x54);
+static_assert(offsetof(StrafeRearmRefView, section_chance_64) == 0x64);
+static_assert(offsetof(StrafeRearmRefView, weight_70) == 0x70);
+static_assert(sizeof(StrafeRearmApproachView) == 0xcc);
+
+void rearm_strafe_target(GameUnitsHost::Impl& owner, GameUnitSlot& unit,
+                         const GameUnitSlot* target) {
+    StrafeRearmApproachView approach{};
+    approach.row_14 = bsp::cc13_torp_goaway::pilot_bot_row(unit.pilot_skill_index);
+    if (approach.row_14 == nullptr)
+        throw std::logic_error("009CA780: selected PilotBot row was not loaded");
+    approach.rocket_20 = &unit.orx;
+    approach.ref_58.target_18 = target;
+    approach.ref_58.centre_54 = unit.hull_aim_ref.centre_54;
+
+    struct Binding final : bsp::StrafeTargetRearmCalls {
+        GameUnitsHost::Impl& owner;
+        GameUnitSlot& unit;
+        StrafeRearmApproachView& approach;
+        Binding(GameUnitsHost::Impl& o, GameUnitSlot& u, StrafeRearmApproachView& a)
+            : owner(o), unit(u), approach(a) {}
+
+        void approach_ref_pick_aim_offset_009fa260(void* raw_ref) override {
+            if (raw_ref != &approach.ref_58)
+                throw std::logic_error("009CA780: picker received another target reference");
+            auto& view = approach.ref_58;
+            auto& ref = unit.hull_aim_ref;
+            ref.spread_48 = view.spread_48;
+            ref.section_chance_64 = view.section_chance_64;
+            ref.weight_68 = view.weight_68;
+            ref.weight_6c = view.weight_6c;
+            ref.weight_70 = view.weight_70;
+            ref.dirty_41 = view.dirty_41 != 0;
+            // The typed pick tests tracking where the native pick tests ref+18h.
+            ref.tracking = view.target_18 != nullptr;
+            unit.aim_error_drawn = true;
+            if (view.target_18 != nullptr) {
+                const GameUnitSlot& target = *view.target_18;
+                const std::size_t target_index = owner.index_of_slot(target);
+                if (target_index >= owner.slots.size())
+                    throw std::logic_error("009CA780: target is outside the live unit registry");
+                const bool samples = hull_aim_target_samples_hull(target);
+                bsp::LeadAimHullExtents hull;
+                hull.length = target.motion_class.hull_length;
+                hull.width = target.class_width_00a4;
+                hull.height = target.motion_class.hull_height;
+                bsp::ApproachTargetSections sections;
+                const bsp::ApproachTargetSections* sections_in = nullptr;
+                if (samples && ref.section_chance_64 > 0.0f) {
+                    sections = owner.approach_target_sections(target_index, target);
+                    sections_in = &sections;
+                }
+                bsp::ShipLeadRandomDraws draws{};
+                if (samples) {
+                    if (owner.gunnery == nullptr)
+                        throw std::logic_error("009CA780: hull pick has no shared random stream");
+                    const float total = sections_in != nullptr
+                        ? bsp::approach_target_ref_section_total(ref, sections) : 0.0f;
+                    draws = hull_aim_shared_stream_draws_00816650(ref, true, total,
+                        *owner.gunnery, owner.index_of_slot(unit));
+                }
+                // bsp.py show 009FA260: pick + bias, clear dirty, no world-point
+                // update or lead. Draw now (009CA7D7), once, on the live stream.
+                bsp::approach_target_ref_pick_009fa260(ref, hull, draws, samples, sections_in);
+                // This is the same bound target; retain the eager pick at the
+                // next 009FADA0 query instead of rebuilding its typed reference.
+                unit.hull_aim_target_plus_one = target_index + 1;
+            } else {
+                // 009FA2CE clears dirty even when ref+18h is null, without draws.
+                ref.dirty_41 = false;
+            }
+            view.dirty_41 = ref.dirty_41 ? 1 : 0;
+        }
+
+        void opportunistic_rocket_set_target_007b7870(void* rocket, void* raw_target,
+                                                      const float point[3]) override {
+            auto* const target = static_cast<const GameUnitSlot*>(raw_target);
+            if (rocket != &unit.orx || target != approach.ref_58.target_18)
+                throw std::logic_error("009CA780: rocket tail lost its live approach state");
+            bsp::opportunistic_rocket_set_target_007b7870(unit.orx,
+                target != nullptr ? owner.index_of_slot(*target) + 1 : 0,
+                target != nullptr && bsp::unit_is_kind_of(target->class_id, 0x0f),
+                {point[0], point[1], point[2]});
+            unit.orx_owner = 2;
+        }
+    } binding(owner, unit, approach);
+    bsp::bot_approach_strafe_rearm_target_point_009ca780(binding, &approach);
+    owner.done("StrafeApproach::rearm_target_point", 0x009ca780u);
+}
 
 // Goal 5 chain 654. 007DE600 BSP_PlaneEngineList_StopAll on the plane's list at
 // unit+C98h: slot +0Ch on each engine (007DDF00 base, 007DDF10 rotor).
@@ -6422,44 +6547,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         st_glide_seed_009ca3b0();                         // 009CA82C
                         // 009CA849-009CA85D: +48h = U(0.8, 1.1) * desc+18Ch TravelSpeed.
                         unit_.st_run_speed_48 = st_draw("48", 0.8f, 1.1f) * unit_.plane_travel_speed;
-                        // 009CA866 -> 009CA780: the target ref re-armed with the strafe
-                        // row: spread = StrafeTargetPointSelectPrec on all three axes
-                        // (ref+48h..+50h), the dirty byte, the section chance and the
-                        // three weights (ref+64h..+70h), then 009FA260's pick.
-                        // SUBSTITUTIONS, labelled: the pick runs at the next aim-point
-                        // query (hull_aim_world_point) on a fresh deterministic seed;
-                        // the tail call 007B7870 ([approach+20h], target, approach+80h)
-                        // is unread and not modelled.
-                        const GameUnitsHost::Impl::PilotStrafeRow& row =
-                            GameUnitsHost::Impl::strafe_row(unit_);
-                        bsp::ApproachTargetRefState& ref = unit_.hull_aim_ref;
-                        ref.spread_48 = {row.target_point_select_prec_0f0,
-                                         row.target_point_select_prec_0f0,
-                                         row.target_point_select_prec_0f0};
-                        ref.section_chance_64 = row.section_damage_chance_0f4;
-                        ref.weight_68 = row.engine_room_weight_0f8;
-                        ref.weight_6c = row.magazine_weight_0fc;
-                        ref.weight_70 = row.fueltank_weight_100;
-                        ref.dirty_41 = true;
-                        unit_.aim_error_drawn = true;   // keep them across a ref rebuild
-                        unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
-                        if constexpr (bsp::kOpportunisticRocketBound) {
-                            // 009CA80E: 007B7870(task+38Ch, approach+70h, approach+80h);
-                            // approach+80h is the ref's +54h. OFF: LABELLED, the host's
-                            // target ref is the commanded target. ON
-                            // (kStrafeTargetFallback70Cc13Bound): approach+70h itself.
-                            const GameUnitSlot* t = nullptr;
-                            if constexpr (bsp::kStrafeTargetFallback70Cc13Bound) {
-                                t = st_target_70();
-                            } else {
-                                t = st_target();
-                            }
-                            bsp::opportunistic_rocket_set_target_007b7870(
-                                unit_.orx, t != nullptr ? unit_.command_target_plus_one : 0,
-                                t != nullptr && bsp::unit_is_kind_of(t->class_id, 0x0F),
-                                ref.centre_54);
-                            unit_.orx_owner = 2;
-                        }
+                        // 009CA866 calls the existing rearm body. Its row stores,
+                        // immediate 009FA260 pick and 007B7870 tail replace the
+                        // former inline copy and deferred pick on this path.
+                        rearm_strafe_target(owner_, unit_, st_target_70());
                     }
                     // 009CB8B0 goaway enter (vtable 00D2103C +4h).
                     // Packet cc9_strafe_breakoff (docs/SQUADRON_LAND_TASK.md 5cm).
