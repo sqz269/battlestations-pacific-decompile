@@ -1,0 +1,90 @@
+{
+  "run": 2169,
+  "goal": 5,
+  "chain": 981,
+  "slot": "g5-w7",
+  "branch": "agent/g5-w7",
+  "picked": "Countdown Lua entry bodies on the existing mission countdown, HUD counters and borrowed Lua frame",
+  "change": "Moved the existing, listing-checked inline implementations from dispatch into unique address-named member bodies and made dispatch call them. The old inline copies were deleted. No new state, duplicate execution, behavior switch or gameplay behavior was introduced.",
+  "rows": [
+    {
+      "native": "008b16e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> GameScriptOrdersHost::run_countdown_008b16e0",
+      "runtime_state": "The active dispatch Lua frame, countdown_ and mission_clock_ shared with fixed-step updates, and the existing narrative_hud_ owner.",
+      "call_site": "1021853d",
+      "note": "Existing implementation extracted and called once; CountdownTimeLeft was already counted by the source host heuristic, so the three explicit calls add two to the wired total."
+    },
+    {
+      "native": "008b19a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> GameScriptOrdersHost::run_countdown_cancel_008b19a0",
+      "runtime_state": "The active dispatch Lua frame, countdown_ and mission_clock_ shared with fixed-step updates, and the existing narrative_hud_ owner.",
+      "call_site": "1021857f",
+      "note": "Existing implementation extracted and called once; CountdownTimeLeft was already counted by the source host heuristic, so the three explicit calls add two to the wired total."
+    },
+    {
+      "native": "008b1b40",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch -> GameScriptOrdersHost::run_countdown_time_left_008b1b40",
+      "runtime_state": "The active dispatch Lua frame, countdown_ and mission_clock_ shared with fixed-step updates, and the existing narrative_hud_ owner.",
+      "call_site": "102195fd",
+      "note": "Existing implementation extracted and called once; CountdownTimeLeft was already counted by the source host heuristic, so the three explicit calls add two to the wired total."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_deviation_factor",
+      "reason": "Missing the actual constructed movie-camera screen/limit owner; the current callback still aborts through movcam_new_unreached and cannot pass its identity token as native storage."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_overview_height",
+      "reason": "Missing the actual constructed movie-camera screen/limit owner; the current callback still aborts through movcam_new_unreached and cannot pass its identity token as native storage."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_speed_limits",
+      "reason": "Missing the actual constructed movie-camera screen/limit owner; the current callback still aborts through movcam_new_unreached and cannot pass its identity token as native storage."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost::movcam_reset_accel_time",
+      "reason": "Missing the actual constructed movie-camera screen/limit owner; the current callback still aborts through movcam_new_unreached and cannot pass its identity token as native storage."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save Lua owner/current mission key and real checkpoint-diff result; the inspected checkpoint_differs callback returns false."
+    }
+  ],
+  "totals": {
+    "wired_before": 10838,
+    "wired_after": 10840,
+    "call_graph_recon_called_before": 5725,
+    "call_graph_recon_called_after": 5725
+  },
+  "validation": {
+    "build": "scripts/build.ps1: passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader passed",
+    "pc24": "No float arithmetic changed; original countdown_time_left PC24 operations retained. pc24_lint --diff origin/main...HEAD is also run after the commit.",
+    "calls": "call_graph.py who reports one entry-reachable dispatch call to each selected body; wire_readiness rows also have called=true and call_sites=1.",
+    "evidence": [
+      "local/output/c981-baseline-build.log",
+      "local/output/c981-build.log",
+      "local/output/c981-before.json",
+      "local/output/c981-after.json",
+      "local/output/c981-who-after.log",
+      "local/output/c981-pc24.log"
+    ]
+  },
+  "limits": [
+    "Source host interfaces only; no binary ABI compatibility or live game validation claimed. Game was not launched.",
+    "The countdown owner retains its existing assumption that constructor-unwritten timing fields initially read as zero.",
+    "Native diagnostic/SEH/allocator representation and multiplayer-only broadcasts were not changed."
+  ],
+  "left": "Movie-camera reset functions need the actual constructed screen/limit owner; profile checkpoint clearing needs the pre-load Lua checkpoint owner and real checkpoint-diff path."
+}

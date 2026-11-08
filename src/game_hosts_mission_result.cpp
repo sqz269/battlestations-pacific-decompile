@@ -814,7 +814,15 @@ void GameMissionResultHost::flush_storage_007fa1b0() {
 }
 
 void GameMissionResultHost::reset_player_records_00916980() {
-    record("MissionEndScene::reset_player_records", 0x004d7a37u);
+    // bsp.py show 00916980 --asm: 00916986..009169A0 walks eight
+    // manager+4h records, then 009169A2 clears +1484h and 009169A8..009169EE
+    // clears the +1488h ignored-kill entity tree. This is the live manager
+    // read by Scoring_* Lua rows and the mission-result commit path.
+    for (std::size_t slot = 0; slot < bsp::kMissionScoringSlotCount; ++slot)
+        bsp::cc13_seg59b::mission_score_record_clear_00915760(scoring_, slot);
+    scoring_.pending_1484 = false;
+    scoring_.ignored_kill_entities_1488.clear();
+    done("MissionEndScene::reset_player_records", 0x004d7a37u);
 }
 
 void GameMissionResultHost::broadcast_end_scene() {

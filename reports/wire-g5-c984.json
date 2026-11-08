@@ -1,0 +1,87 @@
+{
+  "run": 2176,
+  "goal": 5,
+  "chain": 984,
+  "slot": "g5-w9",
+  "branch": "agent/g5-w9",
+  "picked": "Mission score-record clear and single-player end-scene reset on the live scoring manager",
+  "rows": [
+    {
+      "native": "00915760",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::reset_player_records_00916980",
+      "evidence": "One direct entry-reachable call site in the built executable (call_graph who 00915760); readiness called=true, call_sites=1."
+    },
+    {
+      "native": "00916980",
+      "status": "wired",
+      "host_site": "src/mission_result.cpp: run_end_scene_004d7970 -> MissionResultHost::reset_player_records_00916980",
+      "evidence": "Existing reachable virtual host hook now clears all eight live records, manager+1484h and ignored_kill_entities_1488 instead of logging a stub; this address was already text-wired at baseline."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: Scrollbar factory admission",
+      "reason": "Missing genuine AC8A80 child-layout and application lifetime bindings; application file was held by the Button worker at selection."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing a real frame-job-thread deferred-call producer with LuaVariantRecord arguments; the mission interpreter currently executes on the main thread."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Missing a live native vehicle-camera-array owner and a reached resize caller using that owner."
+    },
+    {
+      "native": "0090ed40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59a.cpp: scoring_add_unit_float_0090ed40",
+      "reason": "Missing an actual unit category-interface and scoring-map producer bridge; the raw callback body cannot consume the current typed manager directly."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list integration",
+      "reason": "Missing a gameplay score-list consumer; the established native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate chosen-record integration",
+      "reason": "Missing a gameplay consumer of the native chosen byte; adding an unused debug score list would not establish gameplay wiring."
+    }
+  ],
+  "built": [
+    "One existing 00915760 body ported from unused raw Seg59bHost memory to the actual MissionScoringManagerState records shared by Lua and commit.",
+    "Owned runtime-only score fields, retaining the existing shared runtime_awards rather than creating duplicate award state.",
+    "00916980 eight-record reset, pending byte clear and ignored-kill entity-set clear, from the native assembly.",
+    "Focused Win32 regression probe for shared awards, nested/owned score clears, extended-field preservation and neighboring-slot isolation."
+  ],
+  "totals": {
+    "readiness_wired_before": 10839,
+    "readiness_wired_after": 10840,
+    "exe_called_addresses_before": 5726,
+    "exe_called_addresses_after": 5727
+  },
+  "validation": {
+    "baseline_build": "PASS, 4/4 CTests",
+    "final_build": "PASS, 4/4 CTests; local/c984-build-final.log",
+    "focused_probe": "PASS; local/c984-probe.log; standalone executable with /MANIFEST:EMBED",
+    "call_graph": "PASS; local/c984-graph-final.log; 00915760 has one direct call from the changed host hook",
+    "readiness": "00915760 wired, called=true, call_sites=1; 00916980 called=true via the existing reachable host virtual table",
+    "game_execution": "Not run, as assigned"
+  },
+  "limits": [
+    "Source interfaces and C++ container ownership; not original binary ABI, STL sentinel/checked-iterator or FH3 compatibility.",
+    "Runtime scalar key/value meanings remain provisional raw words, and the +1BCh value is an opaque native 2Ch-byte payload. New empty runtime fields use the binary empty-container/zero defaults; their additional gameplay producers remain future work.",
+    "The +26Ch/+278h arrays and extended +284h count survive the base-record clear, matching its actual native write set."
+  ],
+  "left": [
+    "Scoring_ClearPlayerScore 008BC540 dispatch/producer binding, which must save and restore +08h and +250h around 00915760.",
+    "Additional native runtime statistic/message producers can now use runtime_slots; campaign/gameplay validation remains outstanding."
+  ]
+}

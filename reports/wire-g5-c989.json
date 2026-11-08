@@ -247,5 +247,55 @@
     "abi_compatible": false,
     "game_validated": false
   },
-  "remaining": "Native GUI relayout requires the actual Page/model dispatch adapter. Error-context candidates require a reached reporter owner. Existing typed identity/fallback and original SEH limitations of GetCapturePercentage remain."
+  "remaining": "Native GUI relayout requires the actual Page/model dispatch adapter. Error-context candidates require a reached reporter owner. Existing typed identity/fallback and original SEH limitations of GetCapturePercentage remain.",
+  "integration_review_1": {
+    "merged_origin_main": "18f7f4ce4f05cff29e102ccaa7fae80717bac5d3",
+    "resolution": "The only conflict was the adjacent insertion before dispatch. Kept both lua_get_capture_percentage_0089b840 and upstream run_get_squadron_planes_0089cc50 as unique complete methods; retained both direct dispatcher calls. Upstream squadron body was checked byte-for-byte against origin/main. Ledger/identifier/header changes auto-merged without conflicts.",
+    "normal_build": "scripts/build.ps1: Win32 Release and all four CTests passed",
+    "on_build": "python tools/off_switch_on_build.py --log local/output/c989-review1-on-build.log -- -BuildDir build/c905-on: exit0, zero diagnostics and all four CTests passed",
+    "on_switches": [
+      "kAutoAttackAllMembersBound",
+      "kPlaneFormationPlacementEnabled"
+    ],
+    "switch_restore": "Both temporary ON files restored byte-for-byte; kWireGoal3Chain242Bound remains false.",
+    "readiness_summary": {
+      "wired": 10849,
+      "callees_done_no_wired_caller": 8440,
+      "ready": 1185,
+      "blocked_on_callees": 51,
+      "unknown_no_identifier": 200
+    },
+    "entry_rows": [
+      {
+        "address": "0089b840",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "0089cc50",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    ],
+    "graph": "Normal build: 43513/43667 functions entry-reachable; 5740/6452 reconstructed addresses called. 0089B840 and 0089CC50 each have one direct reachable dispatcher call.",
+    "capture_call_site": "10219603 -> lua_get_capture_percentage_0089b840 at1021f8b0",
+    "upstream_squadron_call_site": "10216dab -> run_get_squadron_planes_0089cc50 at10229080",
+    "pc24": "pc24_lint --diff origin/main: zero findings",
+    "evidence": [
+      "local/output/c989-review1-build.log",
+      "local/output/c989-review1-on-build.log",
+      "local/output/c989-review1-on-run.log",
+      "local/output/c989-review1-readiness.log",
+      "local/output/c989-review1-after.json",
+      "local/output/c989-review1-graph.log",
+      "local/output/c989-review1-who.log",
+      "local/output/c989-review1-who-upstream.log",
+      "local/output/c989-review1-pc24-worktree.log"
+    ],
+    "game_run": false
+  }
 }

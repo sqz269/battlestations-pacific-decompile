@@ -1,4 +1,5 @@
 #include "bsp/native_lua_bootstrap.hpp"
+#include "bsp/native_mission_lua_register.hpp"
 #include "bsp/lua_exec_guard.hpp"
 #include "bsp/storage_pool.hpp"
 #include <cstring>
@@ -54,7 +55,10 @@ void open_native_lua_state_00b6a020(NativeLuaStateStorage& owner,std::uint32_t m
             if(region && _stricmp(region,"JAP")==0)platform_chunk(owner,strings,"REGION=\"JAP\"",true);
         }
     }
-    lua_pushcclosure(owner.state_04,inputs.do_file_00b69e00,0);lua_setfield(owner.state_04,LUA_GLOBALSINDEX,"DoFile");
+    // 006B8610 (bsp.py show --asm): zero-upvalue closure, then reload +4h
+    // before global publication. This owner has the same live state slot;
+    // retain the application's DoFile callback and the bootstrap stack.
+    register_native_mission_lua_global_006b8610(&owner,"DoFile",inputs.do_file_00b69e00);
     const auto length=inputs.get_fundamentals_00884770(inputs.fundamentals_context)->size_08;
     const char* const data=inputs.get_fundamentals_00884770(inputs.fundamentals_context)->bytes_04;
     (void)luaL_loadbuffer(owner.state_04,data,length,"Scripts\\fundamentals.lua");

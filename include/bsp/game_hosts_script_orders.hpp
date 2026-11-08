@@ -1044,10 +1044,18 @@ private:
     void run_blackout_update(float step);
     // Packet cc9_lua_countdown: the countdown arm of 00735100 (00735151-0073524F).
     void run_countdown_update_00735100();
+    // Lua natives: ECX = borrowed lua_State*, EAX = result count, plain RET.
+    // These source methods use the dispatch's borrowed frame and the same
+    // countdown owner consumed by run_countdown_update_00735100; no binary ABI.
+    int run_countdown_008b16e0();
+    int run_countdown_cancel_008b19a0();
+    int run_countdown_time_left_008b1b40();
     // Packet cc9_lua_mission_narrative: 00735100's narrative half.
     void run_narrative_update_00735100(float step);
     // Packet cc9_lua_camera_state.
     int run_get_camera_state_008bf6a0();
+    // 0089CC50 over the active Lua call and retained squadron members.
+    int run_get_squadron_planes_0089cc50();
     void basis_degrees_0042d2e0(const bsp::CameraMatrix& world, float out[3]);
     std::size_t camera_state_calls_{0};
     std::size_t camera_state_from_camera_{0};

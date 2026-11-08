@@ -10820,12 +10820,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ImmediateFireState& im = immediate_fire_by_gun[g];
             const int last = std::max(1, gun.barrel_num) - 1;   // 006FE0E9..006FE11D
             if (gun.next_fire_barrel == last) {                 // 006FE120
-                if (im.salvo_4d8) {
+                FireRequestBinding salvo_host(*this, g);
+                if (!bsp::single_turning_gun_set_fire_request_006fdcd0(
+                        gun.fire, salvo_host, im.immediate_4d4, im.salvo_4d8, false)) {
                     ++salvo_ignored_false;                      // 006FDCDB
                 } else {
-                    FireRequestBinding salvo_host(*this, g);
-                    bsp::gun_set_fire_request_0072d2c0(gun.fire, salvo_host, false);
-                    if (!gun.fire.fire_requested) im.immediate_4d4 = false;
                     ++salvo_drops;
                 }
                 im.salvo_4d8 = false;                           // 006FE13A
@@ -12207,15 +12206,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             // vtable[1E8h]: 006FDC90 (MRTGun) or 006FDCD0 (MSTGun).
             ImmediateFireState& im = immediate_fire_by_gun[g];
             auto set_request = [&](bool want) {
-                if (turning == kTurningClassSingle && !want && im.salvo_4d8) {
-                    ++salvo_ignored_false;              // 006FDCDB: +4D8h holds it
-                    return;
+                const bool was_immediate = im.immediate_4d4;
+                if (turning == kTurningClassSingle) {
+                    if (!bsp::single_turning_gun_set_fire_request_006fdcd0(
+                            gun.fire, fire_host, im.immediate_4d4, im.salvo_4d8, want)) {
+                        ++salvo_ignored_false;
+                        return;
+                    }
+                } else {
+                    bsp::rapid_turning_gun_set_fire_request_006fdc90(
+                        gun.fire, fire_host, im.immediate_4d4, want);
                 }
-                bsp::gun_set_fire_request_0072d2c0(gun.fire, fire_host, want);
-                if (!gun.fire.fire_requested && im.immediate_4d4) {
-                    im.immediate_4d4 = false;           // 006FDCA6 / 006FDCF2
-                    ++immediate_flag_drops;
+                if (was_immediate && !im.immediate_4d4) ++immediate_flag_drops;
+            };
+            auto request_immediate = [&]() {
+                const bool was_immediate = im.immediate_4d4;
+                if (turning == kTurningClassRapid) {
+                    bsp::rapid_turning_gun_request_immediate_fire_006fdf60(im.immediate_4d4);
+                } else {
+                    bsp::single_turning_gun_request_immediate_fire_006fdc50(
+                        gun.fire, fire_host, im.immediate_4d4, im.salvo_4d8);
                 }
+                if (was_immediate && !im.immediate_4d4) ++immediate_flag_drops;
             };
             const bool artillery_bot = !player_seat && artillery_bot_aims(gun.category, target)
                 && (!have_target || dp_air_ammo(g, gun.category, target) == nullptr);
@@ -12235,11 +12247,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         im.fire_delay_time -= dt;                        // 006DFC3D
                         if (im.fire_delay_time < 0.0f) {                 // 006DFC55
                             ++immediate_slot_calls;
-                            if (turning == kTurningClassRapid) {
-                                im.immediate_4d4 = true;                 // 006FDF60
-                            } else {
-                                set_request(true);                       // 006FDC50
-                            }
+                            request_immediate();
                             im.delayed_fire = false;                     // 006DFC61
                             done("Gun::immediate_fire_slot_1f0", 0x006fdf60u);
                         }
@@ -12252,11 +12260,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // Packet cc9_fire_function_guns_now: 009E2B99's vtable[1F0h].
                 gun.immediate_fire_009e2b60 = false;
                 ++immediate_function_fires;
-                if (turning == kTurningClassRapid) {
-                    im.immediate_4d4 = true;                             // 006FDF60
-                } else {
-                    set_request(true);                                   // 006FDC50
-                }
+                request_immediate();
                 done("Gun::immediate_fire_slot_1f0_009e2b60", 0x009e2b99u);
             }
             latched = gun.fire.fire_requested;

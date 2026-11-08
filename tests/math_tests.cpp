@@ -843,10 +843,12 @@ int main() {
         // ungated/untargeted extra send and a synchronous 0084C4E0 clear.
         struct FireSyncRecorder final : bsp::GunFireRequestHost {
             bool request{true}, blocked{true}, clear_on_send{false};
+            bool suppressed{false};
+            mutable int request_checks{0};
             int ticks{0};
             std::vector<std::uint16_t> targets;
-            bool has_owning_unit() const override { return true; }
-            bool unit_suppressed() const override { return false; }
+            bool has_owning_unit() const override { ++request_checks; return true; }
+            bool unit_suppressed() const override { return suppressed; }
             bool gun_suppressed() const override { return false; }
             void release_fire_target_ref_006952a0() override {}
             bool is_rapid_fixed_slave_006e3d50(int) override { return false; }
@@ -894,6 +896,26 @@ int main() {
             && host.targets == std::vector<std::uint16_t>{42}
             && host.ticks == 3 && state.barrel_delay_time == 0.25f,
             "0084C5DB observes the 0084C4E0 latch clear during base-message delivery");
+
+        // 006FDCDB rejects before even querying the base host. In contrast,
+        // an admitted true request can be suppressed by the base and must
+        // clear +4D4h from the resulting latch, not from its true input.
+        host.request = true;
+        const int checks_before = host.request_checks;
+        const bool admitted = bsp::single_turning_gun_set_fire_request_006fdcd0(
+            state, host, host.request, true, false);
+        const bool untouched = !admitted && state.fire_requested && host.request
+            && host.request_checks == checks_before;
+        host.suppressed = true;
+        bsp::single_turning_gun_request_immediate_fire_006fdc50(
+            state, host, host.request, true);
+        const bool single_cleared = !state.fire_requested && !host.request;
+        bsp::rapid_turning_gun_request_immediate_fire_006fdf60(host.request);
+        const bool rapid_armed = host.request;
+        bsp::rapid_turning_gun_set_fire_request_006fdc90(state, host, host.request, true);
+        check(untouched && single_cleared && rapid_armed && !host.request
+            && !state.fire_requested && host.request_checks == checks_before + 2,
+            "turning-gun overrides preserve salvo rejection and clear immediate fire after suppression");
     }
     {
         // Passive metadata fixture only: this ordinary header is never passed

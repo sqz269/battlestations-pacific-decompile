@@ -70,7 +70,8 @@ public:
     void get_table(int index);                                // 006B8470
     void create_table_006b84b0();
     void create_table() { create_table_006b84b0(); }
-    void set_table(int index);                                // 006B84D0
+    void set_table_006b84d0(int index);
+    void set_table(int index) { set_table_006b84d0(index); }
     int protected_call(int nargs, int nresults, int errfunc); // 006B8530
     int next(int index);                                      // 006B85B0
     void pop(int count);                                      // 006B85F0

@@ -205,6 +205,24 @@ bool gun_set_fire_request_0072d2c0(GunFireRequestState& state,
                                    GunFireRequestHost& host,
                                    bool want_fire);
 
+// Turning-gun overrides, recovered from bsp.py show --asm. Native 006FDC90 /
+// 006FDCD0 are __thiscall(gun, bool), RET 4; these semantic interfaces borrow
+// the same gun's +454h state, +4D4h immediate flag and +4D8h salvo flag.
+// The single-gun result only reports whether the request was admitted, for
+// host diagnostics; the original returns void. Rejection runs no base calls.
+void rapid_turning_gun_set_fire_request_006fdc90(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool want_fire);
+bool single_turning_gun_set_fire_request_006fdcd0(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool salvo_4d8, bool want_fire);
+
+// Native 006FDC50 / 006FDF60: ECX = gun, plain RET. The former dispatches
+// vtable[1E8h](1); this interface is for the host's concrete single-turning
+// class (and its inherited depth-charge override) whose slot is 006FDCD0.
+// These are semantic C++ calls, not drop-in native ABI replacements.
+void single_turning_gun_request_immediate_fire_006fdc50(GunFireRequestState& state,
+    GunFireRequestHost& host, bool& immediate_4d4, bool salvo_4d8);
+void rapid_turning_gun_request_immediate_fire_006fdf60(bool& immediate_4d4) noexcept;
+
 // 0072D130 over the host: the countdowns, then the conditional 0ADh send.
 // Returns true when the message went out this step.
 bool gun_fixed_step_tick_0072d130(GunFireRequestState& state,

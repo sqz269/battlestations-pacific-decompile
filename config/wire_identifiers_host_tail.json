@@ -146,9 +146,9 @@
       "address": "0089cc50",
       "source": "src/game_hosts_script_orders.cpp",
       "identifiers": [
-        "dispatch"
+        "run_get_squadron_planes_0089cc50"
       ],
-      "evidence": "src/game_hosts_script_orders.cpp: executable dispatch. Explicit GetSquadronPlanes branch resolves registry members, emits 1-based entity-id strings and caps at five; fused/departed lead and malformed-native-input substitutions remain. Source-level body identity only; existing gates/ABI/ownership limitations remain, no new runtime or game validation."
+      "evidence": "Goal5 c988: GameScriptOrdersHost::dispatch calls the sole run_get_squadron_planes_0089cc50 body, extracted unchanged from the verified GetSquadronPlanes branch. It reads the active real Lua VM and resolved squadron registry members, emits 1-based entity-id strings and caps at five. Win32 build and CTests pass; call_graph who confirms one reachable direct dispatch call. Existing departed-lead, native-handle and malformed-input substitutions remain; no ABI or game validation."
     },
     {
       "address": "008a3e70",
