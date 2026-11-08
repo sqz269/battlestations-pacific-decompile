@@ -1,0 +1,287 @@
+{
+  "chain": 860,
+  "slot": "g5-w5",
+  "branch": "agent/g5-w5",
+  "picked": "Canonical input/mouse base construction over real native device allocations",
+  "rows": [
+    {
+      "native": "00a943d0",
+      "status": "wired",
+      "host_site": "src/native_keyboard_mouse.cpp:construct_native_keyboard_base_00a962f0; src/native_gamepad_xinput.cpp:construct_native_gamepad_00a95d70"
+    },
+    {
+      "native": "00a9a0b0",
+      "status": "wired",
+      "host_site": "src/native_keyboard_mouse.cpp:construct_native_mouse_00a9a290"
+    },
+    {
+      "native": "00a93ec0",
+      "status": "wired",
+      "host_site": "src/cc13_sweepC.cpp:input_device_construct_00a943d0; mouse_device_construct_00a9a0b0",
+      "reason": "Existing wiring retained through both canonical base constructors; each history is cleared exactly once."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:stream_writer_write_dword_00bf0340",
+      "reason": "No live native writer with virtual+54h DWORD output and its remaining-byte counter was established."
+    },
+    {
+      "native": "00bf0810",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:push_back_stream_writer_chunk_00bf0810",
+      "reason": "No live stream-writer chunk-array owner or producer was established."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp:read_dword_field",
+      "reason": "No live RamImage data consumer and actual native RamImage owner were established in the inspected host paths."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "Missing live native bot-state registry owner and state/name publication; the profile word remains explicitly uncallable."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp:destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing live native bot-state registry lifetime owner and callable class/profile binding."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:distortion_extent_00b4ed30 provider",
+      "reason": "No concrete live distortion-pass owner/provider for the original +24h/+28h extent consumer was found."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:main-scene metadata submission",
+      "reason": "Canonical call already exists in the native main-scene submission model; no additional live metadata producer was established."
+    },
+    {
+      "native": "00a90180",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:input_device_table_any_button_down_00a90180",
+      "reason": "The eight native device slots require callable device+2Ch virtuals; current raw profile labels need explicit runtime dispatch."
+    },
+    {
+      "native": "00a90ec0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:input_backend_default_slot08_00a90ec0",
+      "reason": "No live base-backend slot08 consumer was established; the application owns a derived native backend."
+    },
+    {
+      "native": "00a97b80",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:native_input_backend_byte_f4_00a97b80",
+      "reason": "The actual enumeration producer writes backend+F4h, but no current gameplay consumer of that flag was established."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp:release_native_enum_symbol_node_holder_008f3d80",
+      "reason": "No live unique detached enum-symbol node holder was established; bucket-chain cleanup has different publication ordering."
+    },
+    {
+      "native": "008f3dc0",
+      "status": "skipped",
+      "host_site": "src/native_scene_name_node_holder.cpp:release_native_property_library_node_holder_008f3dc0",
+      "reason": "No live unique detached property-library node holder was established; map teardown still traverses linked nodes."
+    },
+    {
+      "native": "008f0700",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_record_assignment.cpp:assign_native_scene_property_record_008f0700",
+      "reason": "Already entry-reachable from canonical 008F23E0 and 008F54F0; no new wiring change is needed."
+    },
+    {
+      "native": "008f0340",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_record_assignment.cpp:type-5 assignment",
+      "reason": "Existing canonical type-5 assignment already invokes this payload-copy body; no new host path was added."
+    },
+    {
+      "native": "008f0420",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_reference_set.cpp:set_native_scene_property_reference_008f0420",
+      "reason": "No new live reference setter producer was established outside the scene-property files under review."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp:ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "Missing a live ocean depth-render kernel consumer with the original screen dimensions; this is a rendering fragment, not the simulation update."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp:set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing saved-entity Lua toTurn restoration producer; a live order ring does not justify an extra rudder reset."
+    },
+    {
+      "native": "00b58400",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp:shader_constant_list_construct_00b58400",
+      "reason": "No live original constant-list Lua-reader consumer and corresponding 10h list owner were established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp:leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established consumer is the excluded debug inspector; no gameplay consumer was established."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp:support_site_squad_size_0084cf80",
+      "reason": "Missing live support-site stock lists and the corresponding support-order or spawn-composition consumer."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg52_cc13.cpp:support_site_can_supply_class_0084d050",
+      "reason": "Missing live support-site availability list, owner-health source and support-menu consumer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp:font_accepts_text_byte_00ab6d00",
+      "reason": "Missing live input-character admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:check_multiplayer_player_count",
+      "reason": "Multiplayer participant-count watchdog is excluded from this single-player task."
+    },
+    {
+      "native": "00568290",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp:gui_icon_set_uv_rect_00568290",
+      "reason": "Missing live session-browser map-icon crop owner and concrete widget+8Ch UV publication callback."
+    },
+    {
+      "native": "0070bba0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB.cpp:cc13_sweepB_flag_params_init_0070bba0",
+      "reason": "No live complete flag-node producer/consumer was established; the inspected generic flag attachment model still requires host callbacks."
+    },
+    {
+      "native": "00a9a380",
+      "status": "skipped",
+      "host_site": "src/gui_widget_frame_runtime.cpp:gui_mouse_double_click_seconds_00a9a380",
+      "reason": "The raw runtime already has the canonical FLD mouse+238h leaf; the separate typed projection supplies no additional runtime wiring."
+    },
+    {
+      "native": "00a818d0",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:sound_sample_has_resource_word08_00a818d0",
+      "reason": "Actual sample/resource objects exist, but no live original resource-kind query consumer was established."
+    },
+    {
+      "native": "00a83120",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp:apply_sound_sample_settings_00a83120",
+      "reason": "Missing live descriptor-editing consumer and definition-file output path; ordinary sample loading is a different operation."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp:sound_channel_progress_00a7a6b0",
+      "reason": "No live original channel-progress query consumer was established."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp:sound_channel_audibility_00a7a710",
+      "reason": "No live original channel-audibility query consumer was established."
+    },
+    {
+      "native": "00a7be50",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp:sound_instance_default_handle_00a7be50",
+      "reason": "No live base-instance handle-query consumer was established; concrete instances use derived profiles."
+    },
+    {
+      "native": "00a7be60",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp:sound_instance_default_audibility_00a7be60",
+      "reason": "No live base-instance audibility-query consumer was established."
+    },
+    {
+      "native": "00a7bea0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp:sound_instance_default_parameter_00a7bea0",
+      "reason": "No live base-instance parameter-query consumer was established."
+    },
+    {
+      "native": "00a7bed0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp:sound_instance_default_vector_00a7bed0",
+      "reason": "No live base-instance vector-query consumer was established."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00A943D0",
+    "bsp.py show 00A9A0B0",
+    "bsp.py show 00A93EC0",
+    "bsp.py show 00A962F0",
+    "bsp.py show 00A95D70",
+    "bsp.py show 00A9A290"
+  ],
+  "contract": "Reuses existing C++ bodies on actual native keyboard/gamepad/mouse allocations. Derived profiles replace transient base profiles before callbacks or allocations. Removes the old duplicate initialization; preserves the existing canonical history-clear call. No Original register/EH ABI or game-run claim.",
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release",
+    "tests": {
+      "reconstructed_math": "passed",
+      "tool_tests": "passed",
+      "cc462_loading_config": "passed",
+      "cc464_vfs_stream_reader": "passed"
+    },
+    "call_graph": "build/win32: entry-reachable reconstructed addresses 5578 -> 5580",
+    "calls": {
+      "00a943d0": [
+        {
+          "caller": "construct_native_gamepad_00a95d70",
+          "site": "1061569f"
+        },
+        {
+          "caller": "construct_native_keyboard_00a9a3e0",
+          "site": "10617f16"
+        }
+      ],
+      "00a9a0b0": [
+        {
+          "caller": "construct_native_mouse_00a9a290",
+          "site": "1061806f"
+        }
+      ],
+      "00a93ec0": [
+        {
+          "caller": "input_device_construct_00a943d0",
+          "site": "103e6fa5"
+        },
+        {
+          "caller": "mouse_device_construct_00a9a0b0",
+          "site": "103e7095"
+        }
+      ]
+    },
+    "game_run": false,
+    "new_tests": 0,
+    "float_math_changed": false,
+    "readiness": "Both new constructors wired; called=true; 00A943D0 has 2 direct reachable call sites, 00A9A0B0 has 1; 00A93EC0 retains 2."
+  },
+  "totals_before": {
+    "readiness_wired": 10710,
+    "entry_reachable_reconstructed_addresses": 5578
+  },
+  "totals_after": {
+    "readiness_wired": 10712,
+    "entry_reachable_reconstructed_addresses": 5580
+  }
+}
