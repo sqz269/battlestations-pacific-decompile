@@ -943,6 +943,10 @@ GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std:
     return page;
 }
 
+const bool& GameFrontendHost::crt_sse2_conversion() const noexcept {
+    return impl_->sse2_conversion;
+}
+
 GameFrontendHost::GameFrontendHost(GameHostLog& log, GameVfsHost& vfs, GameScriptHost& scripts,
     GameFontHost& fonts, IDirect3DDevice9& device, bool widescreen, const bool& gui_sse2_conversion)
     : impl_(std::make_unique<Impl>(log, vfs, scripts, fonts, device, widescreen,
