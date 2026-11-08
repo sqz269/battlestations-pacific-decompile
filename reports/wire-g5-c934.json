@@ -1,0 +1,137 @@
+{
+  "goal": 5,
+  "chain": 934,
+  "slot": "g5-w11",
+  "run": 2078,
+  "branch": "agent/g5-w11",
+  "picked": "Avoid-zone registry list lifecycle on the retained GameAvoidZoneRegistry::NativeRegistry",
+  "rows": [
+    {
+      "native": "0041bfd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::buy_head_node_0041bfd0",
+      "body": "bsp::buy_native_registry_list_head_0041bfd0",
+      "evidence": "bsp.py show 0041bfd0: raw 0Ch allocation, two self-links, sentinel payload remains unread",
+      "original_abi": "no receiver/arguments; EAX node; RET",
+      "built_body": "104125f0",
+      "direct_host_call": "10069d40",
+      "qualification": "Release ICF folds the head producer with the identical 004C3200 sentinel producer; the changed host explicitly calls the existing 0041BFD0 body."
+    },
+    {
+      "native": "0041c1f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::buy_node_0041c1f0 and load",
+      "body": "bsp::buy_native_registry_list_node_0041c1f0",
+      "evidence": "bsp.py show 0041c1f0: allocate node, write links, then capture the real layer pointer through its supplied slot",
+      "original_abi": "unused ECX; three stack arguments; EAX node; RET 0Ch",
+      "built_body": "10412640",
+      "direct_host_calls": [
+        "10069d61",
+        "1006a347"
+      ]
+    },
+    {
+      "native": "00420140",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::increment_size_00420140 and load",
+      "body": "bsp::increment_native_list_count_00420140",
+      "evidence": "bsp.py show 00420140: unsigned 3FFFFFFFh-current guard, then count store; actual list header is registry.list_proxy_04 at registry+4h",
+      "original_abi": "ECX list header; stacked uint32 addition; RET 4",
+      "built_body": "104125a0",
+      "direct_host_calls": [
+        "1006a0ae",
+        "1006a375"
+      ]
+    },
+    {
+      "native": "0041ded0",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::clear_layers_0041ded0 and load",
+      "body": "bsp::native_avoid_zone_registry_clear_layers_0041ded0",
+      "evidence": "bsp.py show 0041ded0: delete front payload, reload front, unlink/free node, decrement actual count",
+      "original_abi": "ECX registry; no stack arguments; RET",
+      "built_body": "10412700",
+      "direct_host_calls": [
+        "10069d8f",
+        "1006a235"
+      ]
+    },
+    {
+      "native": "0041d710",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::destroy_layer_list_0041d710",
+      "body": "bsp::tidy_native_registry_list_0041d710",
+      "evidence": "bsp.py show 0041d710: reset links/count, free nodes and sentinel, null header+4h; actual header is registry+4h",
+      "original_abi": "ECX list header; no stack arguments; RET",
+      "built_body": "104126b0",
+      "direct_host_call": "1006a06f"
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state producer candidate",
+      "reason": "No retained ControllerStateMessage producer and consumer carrying both descriptors, mode and controller flags was established; the inspected host references only flattened flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "No retained ControllerSnapshotMessage owner and transport consumer was established at the inspected host site."
+    },
+    {
+      "native": "00b3dbb0",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: allocate_native_cube_texture_slot_00b3f170",
+      "reason": "Existing CubeTexture reserve/push_back bodies already contain the table helper calls; no additional live CubeTexture allocation consumer was established in this packet."
+    },
+    {
+      "native": "00b3dc00",
+      "status": "skipped",
+      "host_site": "src/native_cube_texture_pool_allocate.cpp: allocate_native_cube_texture_slot_00b3f170",
+      "reason": "Existing CubeTexture push_back already calls this grow helper; no additional live CubeTexture allocation consumer was established in this packet."
+    }
+  ],
+  "real_state": "The process singleton owns registry_, its sentinel, linked nodes and typed layer views. Construction, scene replacement and destruction now call the existing reconstructed list bodies. All layer pointers and counts come from that retained registry. No extra invocation or alternate old path remains.",
+  "ownership": "Node producers use singleton_lifetime_allocate, and node cleanup plus load unwind now use singleton_lifetime_free. Typed layer views still use their original host new/delete. Their grid pointers borrow layers_ records; those owning records clear only after native list cleanup, avoiding duplicate grid release. Null-head cleanup guard applies only if constructor allocation failed before creating a list.",
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed; 5/5 CTests",
+    "changed_build": "./scripts/build.ps1 passed; 5/5 CTests",
+    "focused_probe": "local/c934-probe.cmd passed (manifest embedded): default construction -> three-layer scene -> empty scene -> three-layer scene -> normal exit with live-node cleanup; 3FFFFFFFh count-limit throw preserves count",
+    "call_graph": "python tools/call_graph.py followed by who for all five addresses; each actual reconstructed body now has a reachable direct caller in game_hosts_avoid_zones.obj",
+    "call_graph_reconstructed_called": {
+      "before": 5683,
+      "after": 5686
+    },
+    "call_graph_reconstructed_linked": {
+      "before": 6374,
+      "after": 6379
+    },
+    "target_actual_bodies_linked_reachable": {
+      "before": 0,
+      "after": 5
+    },
+    "wire_readiness_wired": {
+      "before": 10811,
+      "after": 10811
+    },
+    "counter_qualification": "wire_readiness omits these library-shaped rows and already counts address-suffixed Host methods. The built graph also counted the old Host clear/tidy calls, so five newly linked/reachable bodies produce three additional called addresses. The baseline readiness called field used an inherited stale graph cache; only freshly generated build-specific call_graph totals above are compared.",
+    "evidence_files": [
+      "local/c934-baseline.json",
+      "local/c934-final.json",
+      "local/c934-baseline-build.log",
+      "local/c934-build.log",
+      "local/c934-probe.log",
+      "local/c934-graph-before.log",
+      "local/c934-graph-after.log",
+      "local/c934-who-after.log"
+    ],
+    "diff_check": "git diff --check passed",
+    "float_math": "No float arithmetic changed."
+  },
+  "qualifications": [
+    "Source interfaces and existing typed host layer deletion are preserved; this does not prove original binary/vtable/exception ABI compatibility.",
+    "Build, fixture and built-call-graph evidence only; the game was not run."
+  ],
+  "left_for_others": "Controller state/snapshot work still needs a retained producer/consumer. CubeTexture table helpers need a live allocation consumer beyond their existing internal callers.",
+  "new_address_suffixed_functions": false
+}

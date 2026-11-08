@@ -1,0 +1,125 @@
+{
+  "chain": 937,
+  "slot": "g5-w6",
+  "picked": "Retained Icon F8BDA0 pool table cleanup, ordinary destruction and constructor state-2 unwind",
+  "rows": [
+    {
+      "native": "00ab14f0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::destroy and ::initialize via destroy_pool/initialize_pool FreeTable callback",
+      "body": "include/bsp/native_gui_icon_pool_table.hpp: free_native_gui_icon_pool_table_00ab14f0",
+      "state": "The retained process Icon pool at F8BDA0 supplies its actual +28h slab table. Slabs are freed before the table on ordinary destruction. Constructor failure uses that same header in state 2.",
+      "evidence": "AB14F0 original listing MOV EAX,[ECX]; TEST/JZ; PUSH EAX; CALL BF6989; POP ECX; RET. CB7A33 loads original pool, adds 28h, and tail-jumps at CB7A39. AB1FD0 inlines the equivalent nonnull free before CS/list retirement.",
+      "analysis_calls": ["106c4b84 from Icon destroy_pool", "106c54dc from Icon initialize_pool"],
+      "called": true
+    },
+    {
+      "native": "00ab1fd0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::destroy",
+      "reason": "Already reached through the retained process pool before this chain; its new specialization replaces the inline table free without activating another pool-destructor body."
+    },
+    {
+      "native": "00ab2850",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::initialize",
+      "reason": "Already reached through the retained process pool before this chain; only its existing state-2 cleanup delegates to the newly reconstructed leaf."
+    },
+    {
+      "native": "00737f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameStartupHost::application_shutdown",
+      "reason": "Missing the complete native application-shutdown state and singleton teardown bindings; current host shutdown explicitly remains partial."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: application shutdown and frontend retirement",
+      "reason": "Missing a complete live NativeGameLifetimeContext for the raw game destructor; host frontend/input retirement does not supply that object's full lifetime."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate planning",
+      "reason": "Missing a native candidate score-table gameplay consumer; the documented native table reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate planning",
+      "reason": "Missing native candidate-score records whose chosen byte feeds gameplay; the host plans with separate weight vectors."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member candidate loop",
+      "reason": "The inspected host already directly invokes this predicate with unit kind and team membership; no additional wiring was identified."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing the live ambient SoundInstance and sample-options owner; the current method only records the requested volume operation."
+    },
+    {
+      "native": "0094bff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: powerup spawning",
+      "reason": "Missing a concrete flight-spawn manager and resolved air-support vehicle-class provider at the existing powerup spawn path."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text layout",
+      "reason": "Missing a live character-admission consumer and retained input font context; complete-string layout does not supply that input call site."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp: raw land-approach lifetime",
+      "reason": "Missing an established production owner of the complete raw native land-approach registry in the inspected host path."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: raw registry construction",
+      "reason": "Missing an established production native land-approach registry owner and its matching lifetime; no detached registry was created."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_resources.inc: MissionRenderResourcesGraph distortion context",
+      "reason": "Missing a production record-append caller with live distortion records; the inspected lifetime path only needs zero-count cleanup."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: distortion record cleanup",
+      "reason": "Existing distortion lifetime code already invokes resize-to-zero; no new production growth caller with actual records was established."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all 5 tests",
+    "changed_build": "scripts/build.ps1 passed all 5 tests; local/c937-build.log",
+    "focused_probe": "tests/wire_g5_c937_icon_cleanup_probe.cpp compiled MSVC Win32 /fp:strict /link /MANIFEST:EMBED; passed 65 slots, two live slabs, null table release, all 12 stale header bytes preserved, and allocator-list retirement; local/c937-probe.log",
+    "analysis_build": "python tools/call_graph.py --build passed; build/callgraph uses /Ob0 and /OPT:NOICF",
+    "call_graph": "Analysis leaf 106c82f0 has exactly two entry-reachable call sites from the Icon destroy_pool and initialize_pool specializations; local/c937-analysis-who.log and local/c937-analysis-path.log. Normal Release also has Icon callers but folds identical table-release leaves.",
+    "readiness_before": 10812,
+    "readiness_after": 10812,
+    "readiness_limit": "The header-defined AB14F0 function is omitted from wire_readiness rows, as with existing header table entries; metrics were not changed. One new distinct leaf is proven called in the analysis executable.",
+    "float_math_changed": false,
+    "original_abi_compatible": false,
+    "game_validated": false,
+    "remaining": "Constructor failure cleanup is source/listing and graph checked, not fault injected. No game run or original register ABI test was performed."
+  },
+  "assumptions": [
+    "Reuse the original nonnull table free at the ordinary destructor's equivalent inline site as well as its explicit constructor unwind site.",
+    "Preserve the native stale table pointer/count/capacity after release, and replace the old free rather than adding another one."
+  ],
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "annotation": "Provisional descriptive rename BSP_GuiIconPoolTable_Release; existing annotations preserved, project saved, export refreshed",
+    "prior_values": "local/ghidra-annotations-20261108T175324Z.json"
+  }
+}

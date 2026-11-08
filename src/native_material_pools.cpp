@@ -1,14 +1,19 @@
 #include "bsp/native_material_pools.hpp"
+#include "bsp/native_material_pool_tables.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
+#include "bsp/native_gui_anim_icon_pool_table.hpp"
 #include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
-#include "bsp/native_gui_icon_pool_table.hpp"
 #include "bsp/native_gui_clip_box_pool_table.hpp"
+#include "bsp/native_gui_icon_pool_table.hpp"
+#include "bsp/native_gui_scrollbar_pool_table.hpp"
 #include "bsp/native_gui_section_pool_table.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
+#include "bsp/native_gui_layer_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -239,12 +244,49 @@ void destroy_pool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage)
 }
 } // namespace
 
+// bsp.py show B17B70/B17BF0/B17C50/B17CD0: these four instantiations have
+// the same allocate/copy/free operation as set_slab_table_capacity above.
+// Keep their address bodies distinct while sharing that source operation.
+__declspec(noinline) void append_native_material_pool_slab_00b17b70(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        set_slab_table_capacity(table, table.capacity * 2u + 2u);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void reserve_native_material_pool_table_00b17bf0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+}
+__declspec(noinline) void append_native_material_parameter_pool_slab_00b17c50(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity)
+        set_slab_table_capacity(table, table.capacity * 2u + 2u);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+__declspec(noinline) void reserve_native_material_parameter_pool_table_00b17cd0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity) set_slab_table_capacity(table, capacity);
+}
+
 NativeMaterialPool::NativeMaterialPool(AllocatorListDomain& list, NativeMaterialPoolStorage& storage)
     : allocator_list_(list), storage_(storage) {
     list.bind_virtual0(storage.allocator_00, {native_vtable, native_virtual0, this, &invoke_trim});
 }
-void NativeMaterialPool::initialize_00b17fa0() { initialize_pool<NativeMaterialPool>(allocator_list_, storage_); }
-void* NativeMaterialPool::allocate_00b18200() { return allocate_slot<NativeMaterialPool>(storage_); }
+void NativeMaterialPool::initialize_00b17fa0() {
+    // B17FA0 inlines B17BF0's reserve(32) on this F8D3AC+28h table in EH state 2.
+    initialize_pool<NativeMaterialPool,
+        &reserve_native_material_pool_table_00b17bf0>(allocator_list_, storage_);
+}
+void* NativeMaterialPool::allocate_00b18200() {
+    // B18200 inlines B17B70 after initializing/publishing its actual 4584h slab,
+    // under the same pool lock. Replace the prior generic append once.
+    return allocate_slot<NativeMaterialPool, &initialize_slab<NativeMaterialPool>,
+        &append_native_material_pool_slab_00b17b70>(storage_);
+}
 void NativeMaterialPool::return_slot_00b17a80(void* slot) noexcept { return_slot<NativeMaterialPool>(storage_, slot); }
 void NativeMaterialPool::trim_empty_slabs_00b18160() { trim_empty_slabs<NativeMaterialPool>(storage_); }
 void NativeMaterialPool::destroy_00b180d0() { destroy_pool<NativeMaterialPool>(allocator_list_, storage_); }
@@ -258,10 +300,16 @@ NativeMaterialParameterPool::NativeMaterialParameterPool(
     list.bind_virtual0(storage.allocator_00, {native_vtable, native_virtual0, this, &invoke_trim});
 }
 void NativeMaterialParameterPool::initialize_00b18340() {
-    initialize_pool<NativeMaterialParameterPool>(allocator_list_, storage_);
+    // B18340 inlines B17CD0's reserve(32) on this F8D3E4+28h table, EH state 2.
+    initialize_pool<NativeMaterialParameterPool,
+        &reserve_native_material_parameter_pool_table_00b17cd0>(allocator_list_, storage_);
 }
 void* NativeMaterialParameterPool::allocate_slot_00b185a0() {
-    return allocate_slot<NativeMaterialParameterPool>(storage_);
+    // B185A0 inlines B17C50 after publishing/initializing the genuine 4504h
+    // slab and while holding this pool's critical section.
+    return allocate_slot<NativeMaterialParameterPool,
+        &initialize_slab<NativeMaterialParameterPool>,
+        &append_native_material_parameter_pool_slab_00b17c50>(storage_);
 }
 void NativeMaterialParameterPool::return_slot_00b193fa_fragment(void* slot) noexcept {
     return_slot<NativeMaterialParameterPool>(storage_, slot);
@@ -396,10 +444,16 @@ NativeGuiLayerPool::~NativeGuiLayerPool() {
     allocator_list_.unbind_virtual0(storage_.allocator_00);
 }
 void NativeGuiLayerPool::initialize_00ac4d70() {
-    initialize_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+    // AC4D70 inlines reserve(32) on F8BF50+28h in unwind state 2.
+    initialize_pool<NativeGuiLayerPool,
+        &reserve_native_gui_layer_pool_table_00ac4a10,
+        &free_native_gui_layer_pool_table_00ac4250>(allocator_list_, storage_);
 }
 void* NativeGuiLayerPool::allocate_00ac4e50() {
-    return allocate_slot<NativeGuiLayerPool>(storage_);
+    // AC4E50 appends the actual initialized slab under the existing pool lock;
+    // AC4990 is the out-of-line equivalent of its inline growth and append.
+    return allocate_slot<NativeGuiLayerPool, &initialize_slab<NativeGuiLayerPool>,
+        &push_native_gui_layer_pool_slab_00ac4990>(storage_);
 }
 void NativeGuiLayerPool::return_00ac47f0(void* slot) noexcept {
     return_slot<NativeGuiLayerPool>(storage_, slot);
@@ -408,7 +462,9 @@ void NativeGuiLayerPool::trim_00ac4750() {
     trim_empty_slabs<NativeGuiLayerPool>(storage_);
 }
 void NativeGuiLayerPool::destroy_00ac4670() {
-    destroy_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+    // AC4670 releases slabs before the current table, then tears down CS/list.
+    destroy_pool<NativeGuiLayerPool,
+        &free_native_gui_layer_pool_table_00ac4250>(allocator_list_, storage_);
 }
 void NativeGuiLayerPool::invoke_trim(void* context) {
     static_cast<NativeGuiLayerPool*>(context)->trim_00ac4750();
@@ -641,7 +697,16 @@ template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::initialize() {
     // 00AB2850 inlines 00AB2420's reserve(32) at the same pool+28h header,
     // in unwind state 2. CD7180 starts this retained F8BDA0 process pool.
     initialize_pool<GuiIconPoolTraits,
-        &reserve_native_gui_icon_pool_table_00ab2420>(allocator_list_, storage_);
+        &reserve_native_gui_icon_pool_table_00ab2420,
+        &free_native_gui_icon_pool_table_00ab14f0>(allocator_list_, storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiIconPoolTraits>::destroy() {
+    // AB1FD0 inlines AB14F0's release on the same F8BDA0+28h header,
+    // after its slabs and before CS/list teardown. CB7A33 -> AB14F0 is
+    // the matching constructor state-2 cleanup; neither path zeros fields.
+    destroy_pool<GuiIconPoolTraits,
+        &free_native_gui_icon_pool_table_00ab14f0>(allocator_list_, storage_);
 }
 template<class T> void* NativeGuiWidgetPool<T>::allocate() {
     // bsp.py show 00AB2930 / 00AB1340: the Icon allocator initializes the
@@ -672,6 +737,74 @@ __declspec(noinline) void* initialize_native_gui_icon_slab_00ab1340(
     // Address entry only: reuse the one pre-existing Icon member body.
     return NativeGuiWidgetPool<GuiIconPoolTraits>::initialize_slab(raw, index);
 }
+
+__declspec(noinline) void free_native_gui_anim_icon_pool_table_00ad2f20(
+    void* actual_header) noexcept {
+    // AD2F20 frees only data. Leave data/count/capacity untouched on both
+    // AD31F0 normal teardown and AD36A0 unwind state 2 (handler CB934E).
+    auto* const data = *static_cast<std::byte**>(actual_header);
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_set_capacity_00ad2f50(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // bsp.py show AD2F50: same capacity-before-allocation, null-tested
+    // pointer copy, old-table free and replacement publication as AA6FA0.
+    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_grow_00ad2fa0(
+    NativeGuiPoolSlabTable& table) {
+    // Native LEA implements DWORD wrapping for capacity*2+2.
+    native_gui_anim_icon_pool_table_set_capacity_00ad2f50(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_push_back_00ad3330(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    // AD3330 / inlined AD3820: grow before the null-tested slot store,
+    // publish count afterwards, with the real slab under the pool lock.
+    if (table.count == table.capacity) native_gui_anim_icon_pool_table_grow_00ad2fa0(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    if (destination != 0) ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_anim_icon_pool_table_reserve_00ad33c0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_anim_icon_pool_table_set_capacity_00ad2f50(table, capacity);
+}
+
+__declspec(noinline) NativeGuiWidgetPoolStorage* initialize_native_gui_anim_icon_pool_00ad36a0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // AD36A0 / CRT CD77B0: reserve 32 on the retained F8C1D4+28h header.
+    // Expose the existing constructor algorithm once; the traits adapter
+    // below forwards instead of running a second initialization path.
+    initialize_pool<GuiAnimIconPoolTraits, &native_gui_anim_icon_pool_table_reserve_00ad33c0,
+        &free_native_gui_anim_icon_pool_table_00ad2f20>(list, storage);
+    return &storage;
+}
+
+template<> void NativeGuiWidgetPool<GuiAnimIconPoolTraits>::initialize() {
+    initialize_native_gui_anim_icon_pool_00ad36a0(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiAnimIconPoolTraits>::allocate() {
+    // AD3820: the existing slab initializer and same actual table/lock.
+    return allocate_slot<GuiAnimIconPoolTraits, WidgetSlabInitializer<GuiAnimIconPoolTraits>::entry,
+        &native_gui_anim_icon_pool_table_push_back_00ad3330>(storage_);
+}
+
+__declspec(noinline) void destroy_native_gui_anim_icon_pool_00ad31f0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // AD31F0 / CE0B50 retire this owner; no widget payload destructor runs.
+    destroy_pool<GuiAnimIconPoolTraits, &free_native_gui_anim_icon_pool_table_00ad2f20>(
+        list, storage);
+}
+
+template<> void NativeGuiWidgetPool<GuiAnimIconPoolTraits>::destroy() {
+    destroy_native_gui_anim_icon_pool_00ad31f0(allocator_list_, storage_);
+}
 // 00AAD5F0 / 00AAD6D0 inline the same reserve and append schedules as
 // 00AAD4D0 / 00AAD450. Borrow the real pool+28h header once, retaining the
 // allocator-list lifetime, first-free publication and allocation lock scope.
@@ -685,6 +818,14 @@ template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::initialize() {
 template<> void* NativeGuiWidgetPool<GuiMoviePoolTraits>::allocate() {
     return allocate_slot<GuiMoviePoolTraits, WidgetSlabInitializer<GuiMoviePoolTraits>::entry,
         &native_gui_movie_pool_table_push_back_00aad450>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiMoviePoolTraits>::destroy() {
+    // AAD040's inline release is AACCE0's load/null-test/free on this same
+    // F8BD4C+28h header. Replace the common table free exactly once, after
+    // the live slabs and before the existing critical-section/list teardown.
+    destroy_pool<GuiMoviePoolTraits,
+        &free_native_gui_movie_pool_table_00aacce0>(allocator_list_, storage_);
 }
 
 // ACD530/ACD6B0 inline ACD4C0/ACD430 on this same retained F8C0EC+28h
@@ -708,64 +849,15 @@ template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
 }
 
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
-// ClipBox's out-of-line vector operations also replace the identical inline
-// copies in ACE750/ACE8D0/ACE3E0, over the retained pool's actual +28h header.
-// Source reuse preserves the constructor unwind and allocator lock scopes.
-__declspec(noinline) void free_native_gui_clip_box_pool_table_00ace310(
-    void* actual_table) noexcept {
-    // ACE310 and CB9043: free only current [ECX], retaining all three words.
-    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
-    if (data) singleton_lifetime_free(data);
-}
-
-__declspec(noinline) void set_native_gui_clip_box_pool_table_capacity_00ace340(
-    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
-    // ACE340 has the same capacity-before-new, live entry copy, free/adopt
-    // schedule as AA6FA0. Reuse that complete body on the real header.
-    native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
-}
-
-__declspec(noinline) void grow_native_gui_clip_box_pool_table_00ace390(
-    NativeGuiPoolSlabTable& table) {
-    set_native_gui_clip_box_pool_table_capacity_00ace340(table, table.capacity * 2u + 2u);
-}
-
-__declspec(noinline) void push_native_gui_clip_box_pool_slab_00ace520(
-    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
-    if (table.count == table.capacity) grow_native_gui_clip_box_pool_table_00ace390(table);
-    // ACE520 reads the caller's current slab after growth; its real caller
-    // supplies a local pointer whose storage survives table reallocation.
-    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
-    if (destination != 0)
-        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
-    ++table.count;
-}
-
-__declspec(noinline) void reserve_native_gui_clip_box_pool_table_00ace5b0(
-    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
-    if (table.capacity < capacity)
-        set_native_gui_clip_box_pool_table_capacity_00ace340(table, capacity);
-}
-
-template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize() {
-    initialize_pool<GuiClipBoxPoolTraits,
-        &reserve_native_gui_clip_box_pool_table_00ace5b0,
-        &free_native_gui_clip_box_pool_table_00ace310>(allocator_list_, storage_);
-}
-
-template<> void* NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate() {
-    return allocate_slot<GuiClipBoxPoolTraits,
-        &NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize_slab,
-        &push_native_gui_clip_box_pool_slab_00ace520>(storage_);
-}
-
-template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy() {
-    destroy_pool<GuiClipBoxPoolTraits,
-        &free_native_gui_clip_box_pool_table_00ace310>(allocator_list_, storage_);
-}
-
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.
+__declspec(noinline) void free_native_gui_button_pool_table_00aab7f0(
+    void* actual_table) noexcept {
+    // bsp.py show 00AAB7F0 --asm: MOV EAX,[ECX]; TEST/JZ; free(EAX); RET.
+    // Reuse its former shared source body; the slot is deliberately not cleared.
+    gui_widgets_cc13::msvc9_containers::free_pointer(static_cast<void**>(actual_table));
+}
+
 __declspec(noinline) void set_native_gui_button_pool_table_capacity_00aab8e0(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
@@ -800,6 +892,14 @@ template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
     return allocate_slot<GuiButtonPoolTraits,
         &NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize_slab,
         &push_native_gui_button_pool_slab_00aabc70>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy() {
+    // AAB9F0 inlines AAB7F0's null-tested table free after the slab frees,
+    // before critical-section teardown and E188B4 unlink. CE0A30 reaches this
+    // retained F8BD00 owner; replace the generic table free rather than repeat it.
+    destroy_pool<GuiButtonPoolTraits,
+        &free_native_gui_button_pool_table_00aab7f0>(allocator_list_, storage_);
 }
 
 // bsp.py show ACEF70/ACF860: publish capacity before allocating, copy DWORD
@@ -854,6 +954,22 @@ template<> void* NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate() {
         &native_gui_frame_box_pool_table_push_back_00acf7e0>(storage_);
 }
 
+// bsp.py show 00ACEEE0 --asm: MOV EAX,[ECX], TEST/JZ, CALL BF6989;
+// plain RET, no header stores. Retain the existing Ghidra template name.
+__declspec(noinline) void free_native_gui_frame_box_pool_table_00aceee0(
+    void* actual_table) noexcept {
+    void* const data = read<void*>(static_cast<const std::byte*>(actual_table));
+    if (data) singleton_lifetime_free(data);
+}
+
+template<> void NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::destroy() {
+    // ACF490 inlines ACEEE0's capture/null-test/free at the retained
+    // F8C188+28h table, after slab cleanup and before section teardown.
+    // Replace that operation once; preserve the original header words.
+    destroy_pool<GuiFrameBoxPoolTraits,
+        &free_native_gui_frame_box_pool_table_00aceee0>(allocator_list_, storage_);
+}
+
 template<class T> void NativeGuiWidgetPool<T>::invoke_trim(void* context) {
     static_cast<NativeGuiWidgetPool*>(context)->trim();
 }
@@ -876,7 +992,8 @@ template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::initialize() {
     // AC9B30 inlines AC9870's reserve(32) on the actual pool+28h table,
     // inside native unwind state 2. Keep the shared engine's unwind order.
     initialize_pool<GuiGridPoolTraits,
-        &native_gui_grid_pool_table_reserve_00ac9870>(allocator_list_, storage_);
+        &native_gui_grid_pool_table_reserve_00ac9870,
+        &free_native_gui_grid_pool_table_00ac9290>(allocator_list_, storage_);
 }
 template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
     // AC9C10 at AC9C58..AC9CBF inlines AC97F0 after the genuine 12A4h
@@ -884,6 +1001,14 @@ template<> void* NativeGuiWidgetPool<GuiGridPoolTraits>::allocate() {
     return allocate_slot<GuiGridPoolTraits,
         &NativeGuiWidgetPool<GuiGridPoolTraits>::initialize_slab,
         &native_gui_grid_pool_table_push_back_00ac97f0>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiGridPoolTraits>::destroy() {
+    // bsp.py show AC94C0: its inline table release matches AC9290 exactly.
+    // Borrow the retained F8C050+28h header after freeing slabs and before
+    // destroying the critical section/unlinking; replace the common free once.
+    destroy_pool<GuiGridPoolTraits,
+        &free_native_gui_grid_pool_table_00ac9290>(allocator_list_, storage_);
 }
 
 template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::initialize() {
@@ -904,6 +1029,72 @@ template<> void NativeGuiWidgetPool<GuiModelPoolTraits>::destroy() {
     destroy_pool<GuiModelPoolTraits,
         &free_native_gui_model_pool_table_00acbdd0>(allocator_list_, storage_);
 }
+__declspec(noinline) void free_native_gui_clip_box_pool_table_00ace310(
+    void* actual_table) noexcept {
+    // bsp.py show 00ACE310: free only the current first DWORD. In particular,
+    // leave data/count/capacity untouched, including after destruction.
+    const auto data = static_cast<NativeGuiPoolSlabTable*>(actual_table)->data;
+    if (data) singleton_lifetime_free(data);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_set_capacity_00ace340(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    // 00ACE340 assembly: capacity precedes new(capacity*4 modulo32); reload
+    // current count/data while copying, free the current old data, then adopt.
+    // Reuse the existing identical engine, including its failure partial state.
+    set_slab_table_capacity(table, capacity);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_grow_00ace390(
+    NativeGuiPoolSlabTable& table) {
+    native_gui_clip_box_pool_table_set_capacity_00ace340(table, table.capacity * 2u + 2u);
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_push_back_00ace520(
+    NativeGuiPoolSlabTable& table, std::byte* const& slab) {
+    if (table.count == table.capacity) native_gui_clip_box_pool_table_grow_00ace390(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(table.data) + table.count * 4u;
+    // 00ACE578..00ACE58C loads the caller's slab only after growth, and only
+    // for a nonnull destination; publish count after the conditional store.
+    if (destination != 0)
+        ::new (reinterpret_cast<void*>(destination)) std::byte*(slab);
+    ++table.count;
+}
+
+__declspec(noinline) void native_gui_clip_box_pool_table_reserve_00ace5b0(
+    NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
+    if (table.capacity < capacity)
+        native_gui_clip_box_pool_table_set_capacity_00ace340(table, capacity);
+}
+
+__declspec(noinline) void construct_native_gui_clip_box_pool_00ace750(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // 00ACE750 inlines ACE5B0's reserve(20h) on pool+28h in unwind state 2.
+    // Keep the existing list/CS/table cleanup; replace its reserve only once.
+    // CB9043: load the same owner, add28h, and tail-jump ACE310 on
+    // state-2 unwind. Preserve c938 cleanup in the canonical c923 wrapper.
+    initialize_pool<GuiClipBoxPoolTraits, &native_gui_clip_box_pool_table_reserve_00ace5b0,
+        &free_native_gui_clip_box_pool_table_00ace310>(list, storage);
+}
+
+__declspec(noinline) void destroy_native_gui_clip_box_pool_00ace3e0(
+    AllocatorListDomain& list, NativeGuiWidgetPoolStorage& storage) {
+    // 00ACE3E0 inlines ACE310 after freeing the slabs, before draining the CS
+    // and unlinking this same E188B4 list element. No second cleanup runs.
+    destroy_pool<GuiClipBoxPoolTraits, &free_native_gui_clip_box_pool_table_00ace310>(list, storage);
+}
+
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::initialize() {
+    construct_native_gui_clip_box_pool_00ace750(allocator_list_, storage_);
+}
+template<> void* NativeGuiWidgetPool<GuiClipBoxPoolTraits>::allocate() {
+    return allocate_slot<GuiClipBoxPoolTraits, WidgetSlabInitializer<GuiClipBoxPoolTraits>::entry,
+        &native_gui_clip_box_pool_table_push_back_00ace520>(storage_);
+}
+template<> void NativeGuiWidgetPool<GuiClipBoxPoolTraits>::destroy() {
+    destroy_native_gui_clip_box_pool_00ace3e0(allocator_list_, storage_);
+}
+
 #define BSP_GUI_WIDGET_POOL_INSTANCE(T)                                                     \
     static_assert(T::free_count_offset + 4 == T::slab_bytes);                               \
     static_assert(T::slots_per_slab <= 0xffffu);                                            \
@@ -956,6 +1147,21 @@ __declspec(noinline) void native_gui_pool_table_push_back_00aa76c0(
 __declspec(noinline) void native_gui_pool_table_reserve_00aa7740(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     if (table.capacity < capacity) native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
+}
+
+template<> void NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize() {
+    // AC8240 inlines AC81A0's reserve(32), in unwind state 2, on the
+    // CD7510 process owner's actual F8C004+28h table. No second header.
+    initialize_pool<GuiScrollbarPoolTraits,
+        &native_gui_scrollbar_pool_table_reserve_00ac81a0>(allocator_list_, storage_);
+}
+
+template<> void* NativeGuiWidgetPool<GuiScrollbarPoolTraits>::allocate() {
+    // AC83C0 publishes first_free_slab before appending the new initialized
+    // slab under its existing lock. Reuse the identical AC8110 body once.
+    return allocate_slot<GuiScrollbarPoolTraits,
+        &NativeGuiWidgetPool<GuiScrollbarPoolTraits>::initialize_slab,
+        &native_gui_scrollbar_pool_table_push_back_00ac8110>(storage_);
 }
 
 // ACBE00/ACBE50/ACC0D0/ACC160 and the inlined Model pool copies operate on

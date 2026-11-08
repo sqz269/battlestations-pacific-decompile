@@ -1,0 +1,35 @@
+{
+  "chain": 932,
+  "slot": "g5-w7",
+  "picked": "Button pool retained slab-table cleanup",
+  "rows": [
+    {"native": "00aab7f0", "status": "wired", "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy", "evidence": "AAB9F0 shutdown now replaces its generic table free with the existing AAB7F0 shared free algorithm on F8BD00+28h, after slab frees and before critical-section teardown/unlink. CD70A0/CE0A30 owner is entry-reachable."},
+    {"native": "00ab6d00", "status": "skipped", "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte", "reason": "The actual font owner exists, but accepts_text_byte has no live input consumer; wiring only that unused method would not establish execution."},
+    {"native": "005cafb0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: movie-camera Lua callbacks", "reason": "Missing constructed movie-camera screen and retained current/default deviation fields on the live Lua path."},
+    {"native": "005cafc0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: movie-camera Lua callbacks", "reason": "Missing constructed movie-camera screen and retained current/default overview-height fields on the live Lua path."},
+    {"native": "005cb970", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: movie-camera Lua callbacks", "reason": "Missing actual movie-camera speed-limit and acceleration-time owner on the live Lua path."},
+    {"native": "005cb9c0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: movie-camera Lua callbacks", "reason": "Missing actual movie-camera acceleration-limit owner and a live screen consumer."},
+    {"native": "00a0f680", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: air-support candidate attack value", "reason": "Missing resolved plane-class weapon-value facts for compose_against_group; the existing candidate callback cannot produce the native value."},
+    {"native": "008141a0", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: helmsman message application", "reason": "Missing reached message application with real sender authority, timestamp and backfill consumer."},
+    {"native": "007ba8d0", "status": "skipped", "host_site": "src/game_hosts_session_messages.cpp: DeadMeatRot message", "reason": "Native C8h DeadMeatRot is gated to multiplayer and excluded from this single-player assignment."},
+    {"native": "006de3f0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: marker-manager stand-in", "reason": "Missing native marker-manager slot occupancy, per-entry keep flags and observer-pair ownership/consumer."},
+    {"native": "00744870", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: land-fort effect synchronization", "reason": "Missing retained D1h session-message dispatch and serializer owner; the host only records synchronization."},
+    {"native": "00b6fc30", "status": "skipped", "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 and fit_and_submit_shadow_slice_00a8ecb0", "reason": "The shadow-fit consumers are not entry-reachable; the active orthographic GUI camera does not consume this query."}
+  ],
+  "validation": {
+    "baseline_readiness_wired": 10809,
+    "readiness_wired_after": 10809,
+    "readiness_note": "The readiness rows do not enumerate the STL_FreePointer_00aab7f0 ledger name; textual wired total is unchanged. Independent built call_graph.py resolves the address-suffixed entry and proves its new direct reachable call.",
+    "baseline_called_addresses": 5680,
+    "baseline_graph_addresses": 6370,
+    "baseline_build": "Win32 Release, 4/4 existing CTest checks passed",
+    "build": "scripts/build.ps1 passed; Win32 Release and all 4 existing CTest checks",
+    "probe": "local/c932-probe.cmd passed: nonempty actual Button pool teardown, allocator unlink, unchanged nonnull/null table headers; no second table free",
+    "called_addresses_after": 5681,
+    "graph_addresses_after": 6371,
+    "call_graph": "00aab7f0 reachable; one direct call at 10533d04 from NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy to free_native_gui_button_pool_table_00aab7f0 at 10534560",
+    "entry_path": "WinMainCRTStartup -> __scrt_common_main_seh -> WinMain -> catch$_WinMain -> GameNativeGuiWidgetPoolProcess<GuiButtonPoolTraits>::initialize_once -> destroy_at_exit -> NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy -> free_native_gui_button_pool_table_00aab7f0",
+    "game_run": false,
+    "abi_compatible": false
+  }
+}
