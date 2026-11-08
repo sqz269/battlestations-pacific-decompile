@@ -2374,6 +2374,37 @@ int main() {
     }
 
     {
+        // AA8710's raw field view must preserve x87 FLD/FSTP (including sNaN
+        // quieting) and observe a child's callback writing the parent's source
+        // BEFORE that parent's local X is produced. No copied transform tree.
+        struct BorrowedLayout final : bsp::GuiWideScreenLayoutAccess {
+            float authored{}, local{};
+            std::uint32_t published_bits{};
+            BorrowedLayout* child{};
+            BorrowedLayout* parent{};
+            bsp::GuiWideScreenAlign align{bsp::GuiWideScreenAlign::None};
+            void apply_children() override { if (child) bsp::apply_widescreen_layout(*child); }
+            bsp::GuiWideScreenAlign alignment() override { return align; }
+            bool widescreen_enabled() override { return true; }
+            const float* authored_x() override { return &authored; }
+            float* local_x() override { return &local; }
+            void notify_layout_changed() override {}
+            void recompose() override { std::memcpy(&published_bits, &local, sizeof local); }
+            void refresh_bounds() override {}
+            void finish_layout() override { if (parent) parent->authored = 0.75f; }
+        } parent, child;
+        parent.authored = 0.5f;
+        parent.align = bsp::GuiWideScreenAlign::ShiftNegativeX;
+        parent.child = &child;
+        child.parent = &parent;
+        const std::uint32_t signaling_nan = 0x7f800001;
+        std::memcpy(&child.authored, &signaling_nan, sizeof signaling_nan);
+        bsp::apply_widescreen_layout(parent);
+        check(child.published_bits == 0x7fc00001 && parent.published_bits == 0x3f1bbbbc,
+            "AA8710 borrowed fields retain x87 stores and child-before-parent publication");
+    }
+
+    {
         // 00AA8450's fifth argument: a descendant takes the requested value only
         // while the widget the change started at recurses (widget+75h). Without
         // it a child that is hidden on its own node stays hidden when an

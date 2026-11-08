@@ -301,6 +301,11 @@ public:
     // Per-call backing survives failure. This is a top-level current-slot
     // operation, not an adapter for an earlier captured profile/target pair.
     void set_widget_visibility_00aa8530(void* actual_widget, std::uint8_t requested);
+    // AA8710 through its shared borrowed-view body on this Page's SAME raw
+    // fields/list/node services. Current hosted profiles have null +DC and
+    // the genuine A9E0A0 current+24; other callbacks reject explicitly.
+    // The live platform+0D byte and Page graph outlive the retained scratch.
+    void apply_page_widescreen_layout(void* actual_widget, const bool& widescreen);
 
     // An entered failure retains its frames, Group, slot and Lua state; the
     // host must _Exit before the singleton drain.

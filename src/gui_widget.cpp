@@ -13,13 +13,11 @@ float pivot_term(float size_lane, float pivot_lane) noexcept
     return size_lane * pivot_lane;
 }
 
-void store_widescreen_local_x(GuiWidgetTransform& widget,
+void store_widescreen_local_x(const float* authored, float* destination,
     GuiWideScreenAlign align, bool widescreen) noexcept
 {
     //00AA8761..00AA877F: the native operation uses x87 even for a plain
     //authored-value copy. Preserve the FLD/FSTP treatment of signaling NaNs.
-    const float* authored = &widget.authored_x;
-    float* destination = &widget.position.x;
     // Actual00D5C118 bits3FC2222240000000 are exactly this promoted float.
     const double shift = static_cast<double>(kGuiWideScreenShift);
     if (align == GuiWideScreenAlign::None || !widescreen) {
@@ -220,26 +218,49 @@ void set_resolved_position(GuiWidgetTransform& widget,
 void apply_widescreen_layout(
     GuiWidgetTransform& widget, GuiWidgetTransformHost& host)
 {
+    struct ProjectedAccess final : GuiWideScreenLayoutAccess {
+        GuiWidgetTransform& widget;
+        GuiWidgetTransformHost& host;
+        ProjectedAccess(GuiWidgetTransform& w, GuiWidgetTransformHost& h) : widget(w), host(h) {}
+        void apply_children() override {
+            for (GuiWidgetTransform* child : widget.children) {
+                if (child == nullptr)
+                    throw std::invalid_argument("GUI layout requires non-null child payloads");
+                apply_widescreen_layout(*child, host);
+            }
+        }
+        GuiWideScreenAlign alignment() override { return widget.widescreen_align; }
+        bool widescreen_enabled() override { return host.widescreen_enabled(); }
+        const float* authored_x() override { return &widget.authored_x; }
+        float* local_x() override { return &widget.position.x; }
+        void notify_layout_changed() override { host.notify_layout_changed(widget); }
+        void recompose() override { recompose_local_transform(widget, host); }
+        void refresh_bounds() override { refresh_local_bounds(widget, host); }
+        void finish_layout() override { host.on_layout_finished(widget); }
+    } access(widget, host);
+    apply_widescreen_layout(access);
+}
+
+void apply_widescreen_layout(GuiWideScreenLayoutAccess& widget)
+{
     // 00AA8714..00AA8744: the children are walked first, in list order, and the
     // loop is bounded by the stored count rather than by the sentinel.
-    for (GuiWidgetTransform* child : widget.children) {
-        if (child == nullptr)
-            throw std::invalid_argument("GUI layout requires non-null child payloads");
-        apply_widescreen_layout(*child, host);
-    }
+    widget.apply_children();
 
-    const auto align = widget.widescreen_align; //00AA8746, before platform read
-    const bool widescreen = align != GuiWideScreenAlign::None && host.widescreen_enabled();
-    store_widescreen_local_x(widget, align, widescreen);
+    const auto align = widget.alignment(); //00AA8746, before platform read
+    const bool widescreen = align != GuiWideScreenAlign::None && widget.widescreen_enabled();
+    const float* authored = widget.authored_x();
+    float* destination = widget.local_x();
+    store_widescreen_local_x(authored, destination, align, widescreen);
 
     // 00AA8782: the +DCh listener. That pointer is not modelled in the layout
     // projection, so the null gate at 00AA8788 lives on the host side.
-    host.notify_layout_changed(widget);
+    widget.notify_layout_changed();
 
     // 00AA8793 then 00AA879A, then the tail jump at 00AA87AB.
-    recompose_local_transform(widget, host);
-    refresh_local_bounds(widget, host);
-    host.on_layout_finished(widget);
+    widget.recompose();
+    widget.refresh_bounds();
+    widget.finish_layout();
 }
 
 } // namespace bsp

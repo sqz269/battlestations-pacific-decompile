@@ -1,0 +1,170 @@
+{
+  "chain": 1002,
+  "owner": "agent/g6-w12",
+  "candidate": "game_hosts_frontend.cpp",
+  "rows": [
+    {
+      "native": "00aa2110",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::run_raw_pointer / GameFrontendHost::set_safe_zone_visible; src/game_hosts.cpp: GameStartupHost::run_initialize_phases",
+      "reason": "004DD734's OnInitOnce call now reads the authoritative settings+B1 byte and invokes the existing body over actual manager+84, current +7C/+80 frames, and the same live platform+0D byte; no copied raw shown latch or second resource initialization."
+    },
+    {
+      "native": "00aa4ef0",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::run_raw_pointer / GameFrontendHost::relayout_gui_pages; src/game_profile_load.cpp: QuickSettingsApplyHost::gui_manager_reload; src/game_hosts.cpp: GameStartupHost::run_initialize_phases settings sink",
+      "reason": "008D60FB now dispatches the existing AA4EF0 body over the actual AA52A0-produced manager page vector. Each page uses the existing AA8710 body through a borrowed raw field view and the same Page node/transform/bounds services; no second widget tree or copied field owner."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910; src/game_hosts_mission_frame.cpp: MissionFrameBinding::update_front_end_screens_004d8620 remains record-only",
+      "reason": "climb: 00AA3910 needs the live AA2F10 widget-hit/frame domain and manager+48/+50/+5C/+60/+64/+68/+6C <- AA4F80 / 004D8620 ordinary frontend frame <- complete startup Page graph including [00E18D48]+1C _FullScreenMovies <- 004F8CF0 / AA5840 native Movie widgets <- Movie activation AB0F90/AB0EB0 <- AB0520 / AB0220 native subtitle storage (stopped: no reconstructed 00AAF820 insert or 00AAF580 erase bodies; canonical raw Movie ownership/consumer is incomplete, and the existing semantic MovieWidgetState is not that owner)."
+    },
+    {
+      "native": "00aa3f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_cc13.cpp: update_page_list_00aa3f70; src/game_hosts_mission_frame.cpp: MissionFrameBinding::update_front_end_screens_004d8620 remains record-only",
+      "reason": "climb: 00AA3F70 needs the active Page list and genuine AA3910/current+40 dispatch <- 004D8620 includes [00E18D48]+1C <- 004F8CF0 loads _FullScreenMovies and its Movie children via AA5840 <- native Movie activation AB0F90/AB0EB0 <- AB0520 / AB0220 retained subtitle vectors (stopped: 00AAF820 insert / 00AAF580 erase have no reconstructed bodies; do not substitute the semantic movie bridge or synthesize an empty active-page list)."
+    },
+    {
+      "native": "00aa59b0",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_manager_adopt_hoisted_widget_00aa59b0; src/gui_manager_cc13.cpp: hoist_flagged_children_00aa9c90",
+      "reason": "climb: 00AA59B0 needs manager+44 attachment group, +34/+38 named-widget list, and a produced {NativeString path, widget+8} entry <- 00AA9C90 flagged-child traversal (stopped: producer is outside any demonstrated host phase; both saved callers and live Ghidra xrefs of 00AA9C90 are only its self-recursive sites 00AA9DE8/00AA9E70, so no external Page-load/entry producer exists to host)."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GuiSafeZoneManagerImage (borrowed view of the existing 88h GuiManager)",
+      "where": "src/game_hosts_frontend.cpp:63",
+      "constructor": "00aa5d70 (existing construct_native_gui_manager_00aa5d70)",
+      "fields": [
+        {
+          "offset": "7c",
+          "width": 4,
+          "name": "safezone_43_FrameBox"
+        },
+        {
+          "offset": "80",
+          "width": 4,
+          "name": "safezone_169_FrameBox"
+        },
+        {
+          "offset": "84",
+          "width": 1,
+          "name": "shown latch"
+        }
+      ],
+      "producers": [
+        "0073BC19 -> existing 004C12B0 -> 00AA5D70 actual manager construction",
+        "00AA5E20: existing Page loads/find-child calls publish +7C at 00AA6251 and +80 at 00AA62C8; 00AA6305 clears +84",
+        "00CD2D80 -> existing 008D7710 initializes settings+B1; existing 008D8190 fills ShowSafeArea from options",
+        "004DD72A..004DD734: hosted OnInitOnce phase reads actual 00F88980+B1 and passes it to 00AA2110"
+      ],
+      "rows": [
+        "00aa2110"
+      ],
+      "climb": [
+        "00AA2110 <- manager+7C/+80/+84 <- existing 00AA5E20 resources <- existing 00AA5D70/004C12B0 <- hosted 0073BAE0 phase",
+        "00AA2110 show argument <- actual settings+B1 (00F88A31) <- existing 008D8190 <- existing 008D7710/CD2D80 <- hosted startup settings phase"
+      ]
+    },
+    {
+      "name": "GuiManagerRelayout / GameNativeGuiPageApplication::Impl::LayoutCall borrowed actual Page traversal",
+      "where": "src/game_hosts_frontend.cpp:795; src/game_native_gui_page_application.cpp:858",
+      "constructor": "Existing manager 00AA5D70; existing Page 00AC6600 and base widget 00AA9390, composed by GameNativeGuiPageApplication",
+      "fields": [
+        {
+          "owner": "manager",
+          "offset": "18",
+          "width": 4,
+          "name": "registered Page vector begin"
+        },
+        {
+          "owner": "manager",
+          "offset": "1c",
+          "width": 4,
+          "name": "registered Page vector end"
+        },
+        {
+          "owner": "widget",
+          "offset": "08",
+          "width": 4,
+          "name": "authored X"
+        },
+        {
+          "owner": "widget",
+          "offset": "0c",
+          "width": 4,
+          "name": "local X; updated in place"
+        },
+        {
+          "owner": "widget",
+          "offset": "4c",
+          "width": 4,
+          "name": "existing scene node"
+        },
+        {
+          "owner": "widget",
+          "offset": "68",
+          "width": 4,
+          "name": "actual child-list sentinel"
+        },
+        {
+          "owner": "widget",
+          "offset": "6c",
+          "width": 4,
+          "name": "child count captured once"
+        },
+        {
+          "owner": "widget",
+          "offset": "dc",
+          "width": 4,
+          "name": "layout listener; constructor-produced null in the current hosted graph"
+        },
+        {
+          "owner": "widget",
+          "offset": "e0",
+          "width": 4,
+          "name": "WideScreenAlign enum"
+        }
+      ],
+      "producers": [
+        "Existing AA9390 / AC6600 / AAA710 base, Page and property readers produce raw widget fields, children and current profiles",
+        "Existing AA52A0 priority registration fills actual manager+18/+1C",
+        "Existing Page application retains actual Group/Model nodes and NativeGuiWidgetTransformBindings",
+        "008D5B50 -> 008D60FB -> QuickSettingsApplyHost::gui_manager_reload -> GameFrontendHost::relayout_gui_pages -> existing AA4EF0 -> shared existing AA8710"
+      ],
+      "rows": [
+        "00aa4ef0"
+      ],
+      "climb": [
+        "00AA4EF0 <- actual manager+14 Page registry <- existing AA52A0 <- existing AA5840/AC6600 Page chain <- hosted 0073BAE0 resources phase",
+        "00AA8710 current fields/list <- existing AA9390/AAA710; same existing AA7220/AA70E0 node services and verified A9E0A0 current+24 body",
+        "Remaining AA3910/AA3F70 runtime <- 004D8620 active pages <- 004F8CF0 _FullScreenMovies <- AB0520/AB0220 native subtitle store <- missing AAF820/AAF580 (stopped)"
+      ],
+      "limits": "Serialized existing Page/Group/Icon graph; non-null layout listener or current+24 other than genuine A9E0A0 rejects and retains the entered graph. No unsupported callback is treated as successful. Source-owned AA7220 scratch has an explicit zero preimage; game fields are borrowed in place."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS after both objects; four existing CTests PASS, including one added focused borrowed-layout x87/child-order case",
+    "call_graph": "00AA2110: 2 reachable call sites from run_raw_pointer and set_safe_zone_visible; 00AA4EF0: 1 reachable call site from run_raw_pointer. The settings sink supplies the concrete relayout invocation. Call graph is static entry reachability, not a game run.",
+    "reconstructed_addresses_called_before": 5742,
+    "reconstructed_addresses_called_after": 5744,
+    "runtime": "Not run; this worker does not run the game.",
+    "pc24_lint": "0 findings, 0 allowed; run with --diff origin/main before commit and origin/main...HEAD after commit",
+    "checks": [
+      "git diff --check PASS",
+      "python tools/call_graph.py PASS",
+      "python tools/call_graph.py who 00aa2110 PASS",
+      "python tools/call_graph.py who 00aa4ef0 PASS"
+    ]
+  },
+  "evidence": [
+    "bsp.py show 00AA2110 and --asm; show 00AA3910 and --asm; show 00AA3F70; show 00AA4EF0; show 00AA59B0",
+    "bsp.py show 00AA5D70 / 008D7710 / 004DD5B0 / 004D8620 / 00AA8710 and --asm",
+    "bsp.py lookup 004F8CF0 / 00AA1770 / 00AAFE20 / 00AAE770 / 00AB0520 / 00AAF820 / 00AAF580; source searches confirm no insert/erase bodies",
+    "bsp.py callers 00AA9C90 and live ghidra xrefs 00AA9C90: only two recursive sites; identity previously checked by brief as /battlestationspacific.exe"
+  ]
+}
