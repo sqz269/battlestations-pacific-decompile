@@ -5,6 +5,7 @@
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include <Windows.h>
 #include "bsp/native_particle_clock_shutdown.hpp"
+#include "bsp/native_particle_record_clear.hpp"
 #include "bsp/native_particle_clock_publication_base.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -140,14 +141,18 @@ void __fastcall clear_native_particle_clock_records_004dda40(
             decrement_current_count(secondary);
         }
     }
-    resize_native_particle_record_array_004dc410(vector_at(secondary), context.records, 0);
+    // bsp.py show 004DCAA0 --asm: PUSH 0 / CALL 004DC410 / RET.
+    // Reuse that exact clear operation on the clock's current actual vector
+    // and the same resize context. The original 004DDA40 calls resize0
+    // directly; this source composition replaces that call once.
+    clear_native_particle_record_array_004dcaa0(vector_at(secondary), context.records);
 }
 
 void __fastcall destroy_native_particle_record_array_004ddaa0(
     NativeResourceRecordVectorStorage& vector, Context& provided) {
     NativeParticleClockShutdownObservedZeroIssuer outer(provided);
     auto& context=outer.context();
-    resize_native_particle_record_array_004dc410(vector, context.records, 0);
+    clear_native_particle_record_array_004dcaa0(vector, context.records);
     singleton_lifetime_free(current_record_data(vector));
 }
 
@@ -160,7 +165,7 @@ void __fastcall destroy_native_particle_clock_records_004de290(
     clear_native_particle_clock_records_004dda40(secondary, context);
     cleanup.armed = false;
     auto& vector = vector_at(secondary);
-    resize_native_particle_record_array_004dc410(vector, context.records, 0);
+    clear_native_particle_record_array_004dcaa0(vector, context.records);
     singleton_lifetime_free(current_record_data(vector));
 }
 
