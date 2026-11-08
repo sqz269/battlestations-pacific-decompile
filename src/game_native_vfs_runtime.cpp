@@ -9,6 +9,8 @@
 #include "bsp/native_filestore_completion.hpp"
 #include "bsp/native_filestore_request.hpp"
 #include "bsp/native_filestore_provider_lifetime.hpp"
+#include "bsp/native_fileblock_owner.hpp"
+#include "bsp/native_loading_queue_retirement.hpp"
 #include "bsp/native_gui_icon_delayed_request_storage.hpp"
 #include "bsp/native_gui_icon_delayed_delivery_storage.hpp"
 #include "bsp/native_gui_icon_texture_apply_storage.hpp"
@@ -253,6 +255,24 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         }
     };
     std::unique_ptr<FileStoreCacheCall> filestore_cache;
+    struct LoadingQueueRetirementCall {
+        NativeLoadingQueueOwnerStorage* actual_queue;
+        NativeFileBlockOwnerContext fileblocks;
+        NativeFileStoreProviderLifetimeContext providers;
+        NativeLoadingQueueRetireContext context;
+        NativeLoadingQueueRetireAcquired acquired;
+
+        LoadingQueueRetirementCall(Impl& runtime, NativeLoadingQueueOwnerStorage* queue,
+            NativeStringRawPoolContext& raw, NativeVfsFileBlockScopeContext& scopes)
+            : actual_queue(queue), fileblocks{runtime.inputs.owners.vfs_publication_0109ceec(),
+                  runtime.inputs.owners.strings(), raw, scopes},
+              providers{runtime.inputs.owners.strings(), runtime.bindings,
+                  runtime.inputs.invalid_parameters},
+              context{fileblocks, runtime.filestore_factory_context, providers, raw} {}
+    };
+    // Publish before entering 506BF0. An escaping invocation retains the SAME
+    // queue, captured front/slot and all FileBlock/string/provider contexts.
+    std::unique_ptr<LoadingQueueRetirementCall> loading_queue_retirement;
     bool filestore_request_started{};
     struct IconCompletionAdapter final : NativeFileStoreCompletionDispatch {
         struct Call {
@@ -538,7 +558,8 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         if (retired) return;
         // DENIAL only: an unfinished caller leaves all bindings/publications
         // intact. Caller must retain/exit, not interpret this as safe cleanup.
-        if (raw_icon_failure_site() != 0 || icon_completion_failure_site()!=0) return;
+        if (raw_icon_failure_site() != 0 || icon_completion_failure_site()!=0 ||
+            loading_queue_retirement) return;
         auto& deletion = inputs.deletion_bindings;
         if (deletion.physical_factory == &physical_factory_context)
             deletion.physical_factory = nullptr;
@@ -716,6 +737,25 @@ NativeVfsFileBlockScopeContext& GameNativeVfsRuntime::borrow_fileblock_scopes() 
         throw std::logic_error("Native FileBlock observer entries differ from the supported image");
     return p.block_scopes;
 }
+void GameNativeVfsRuntime::retire_loading_queue_front(NativeLoadingQueueOwnerStorage* queue,
+    NativeStringRawPoolContext& raw) {
+    auto& p = *impl_;
+    if (p.loading_queue_retirement || file_store_request_failure_site() || name_resolution_failure_site())
+        throw std::logic_error("Loading queue retirement requires the uninterrupted VFS domain");
+    // Both release implementations must name the application's existing pool
+    // cells. No second pool/factory/cache or copied native header is admitted.
+    if (&raw.actual_published_01090aa8 != &p.inputs.owners.string_pool_publication_01090aa8() ||
+        &raw.actual_small_returns_disabled_01090aa4 != &p.inputs.owners.string_returns_disabled_01090aa4())
+        throw std::logic_error("Loading queue retirement requires the SAME raw string publication cells");
+    auto& scopes = borrow_fileblock_scopes();
+    p.loading_queue_retirement = std::make_unique<Impl::LoadingQueueRetirementCall>(p, queue, raw, scopes);
+    auto& call = *p.loading_queue_retirement;
+    // bsp.py show 00509190/00506BF0: stopped state0/2 passes the actual loader.
+    // Retirement owns the native front deletion, live-array shift and count
+    // decrement; the host performs none of those operations a second time.
+    retire_native_loading_queue_front_00506bf0(call.actual_queue, call.context, call.acquired);
+    p.loading_queue_retirement.reset();
+}
 void GameNativeVfsRuntime::construct_and_register_core() {
     impl_->register_core();
 }
@@ -860,6 +900,10 @@ NativeGuiIconDelayedDeliveryFileInvocation& GameNativeVfsRuntime::prepare_icon_d
     p.raw_icon_delivery_file_calls.push_back(std::move(call));return result;
 }
 std::uint32_t GameNativeVfsRuntime::file_store_request_failure_site() const noexcept {
+    if (impl_->loading_queue_retirement) {
+        const auto site = impl_->loading_queue_retirement->acquired.failure_site();
+        return site ? site : 0x00506bf0;
+    }
     if (impl_->filestore_cache) return impl_->filestore_cache->site;
     if (impl_->filestore_request) {
         const auto site = impl_->filestore_request->acquired.failure_site();

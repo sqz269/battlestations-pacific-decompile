@@ -1358,7 +1358,7 @@ void GameFrameHost::update_loading_queue() {
     if constexpr (kLoadingQueueCc15Bound) {
         if (loading_queue_manager_ != nullptr && loading_queue_publication_ != nullptr) {
             // 00737A50: ECX = 004FDE20(), then 00509190.
-            update_native_loading_queue_00509190(get_native_loading_queue_owner_004fde20(
+            vfs_.update_loading_queue(get_native_loading_queue_owner_004fde20(
                 *loading_queue_manager_, *loading_queue_publication_));
             log_.implemented("ApplicationFrameHost::update_loading_queue", "004fde20");
             return;
