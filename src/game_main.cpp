@@ -1154,6 +1154,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         log.notef("native GUI Button pool CRT CD70A0: atexit=%d storage_bytes=%zu "
             "before_gui_icon_pool=1", button_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE3458/CD70F0: MOV ECX,F8BD4C; CALL AAD5F0; atexit(CE0A50).
+        // Live Ghidra confirms this lies between Button CE3450 and Icon CE3468.
         // Start the same retained Movie pool used by AAD990 before Icon.
         // This reserves the table; Movie factory/allocation remains separate.
         auto& gui_movie_pool = bsp::game::GameNativeGuiWidgetPoolProcess<
@@ -1191,6 +1192,16 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         gui_widget_pool_startup_incomplete = false;
         log.notef("native GUI Curve pool CRT CD7280: atexit=%d storage_bytes=%zu",
             curve_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
+        // CE3488/CD72F0: ECX=F8BEAC, CALL ABEE60, atexit(CE0AB0).
+        // The original CRT starts Section after Curve and before Line/Group.
+        // Retain its process pool on the same E188B4 allocator-list domain.
+        auto& gui_section_process = bsp::game::GameNativeGuiWidgetPoolProcess<
+            bsp::GuiSectionPoolTraits>::instance();
+        gui_widget_pool_startup_incomplete = true;
+        const int section_pool_atexit = gui_section_process.initialize_once();
+        gui_widget_pool_startup_incomplete = false;
+        log.notef("native GUI Section pool CRT CD72F0: atexit=%d storage_bytes=%zu",
+            section_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));
         // CE34A0/CD7440 lies between the Text and particle CRT subset entries.
         // Keep the actual pointer before native entry for both failure catches.
         auto& gui_group_process = bsp::game::game_native_gui_group_pool_process();

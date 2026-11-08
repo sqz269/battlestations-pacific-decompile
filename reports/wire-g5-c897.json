@@ -1,0 +1,140 @@
+{
+  "chain": 897,
+  "slot": "g5-w11",
+  "base": "b2cf570a30fd839f907cfc84cb1ada26e66b77cb",
+  "outcome": "Build-tested partial preparation; zero new entry-reachable target bodies. Do not credit the text-only readiness increase as game wiring.",
+  "rows": [
+    {
+      "native": "00b7ae30",
+      "status": "skipped",
+      "host_site": "src/native_point_light_pool.cpp: append_native_point_light_pool_table_00b7b410",
+      "reason": "Missing an entry-reachable PointLight slot producer: canonical startup initializes the pool, but allocate_raw_slot_00b7b810 and its grow/append remain unlinked from bsp_game; exercised only by the real-pool standalone fixture."
+    },
+    {
+      "native": "00b7b410",
+      "status": "skipped",
+      "host_site": "src/native_point_light_pool.cpp: NativePointLightPool::allocate_raw_slot_00b7b810",
+      "reason": "Missing an entry-reachable PointLight allocation consumer: native PointLight and particle-light producers exist in source but have no built game caller; replacing the actual allocator inline append is preparatory work only."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree / insert_into / make_owned_complete_bag",
+      "reason": "Already has three entry-reachable compiled call sites at baseline; its ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Impl / merge_child",
+      "reason": "Already called from entry-reachable code at baseline; the ready text classification is not a new wiring opportunity."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty command-target descriptor owner carrying the actual class ordinal; the inspected host has no retained descriptor initialization path."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message path",
+      "reason": "Missing a retained ControllerStateMessage producer and consumer carrying both descriptors, mode, and controller flags."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot path",
+      "reason": "Missing a retained ControllerSnapshotMessage owner and gameplay transport consumer; constructing a discarded copy does not wire gameplay."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing gameplay ownership and consumption of the native candidate-score records; the previously identified native reader is a debug overlay excluded from this goal."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate-score list",
+      "reason": "Missing gameplay-owned native candidate-score records and a non-debug consumer for chosen marks."
+    }
+  ],
+  "changes": [
+    "Extracted the existing shared-shape 00B7AE30 and 00B7B410 bodies into one address-named implementation each over the actual pool+28h header; generic dispatcher arms delegate to them.",
+    "Replaced the actual PointLight raw-slot allocator inline grow/append with the single append body using the real slab local; removed the old inline path.",
+    "Preserved capacity-before-allocation, modulo-32-bit byte/growth arithmetic, old-pointer release before publication, source-cell read after growth, null destination test, and live count increment.",
+    "Extended the existing standalone canonical-pool fixture to 1025 real slot allocations, crossing 32 slabs to capacity 66, checking every returned slot against its retained slab, then reserve to 128, smaller reserve no-op, return, trim, and CRT teardown."
+  ],
+  "evidence": [
+    "bsp.py show 00b7ae30 and --asm: ECX header, no stack arguments, 2*capacity+2 growth.",
+    "bsp.py show 00b7b410 and --asm: ECX header, pointer-cell stack argument, RET4, source read after old-table release.",
+    "bsp.py show 00b7b810 --asm lines 00B7B858..00B7B8BB: identical real allocator grow/append schedule.",
+    "Original names already state no rel32/abs32 references for the two standalone copies; original instructions are reused by shape, without claiming recovered symbols or binary ABI equivalence."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all five CTests passed.",
+    "final_build": "scripts/build.ps1 passed after final C++ edits, all five CTests passed (34.76 seconds).",
+    "focused_probe": "cmd /c local/c897-probe.cmd passed against final Release libraries; /MANIFEST:EMBED, no game launch.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed; call_graph.py --build also passed.",
+    "target_call_graph": "who 00b7ae30 / 00b7b410 and symbol-name queries find neither target in bsp_game. who NativePointLightPool confirms startup, table reserve/exact allocation, trim and teardown only. Raw slot allocation is absent.",
+    "readiness_text_wired_before": 10754,
+    "readiness_text_wired_after": 10756,
+    "new_entry_reachable_targets": 0,
+    "analysis_build_reconstructed_called_total": 7451,
+    "readiness_warning": "Both new names classify wired by source reachability but called is null. This is preparatory code and receives no actual game-wiring credit.",
+    "float_math": "No float operations changed; pc24 lint is not applicable.",
+    "diff_check": "git diff --check passed."
+  },
+  "remaining": [
+    "Integrate a real PointLight or particle point-light producer and consumer with its native owner lifetime before claiming 00B7B810/00B7AE30/00B7B410 as game wired.",
+    "Candidate source producers include allocate_native_point_light in native_point_light_owner.cpp and point-light allocation in native_particle_object_state.cpp, native_particle_sprite_state.cpp and native_particle_tracer_state.cpp.",
+    "No game launch, rendering, gameplay, allocation-failure execution, original register ABI or whole-owner equivalence was validated."
+  ],
+  "merge_repair": {
+    "merged_origin_main": "7ed4d33564eecdb9b5bc2e217c8a5ab74b842027",
+    "conflict_resolution": {
+      "src/scene_graph2_cc13.cpp": "merge_resolve.py kept pure insertions from both sides; verified all eight PointLight, DirectionalLight and Group forwarding arms.",
+      "config/reconstruction/00b70000.jsonl": "Default union refused because both sides rewrote records. Address-aware merge_resolve.three_way_rows preserved disjoint PointLight two-address and DirectionalLight four-address replacements, with exactly six final function rows and no superseded records."
+    },
+    "normal_build": "PASS: scripts/build.ps1 after merge; all five CTests passed in 27.67 seconds.",
+    "focused_probe": "PASS: cmd /c local/c897-probe.cmd against merged Release libraries, including 1025 real allocations, automatic capacity 32 to 66, reserve to 128, no-op smaller reserve, return/trim and CRT teardown.",
+    "normal_call_graph": "PASS: refreshed build/win32 call graph has 5658 reconstructed addresses called; neither B7AE30 nor B7B410 is linked in bsp_game, so target wiring credit remains zero.",
+    "on_build": "PASS: python tools/off_switch_on_build.py --log local/c897-merge-on-build.log; exit 0, zero distinct diagnostics, all five CTests passed (20.31 seconds). Both default ON switches were enabled, then both headers restored byte-for-byte and matched their pre-ON SHA256 hashes; Goal3 clock unchanged.",
+    "headers_before_on": {
+      "include/bsp/air_operations.hpp": "c3d2bcc891539b5e1451fc956dcf1a08f8ab2f026cf4b700f9aaccbee7fb0ea5",
+      "include/bsp/game_hosts_units_internal.hpp": "46df652adc36ff3fde0fa4e13eb87c65da9ba7af25ac38c45f6cbb6faa340c59"
+    },
+    "wire_readiness": {
+      "summary": {
+        "wired": 10771,
+        "callees_done_no_wired_caller": 8502,
+        "ready": 1201,
+        "blocked_on_callees": 51,
+        "unknown_no_identifier": 200
+      },
+      "targets": [
+        {
+          "address": "00b7ae30",
+          "name": "grow_native_point_light_pool_table_00b7ae30",
+          "state": "wired",
+          "called": null,
+          "call_sites": null
+        },
+        {
+          "address": "00b7b410",
+          "name": "append_native_point_light_pool_table_00b7b410",
+          "state": "wired",
+          "called": null,
+          "call_sites": null
+        }
+      ],
+      "call_graph_stale": false,
+      "source_text_sha256": "8dc547446e5ce1798f804301a5bf41f9ff6c3e45624de08fe1465d22903e4d50",
+      "map_text_sha256": "faa4e585cec2ab8ce4abd20e86b3a9e66c5d47d26414edc83a12fcde1da28629",
+      "log": "local/c897-merge-readiness.log"
+    },
+    "on_headers_restored": true,
+    "restored_normal_build": "PASS: scripts/build.ps1 after ON header restoration; exit 0, all five CTests passed (13.69 seconds), log local/c897-merge-normal-restored-build.log.",
+    "diff_check": "PASS: no unmerged files; git diff --check and git diff --cached --check clean; ON headers match the merge index."
+  }
+}

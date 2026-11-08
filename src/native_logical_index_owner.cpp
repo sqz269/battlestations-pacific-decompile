@@ -1,4 +1,5 @@
 #include "bsp/native_logical_index_owner.hpp"
+#include "bsp/native_logical_index_pool_table.hpp"
 #include "bsp/native_render_buffer_unregistration.hpp"
 #include "bsp/native_logical_vertex_owner.hpp"
 #include "bsp/native_shader_device_reset.hpp"
@@ -296,6 +297,47 @@ void* initialize_native_logical_index_slab_00b48f70(void* slab, std::uint32_t in
     }
     return slab;
 }
+__declspec(noinline) void set_native_logical_index_pool_table_capacity_00b49800(
+    void* header, std::uint32_t capacity) {
+    // bsp.py show 00B49800: publish capacity before allocation, reload live
+    // count/source per copy, free old data, then publish the replacement.
+    // Unsigned arithmetic preserves the native modulo32 byte request.
+    word(header, 8) = capacity;
+    const auto bytes = capacity * 4u;
+    void* const replacement = singleton_lifetime_allocate(
+        {SingletonAllocationKind::pointer_slots, bytes, bytes});
+    void* destination = replacement;
+    for (std::uint32_t index = 0; index < word(header, 4); ++index) {
+        if (destination) word(destination) = word(pointer(header), index * 4u);
+        destination = at(destination, 4);
+    }
+    if (void* const old = pointer(header)) singleton_lifetime_free(old);
+    word(header) = address(replacement);
+}
+
+__declspec(noinline) void grow_native_logical_index_pool_table_00b49850(void* header) {
+    // 00B49850 inlines the same exact-capacity body with 2*capacity+2.
+    set_native_logical_index_pool_table_capacity_00b49800(
+        header, word(header, 8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_logical_index_pool_table_00b4a6f0(
+    void* header, void* const* source_cell) {
+    if (word(header, 4) == word(header, 8))
+        grow_native_logical_index_pool_table_00b49850(header);
+    void* const destination = at(pointer(header), word(header, 4) * 4u);
+    // 00B4A754..75A reads the borrowed source only after growth/free/publication
+    // and only for a nonnull destination; count is reloaded for the increment.
+    if (destination) word(destination) = word(source_cell);
+    word(header, 4) = word(header, 4) + 1u;
+}
+
+__declspec(noinline) void reserve_native_logical_index_pool_table_00b4a770(
+    void* header, std::uint32_t capacity) {
+    if (word(header, 8) < capacity)
+        set_native_logical_index_pool_table_capacity_00b49800(header, capacity);
+}
+
 void* allocate_native_logical_index_slot_00b4b0a0(void* pool) {
     auto* const section = static_cast<CRITICAL_SECTION*>(at(pool, 0x0c));
     EnterCriticalSection(section);
@@ -304,25 +346,10 @@ void* allocate_native_logical_index_slot_00b4b0a0(void* pool) {
         word(pool, 0x34) = word(pool, 0x2c);
         void* const raw = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x544, 0x544});
         void* const slab = raw ? initialize_native_logical_index_slab_00b48f70(raw, word(pool, 0x34)) : nullptr;
-        const auto capacity = word(pool, 0x30);
-        if (word(pool, 0x2c) == capacity) {
-            const auto grown = capacity * 2u + 2u;
-            word(pool, 0x30) = grown;
-            const auto bytes = grown * 4u;
-            void* const replacement = singleton_lifetime_allocate({SingletonAllocationKind::pointer_slots, bytes, bytes});
-            void* destination = replacement;
-            for (std::uint32_t index = 0; index < word(pool, 0x2c); ++index) {
-                if (destination) word(destination) = word(pointer(pool, 0x28), index * 4u);
-                destination = at(destination, 4);
-            }
-            void* const old = pointer(pool, 0x28);
-            if (old) singleton_lifetime_free(old);
-            // Native B4B136 is ADD ESP4, then B4B139 publishes this pointer.
-            word(pool, 0x28) = address(replacement);
-        }
-        void* const destination = at(pointer(pool, 0x28), word(pool, 0x2c) * 4u);
-        if (destination) word(destination) = address(slab);
-        word(pool, 0x2c) = word(pool, 0x2c) + 1u;
+        // 00B4B0A0 inlines 00B4A6F0 on this actual slab table and local cell.
+        // Its returning-free fallthrough at B4B136/B4B139 is preserved by the
+        // shared body's free-before-publication order (bsp.py show, --asm).
+        append_native_logical_index_pool_table_00b4a6f0(at(pool, 0x28), &slab);
     }
     void* const slab = pointer(pointer(pool, 0x28), word(pool, 0x34) * 4u);
     half(slab, 0x540) = static_cast<std::uint16_t>(half(slab, 0x540) - 1u);

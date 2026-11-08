@@ -85,6 +85,33 @@ __declspec(noinline) void allocate_native_point_light_pool_table_00b7ade0(
     write(header, replacement);
 }
 
+// Extract the corresponding scene_graph2 address-dispatched bodies into one
+// implementation over the actual pool+28h header. Evidence: bsp.py show
+// 00b7ae30 --asm and 00b7b410 --asm. Capacity is published before allocation;
+// copying/freeing/publication retains 00B7ADE0's identical instruction order.
+__declspec(noinline) void grow_native_point_light_pool_table_00b7ae30(
+    NativePointLightPoolTableView table) {
+    const auto* header = static_cast<const std::byte*>(table.header);
+    allocate_native_point_light_pool_table_00b7ade0(
+        table, read<std::uint32_t>(header + 8) * 2u + 2u);
+}
+
+__declspec(noinline) void append_native_point_light_pool_table_00b7b410(
+    NativePointLightPoolTableView table, const void* pointer_cell) {
+    auto* header = static_cast<std::byte*>(table.header);
+    if (read<std::uint32_t>(header + 4) == read<std::uint32_t>(header + 8))
+        grow_native_point_light_pool_table_00b7ae30(table);
+    const auto destination = reinterpret_cast<std::uintptr_t>(read<std::byte**>(header))
+        + read<std::uint32_t>(header + 4) * 4u;
+    if (destination != 0) {
+        // 00B7B474..47A loads the caller's cell only after old-table release.
+        write(reinterpret_cast<std::byte*>(destination),
+            read<std::byte*>(static_cast<const std::byte*>(pointer_cell)));
+    }
+    // 00B7B47C increments the live count even for a null destination.
+    write(header + 4, read<std::uint32_t>(header + 4) + 1u);
+}
+
 __declspec(noinline) void reserve_native_point_light_pool_table_00b7b4a0(
     NativePointLightPoolTableView table, std::uint32_t minimum) {
     // 00B7B4A0 compares the existing capacity unsigned; equal/smaller requests
@@ -136,16 +163,10 @@ void* NativePointLightPool::allocate_raw_slot_00b7b810() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b7abd0(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B7B858..B8BB is the same grow/append schedule as 00B7B410,
+        // including the null destination test. Use the real slab local and
+        // live pool header, with no second append on this allocation path.
+        append_native_point_light_pool_table_00b7b410({&storage_.slabs_28}, &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);
