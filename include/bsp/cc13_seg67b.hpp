@@ -89,8 +89,18 @@ public:
     virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
 };
 
+// 009CA780 calls only the target-ref picker and the pilot's rocket setter.
+// Keep its live binding independent of the task/archive construction services.
+class StrafeTargetRearmCalls {
+public:
+    virtual ~StrafeTargetRearmCalls() = default;
+    virtual void approach_ref_pick_aim_offset_009fa260(void* ref) = 0;
+    virtual void opportunistic_rocket_set_target_007b7870(void* rocket, void* target,
+                                                        const float point[3]) = 0;
+};
+
 class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls,
-    public MoveToEntityPoseHost {
+    public MoveToEntityPoseHost, public StrafeTargetRearmCalls {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -1215,7 +1225,7 @@ void* bot_approach_moveto_construct_009c1c30(Cc13Seg67bHost& host, void* a, void
 // 009CA2B0: __fastcall(ECX = bot), RET, EAX = the new retreat task or 0.
 void* bot_task_make_retreat_009ca2b0(Cc13Seg67bHost& host, void* bot);
 // 009CA780: __fastcall(ECX = strafe approach), RET.
-void bot_approach_strafe_rearm_target_point_009ca780(Cc13Seg67bHost& host, void* a);
+void bot_approach_strafe_rearm_target_point_009ca780(StrafeTargetRearmCalls& host, void* a);
 // 009CD300: __fastcall(ECX = bot, EDX = target), RET, EAX = the new strafe task or 0.
 void* bot_task_make_strafe_009cd300(Cc13Seg67bHost& host, void* bot, void* target);
 // 009D4E30: __fastcall(ECX = bot, EDX = target), RET, EAX = the new torpedo task or 0.
