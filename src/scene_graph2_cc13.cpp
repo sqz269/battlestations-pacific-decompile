@@ -1,4 +1,5 @@
 #include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/directional_light_pool_table.hpp"
 #include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/native_camera_pool_table.hpp"
@@ -93,6 +94,11 @@ bool is_pointer_array_routine(std::uint32_t address) noexcept {
 }
 
 void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t n) {
+    if (address == 0x00B7AE80) {
+        allocate_directional_light_pool_table_00b7ae80(
+            {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
+        return;
+    }
     if (address == 0x00B7ADE0) {
         allocate_native_point_light_pool_table_00b7ade0({&a}, static_cast<std::uint32_t>(n));
         return;
@@ -114,6 +120,10 @@ void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t
 }
 
 void grow_pointer_array(std::uint32_t address, PointerArray& a) {
+    if (address == 0x00B7AED0) {
+        grow_directional_light_pool_table_00b7aed0({reinterpret_cast<std::byte*>(&a)});
+        return;
+    }
     if (address == 0x00B72950) {
         grow_native_mesh_pool_table_00b72950({reinterpret_cast<std::byte*>(&a)});
         return;
@@ -131,6 +141,10 @@ void grow_pointer_array(std::uint32_t address, PointerArray& a) {
 }
 
 void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value) {
+    if (address == 0x00B7B510) {
+        append_directional_light_pool_table_00b7b510({reinterpret_cast<std::byte*>(&a)}, &value);
+        return;
+    }
     if (address == 0x00B72E80) {
         append_native_mesh_pool_table_00b72e80({reinterpret_cast<std::byte*>(&a)}, &value);
         return;
@@ -150,6 +164,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
+    if (address == 0x00B7B5A0) {
+        reserve_directional_light_pool_table_00b7b5a0({reinterpret_cast<std::byte*>(&a)}, n);
+        return;
+    }
     if (address == 0x00B7B4A0) {
         reserve_native_point_light_pool_table_00b7b4a0({&a}, n);
         return;

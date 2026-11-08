@@ -1,4 +1,5 @@
 #include "bsp/directional_light_pool.hpp"
+#include "bsp/directional_light_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -47,12 +48,15 @@ std::byte* initialize_slab_00b7ac90(void* raw, std::uint32_t index) noexcept {
     }
     return bytes;
 }
-std::byte** allocate_table(std::uint32_t capacity) {
+std::byte* allocate_table(std::uint32_t capacity) {
     // Native 00BF55BE jumps to the same 00BF681B new-handler allocator.
     const auto native_bytes = capacity * 4u;
-    return static_cast<std::byte**>(singleton_lifetime_allocate({
+    return static_cast<std::byte*>(singleton_lifetime_allocate({
         SingletonAllocationKind::pointer_slots, native_bytes,
         static_cast<std::size_t>(capacity) * sizeof(std::byte*)}));
+}
+DirectionalLightPoolTableView table_view(DirectionalLightPoolStorage& storage) noexcept {
+    return {reinterpret_cast<std::byte*>(&storage.slabs_28)};
 }
 DirectionalLightPool* static_pool_01090154;
 DirectionalLightPool& require_static_pool() {
@@ -61,6 +65,49 @@ DirectionalLightPool& require_static_pool() {
     return *static_pool_01090154;
 }
 } // namespace
+
+// Chain 892 specializes the existing scene_graph2 address-dispatched bodies.
+// Keep one body per address, also used by the legacy dispatcher below.
+__declspec(noinline) void allocate_directional_light_pool_table_00b7ae80(
+    DirectionalLightPoolTableView table, std::uint32_t capacity) {
+    table.capacity(capacity); // 00B7AE87, before 00BF55BE can reenter or throw.
+    auto* const replacement = allocate_table(capacity);
+    // 00B7AEA3..B7: test each destination, reload live source/count, and
+    // advance DWORD addresses modulo32. No snapshot or added null recovery.
+    for (std::uint32_t i = 0, destination = reinterpret_cast<std::uint32_t>(replacement);
+            i < table.count(); ++i, destination += 4u) {
+        if (destination != 0) {
+            std::uint32_t value;
+            std::memcpy(&value, table.data() + i * 4u, sizeof(value));
+            std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+        }
+    }
+    if (auto* const previous = table.data()) singleton_lifetime_free(previous);
+    table.data(replacement); // 00B7AEC8, after the old table's release.
+}
+
+__declspec(noinline) void grow_directional_light_pool_table_00b7aed0(
+    DirectionalLightPoolTableView table) {
+    allocate_directional_light_pool_table_00b7ae80(table, table.capacity() * 2u + 2u);
+}
+
+__declspec(noinline) void append_directional_light_pool_table_00b7b510(
+    DirectionalLightPoolTableView table, const void* pointer_cell) {
+    if (table.count() == table.capacity()) grow_directional_light_pool_table_00b7aed0(table);
+    const auto destination = reinterpret_cast<std::uint32_t>(table.data()) + table.count() * 4u;
+    if (destination != 0) {
+        // 00B7B574..7A reads the caller's cell AFTER growth/free/publication.
+        std::uint32_t value;
+        std::memcpy(&value, pointer_cell, sizeof(value));
+        std::memcpy(reinterpret_cast<void*>(destination), &value, sizeof(value));
+    }
+    table.count(table.count() + 1u); // even if the destination was null.
+}
+
+__declspec(noinline) void reserve_directional_light_pool_table_00b7b5a0(
+    DirectionalLightPoolTableView table, std::uint32_t capacity) {
+    if (table.capacity() < capacity) allocate_directional_light_pool_table_00b7ae80(table, capacity);
+}
 
 DirectionalLightPool::DirectionalLightPool(AllocatorListDomain& list,
     DirectionalLightPoolStorage& storage) : allocator_list_(list), storage_(storage) {
@@ -85,14 +132,8 @@ void DirectionalLightPool::initialize_00b7b940() {
         storage_.table_capacity_30 = 0;
         storage_.first_free_slab_34 = no_free_slab;
         unwind_state = 2;
-        if (storage_.table_capacity_30 < 32) {
-            storage_.table_capacity_30 = 32;
-            auto** replacement = allocate_table(32);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
+        // 00B7B940 inlines 00B7B5A0 over the real +28h header.
+        reserve_directional_light_pool_table_00b7b5a0(table_view(storage_), 32);
     } __finally {
         if (AbnormalTermination()) {
             if (unwind_state >= 2) free_table_unwind_00b7adb0();
@@ -111,16 +152,8 @@ void* DirectionalLightPool::allocate_raw_slot_00b7bac0() {
         storage_.first_free_slab_34 = storage_.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({SingletonAllocationKind::object, slab_bytes, slab_bytes});
         auto* slab = raw ? initialize_slab_00b7ac90(raw, storage_.first_free_slab_34) : nullptr;
-        if (storage_.slab_count_2c == storage_.table_capacity_30) {
-            storage_.table_capacity_30 = storage_.table_capacity_30 * 2u + 2u;
-            auto** replacement = allocate_table(storage_.table_capacity_30);
-            for (std::uint32_t i = 0; i < storage_.slab_count_2c; ++i)
-                ::new (replacement + i) std::byte*(storage_.slabs_28[i]);
-            if (storage_.slabs_28) singleton_lifetime_free(storage_.slabs_28);
-            storage_.slabs_28 = replacement;
-        }
-        ::new (storage_.slabs_28 + storage_.slab_count_2c) std::byte*(slab);
-        ++storage_.slab_count_2c;
+        // 00B7BB08..BB6B inlines 00B7B510 after the native slab producer.
+        append_directional_light_pool_table_00b7b510(table_view(storage_), &slab);
     }
     auto* slab = storage_.slabs_28[storage_.first_free_slab_34];
     const auto count = static_cast<std::uint16_t>(read<std::uint16_t>(slab + free_count) - 1u);
