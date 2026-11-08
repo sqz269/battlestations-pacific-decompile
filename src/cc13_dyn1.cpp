@@ -551,7 +551,7 @@ void shape_collide_mask_clear_00c47f60(void* shape, std::uint32_t bits, ShapeFil
     lock_and_clear_manifolds(shape, calls);
 }
 
-void shape_collide_mask_set_00c47f90(void* shape, std::uint32_t bits, Cc13Dyn1Calls& calls) {
+void shape_collide_mask_set_00c47f90(void* shape, std::uint32_t bits, ShapeFilterCalls& calls) {
     raw(shape).at<std::uint32_t>(0x30) |= bits;
     lock_and_clear_manifolds(shape, calls);
 }

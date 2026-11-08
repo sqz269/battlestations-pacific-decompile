@@ -1,0 +1,205 @@
+{
+  "chain": 966,
+  "slot": "g5-w12",
+  "base_head": "1d5ed26e949b714339e3e6a8a7f62be326962a7d",
+  "rows": [
+    {
+      "native": "00c47f90",
+      "status": "wired",
+      "host_site": "src/hull_terrain_contact.cpp: HullTerrainContactSolver::publish_hull_class_bit (world_step)",
+      "state_source": "HullWorldEntry::class_bit comes from the live unit class/controller state; the setter mutates the retained convex shape+30h consumed by draft and terrain filtering.",
+      "abi": "Existing reconstructed C++ body; ShapeFilterCalls supplies the solver lock and invalidates its four actual manifold maps. Not a binary ABI replacement."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable with three compiled call sites at baseline; no missing wiring at these sites."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already entry-reachable with two compiled call sites at baseline; no missing wiring at these sites."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: participant-count watchdog",
+      "reason": "No single-player consumer of the multiplayer participant-count watchdog was established; multiplayer work is excluded."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp: UnwrittenPostTickCallback",
+      "reason": "Missing native game clock/map ownership and the OnInitOnce writer that publishes callback identity 006965A0 at 00F8BBFC; this application retains the zero BSS publication."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_vfs_remove_content.cpp: native content removal",
+      "reason": "Existing reconstructed removal code already names the body; no new entry-reachable compatible removal consumer was established."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_deviation_factor",
+      "reason": "Missing retained native movie-camera screen ownership; the current host marks this operation unreached."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing retained native movie-camera screen ownership and a live reset-overview consumer."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movcam_reset_speed_limits",
+      "reason": "Missing retained native movie-camera screen ownership; the current host marks this operation unreached."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: movie-camera reset callbacks",
+      "reason": "Missing retained native movie-camera screen ownership and a live reset-acceleration consumer."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship brain construction",
+      "reason": "Missing complete Cc13Seg67bHost construction/lifetime bindings for the native 2268h brain and its subobjects."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units_motion.cpp: dogfight target selection",
+      "reason": "Missing native pilot, approach+A0h observer and +2Ch target-reference ownership; semantic target indices are insufficient."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state messages",
+      "reason": "Missing retained controller-state message producer and consumer carrying both command descriptors, controller mode and flags."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: compose_against_group",
+      "reason": "Missing resolved plane-class weapon-value facts for class flight blocks and the live attack-value callback."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing parser-owned mode-specific ClassPairRow table and live class-pair scoring consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "Missing live per-member reconnaissance-value producer and matching group-scoring consumer."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path messages",
+      "reason": "Missing presence-zero clear-message producer and retained path owners for the selected director slot."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a live empty-descriptor constructor with the current class-ordinal publication and a retained descriptor consumer."
+    },
+    {
+      "native": "008f3880",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene_property_bag_add_matrix_008f3880",
+      "reason": "No live Seg59bHost matrix/float-array bridge was established for an actual bag insertion consumer."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing input-character admission consumer with its retained text-context font; complete-string layout is a different operation."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400",
+      "reason": "Missing live ErrorContextNode tree ownership and a compatible native error-context map consumer."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420",
+      "reason": "Missing live ErrorContextNode tree ownership and a compatible native error-context map consumer."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0",
+      "reason": "Missing live ErrorContextNode tree ownership and a compatible native error-context map consumer."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630",
+      "reason": "Missing live ErrorContextNode tree ownership and a compatible native error-context map consumer."
+    },
+    {
+      "native": "00c47fc0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_group_clear_00c47fc0",
+      "reason": "No live periscope shape-group mutation request and corresponding retained shape owner were established; hull class changes operate on collide masks instead."
+    },
+    {
+      "native": "00c47ff0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: shape_group_set_00c47ff0",
+      "reason": "No live periscope shape-group mutation request and corresponding retained shape owner were established; hull class changes operate on collide masks instead."
+    },
+    {
+      "native": "00c357b0",
+      "status": "skipped",
+      "host_site": "src/cc13_dyn1.cpp: object_set_vec58_and_notify_00c357b0",
+      "reason": "No live raw Dyn object+58h owner and required notification callback bridge were established."
+    },
+    {
+      "native": "00c30570",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_producer.cpp: populate_native_texture_source_00c30570",
+      "reason": "No live persistent texture-source payload with the complete Lua, renderer and child-resource producer services was established."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; 4/4 CTests",
+    "fixture": "python tests/wire_g5_c943_hull_filter_probe.py passed: class addition/removal preserves removed terrain bit, invalidates contacts and retains unrelated contacts and shapes",
+    "call_graph_before": 5716,
+    "call_graph_after": 5717,
+    "new_call": "00C47F90 @104e3e40 from HullTerrainContactSolver::publish_hull_class_bit at 10392067",
+    "entry_path": "WinMain -> startup -> menu/mission frame -> fixed step -> GameUnitsHost::motion_step_00825f20 -> run_world_contact_phase -> HullTerrainContactSolver::world_step -> publish_hull_class_bit -> 00C47F90",
+    "evidence": [
+      "bsp.py show 0092bd70",
+      "bsp.py show 00c47f90",
+      "bsp.py show 00c47f90 --asm",
+      "bsp.py show 00c47f60",
+      "local/c966-before.json",
+      "local/c966-after.json",
+      "local/c966-build.log",
+      "local/c966-who-after.log",
+      "local/c943-probe.log"
+    ],
+    "readiness_wired_before": 10830,
+    "readiness_wired_after": 10831,
+    "readiness_called": true,
+    "readiness_call_sites": 1
+  },
+  "limitations": [
+    "No game launch or gameplay validation performed.",
+    "Existing reconstructed C++ interfaces and retained host collision owners; no drop-in native ABI claim.",
+    "Controller collision-class state is published at the existing world-step snapshot boundary; intermediate same-frame controller transitions remain coalesced."
+  ],
+  "left_for_others": "Periscope shape-group ownership and the native controller event-timed shape chain remain separate work; inspected frontier gaps are recorded per row."
+}

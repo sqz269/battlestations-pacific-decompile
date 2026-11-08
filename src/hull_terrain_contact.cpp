@@ -143,7 +143,7 @@ static_assert(sizeof(DynSolverContactPoint) == 0x30, "the native point is 30h by
 HullTerrainContactSolver::HullTerrainContactSolver() = default;
 HullTerrainContactSolver::~HullTerrainContactSolver() = default;
 
-// 00C47F60's original __thiscall(shape,bits) clears +30h, takes 0109ECD8,
+// 00C47F60/00C47F90's original __thiscall(shape,bits) updates +30h, takes 0109ECD8,
 // then passes [shape+4h] to 00C43AA0 (bsp.py show 00c47f60 --asm).
 // The retained convex records below are the ones 00C535E0 reads. Their +4h
 // pose owners identify this solver's live unit and its four manifold maps;
@@ -198,6 +198,39 @@ std::size_t HullTerrainContactSolver::clear_contact_manifolds(std::size_t unit) 
         + fort_manifolds_.size() + draft_manifolds_.size());
 }
 
+void HullTerrainContactSolver::publish_hull_class_bit(
+    std::size_t unit, HullShape& shape, std::uint32_t bit) {
+    if (shape.class_bit == bit) return;
+    // 0092BD70 switches the class-derived bit through 00C47F60/00C47F90
+    // (bsp.py show 0092bd70). HullWorldEntry carries the live unit's class
+    // and controller state. Publish it into the actual retained convex
+    // records before filtering, replacing the former 0Dh|entry.class_bit
+    // filter approximation. 00C47F97 ORs +30h, then 00C47FA5..A9 invalidates
+    // [shape+4h] under the world lock (bsp.py show 00c47f90 --asm).
+    // This C++ adapter coalesces the controller's snapshot at world_step;
+    // it preserves the existing host's phase boundary, not the binary ABI.
+    ShapeFilterCalls calls(*this, unit, cc13_dyn1::shape_body_00c32490(shape.convex));
+    if (shape.class_bit != 0)
+        cc13_dyn1::shape_collide_mask_clear_00c47f60(shape.convex, shape.class_bit, calls);
+    if (bit != 0)
+        cc13_dyn1::shape_collide_mask_set_00c47f90(shape.convex, bit, calls);
+    shape.class_bit = bit;
+}
+
+bool HullTerrainContactSolver::hull_selects_filter(
+    const HullWorldEntry& hull, std::uint32_t group, std::uint32_t mask) const {
+    for (std::size_t s = 0; s < hull.shapes->size(); ++s) {
+        const auto found = hulls_.find({hull.unit, s});
+        if (found == hulls_.end() || !found->second.convex_ready) continue;
+        const HullShape& shape = found->second;
+        std::uint32_t actual_mask;
+        std::memcpy(&actual_mask, shape.convex + 0x30, sizeof(actual_mask));
+        if (dyn_shapes_overlap_filter(group, mask,
+                cc13_dyn1::shape_group_00c32450(shape.convex), actual_mask)) return true;
+    }
+    return false;
+}
+
 void HullTerrainContactSolver::forget(std::size_t unit) {
     const std::lock_guard<std::recursive_mutex> lock(contact_mutex_);
     clear_contact_manifolds(unit);
@@ -245,6 +278,7 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
     h.records.clear();
     h.handle.reset();
     h.convex_ready = false;
+    h.class_bit = 0;
     std::vector<OceanVec3> local;
     float centre[3] = {0.0f, 0.0f, 0.0f};
     if (kHullTerrainDynHullVerticesBound) {
@@ -1415,8 +1449,7 @@ void HullTerrainContactSolver::hull_draft_narrow_phase(std::vector<HullWorldEntr
             // Goal 5 chain 724: bsp.py show 00C32450 --asm is MOV EAX,[ECX+2Ch]; RET
             // (fastcall shape -> group). set_draft_bodies writes the authored class
             // mask into this retained convex shape; read the same shape dispatched below.
-            if (!dyn_shapes_overlap_filter(cc13_dyn1::shape_group_00c32450(d.convex),
-                    0u, 1u, 0x0Du | eb.class_bit)) {
+            if (!hull_selects_filter(eb, cc13_dyn1::shape_group_00c32450(d.convex), 0u)) {
                 ++census_.draft_pairs_filtered;
                 continue;
             }
@@ -1502,6 +1535,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
         for (std::size_t s = 0; s < e.shapes->size(); ++s) {
             HullShape* shape = hull_convex(e.unit, s, (*e.shapes)[s], e.friction, *e.body);
             if (shape == nullptr) continue;
+            publish_hull_class_bit(e.unit, *shape, e.class_bit);
             std::uint32_t mask;
             std::memcpy(&mask, shape->convex + 0x30, sizeof(mask));
             // 00826410..0082643B: the live sinking state requests removal
@@ -1583,9 +1617,8 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
         Manifold& m = *it->second;
         bool live = fh != by_unit.end() && it->first.first < drafts_.size();
         if (live) {
-            live = dyn_shapes_overlap_filter(
-                cc13_dyn1::shape_group_00c32450(drafts_[it->first.first]->convex),
-                0u, 1u, 0x0Du | fh->second->class_bit);
+            live = hull_selects_filter(*fh->second,
+                cc13_dyn1::shape_group_00c32450(drafts_[it->first.first]->convex), 0u);
         }
         if (live) {
             const DynBody& b = *fh->second->body;

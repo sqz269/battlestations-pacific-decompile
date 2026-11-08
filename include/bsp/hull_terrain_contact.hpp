@@ -324,10 +324,15 @@ private:
         std::shared_ptr<AvoidZoneDynHullHandle> handle;
         alignas(16) std::uint8_t convex[0x240]{};
         bool convex_ready{false};
+        // Last class-mask publication into this retained shape's +30h.
+        std::uint32_t class_bit{0};
         // The body the record's +4h points to: 00C51C20 and 00C48BE0 read its 3x4 at
         // +08h..+37h (the rows, then the translation at +2Ch).
         std::uint8_t body[0x40]{};
     };
+    void publish_hull_class_bit(std::size_t unit, HullShape& shape, std::uint32_t bit);
+    bool hull_selects_filter(const HullWorldEntry& hull, std::uint32_t group,
+                            std::uint32_t mask) const;
     HullShape* hull_convex(std::size_t unit, std::size_t shape,
                            const std::vector<OceanVec3>& raw, float friction,
                            const DynBody& body);
