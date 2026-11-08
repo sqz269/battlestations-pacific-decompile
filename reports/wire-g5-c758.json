@@ -1,0 +1,158 @@
+{
+  "goal": 5,
+  "chain": 758,
+  "slot": "g5-w3",
+  "run": 1630,
+  "owner": "agent/g5-w3",
+  "baseline_head": "e2dcd455bf97fdeb1101a8f3daeb1150bf840e90",
+  "summary": "Wire gun-class first fire record and bullet selectors over a retained live-Lua-produced DeviceClass.Bullet array projection; remove flattened first-record fields.",
+  "rows": [
+    {
+      "native": "00731040",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunClassFireRecords::first_bullet"
+    },
+    {
+      "native": "00731050",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunClassFireRecords::first_record"
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile content policy",
+      "reason": "Missing produced native profile+D0h owned-content list; existing no-content policy is not that list."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Missing genuine writable native F87574/F87578/F8757C publication required by the literal initializer; semantic command-target values do not supply it."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "Missing actual native group+564Ch command and concrete Seg70Host forwarding services; inspected sites currently record semantic notifications."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing concrete live input-character consumer with the text-context font; existing probe-byte checks do not establish game input wiring."
+    },
+    {
+      "native": "00b4ed30",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: distortion_extent_00b4ed30",
+      "reason": "Missing concrete reached distortion-extent implementation for the render-frame service+30h owner; inspected renderer hook remains abstract."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: camera projection product",
+      "reason": "Missing verified reached consumer of the actual CameraProjection FOV-times-aspect product; earlier camera-query skips supplied no new binding."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit native main-scene command metadata",
+      "reason": "Existing reconstructed caller is not linked in this built executable; missing reached scene-submission owner rather than another setter call."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp: construct_native_win32_platform_00becda0",
+      "reason": "Canonical construct_native_window_platform_base_00be2ac0 already runs; older engine_services identifier is not a reason to execute a second base constructor."
+    },
+    {
+      "native": "004084d0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: pool36_page_construct_004084d0",
+      "reason": "Missing live DYN 36-byte/128-slot pool-page allocation caller with the real page index and allocation."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick row access",
+      "reason": "No established live picker lock-action consumer with its native row storage; prior skipped action-byte arm was not expanded by this packet."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick position access",
+      "reason": "No established live picker lock-action consumer with its native entry storage; prior skipped action-byte arm was not expanded by this packet."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: select_native_listbox_index_silently_00a9c8f0",
+      "reason": "Missing native raw listbox selection owner and concrete NativeGuiListboxCalls at the inspected semantic listbox runtime."
+    },
+    {
+      "native": "00a9ac90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::set_layout_flags_00a9ac90",
+      "reason": "Missing reached HudPause registration/setup consumer supplying its three layout flags to the actual listbox runtime."
+    },
+    {
+      "native": "00696430",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_pointer_runtime.cpp: read_gui_listbox_pointer_activation_00696430",
+      "reason": "Missing concrete reached F8BC84 activation-callback publication/consumer; pointer runtime binding methods alone do not establish that path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "Missing produced ControllerSnapshotMessage and routed snapshot consumer; flattened gun flags cannot be wrapped and copied back for credit."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: MSAR checksum chunk processing",
+      "reason": "Missing reached MSAR archive provider/checksum owner; existing crc32_update_b caller is not a game-rooted producer here."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 10601,
+    "readiness_wired_after": 10603,
+    "entry_reachable_reconstructed_called_before": 5449,
+    "entry_reachable_reconstructed_called_after": 5451
+  },
+  "evidence": [
+    "bsp.py show 00731040 and 00731050: zero count at class+78h returns null; otherwise class+74h and first record+34h.",
+    "bsp.py show 007327b0 --start 175 --lines 72: native Lua iteration appends one 48h record per Bullet value (00732C77..00732CCF).",
+    "bsp.py show 007313e0 and listing 0073151E..00731558: scalar/paired reload float spills and resolved bullet at +34h.",
+    "bsp.py ghidra bytes 00d7a2f0 --length 4: CD CC CC 3D, the original missing-Wind 0.1f constant.",
+    "call_graph.py who 00731040: reachable call from GameGunneryHost::Impl::build_guns at 100B8771 in the checked build.",
+    "call_graph.py who 00731050: reachable call from GameGunneryHost::Impl::build_guns at 100B8765 in the checked build."
+  ],
+  "validation": {
+    "baseline_build": "MSVC Win32 Release, all four CTests passed",
+    "final_build": "MSVC Win32 Release, all four CTests passed on final C++ source",
+    "producer_probe": "local/c758-fire-record-probe.cpp extracts the exact producer class and links the existing getters/lua numeric bodies; manifested x86 executable, no game launch.",
+    "installed_table_fixture": {
+      "arcade": {
+        "classes": 412,
+        "records": 519,
+        "empty_classes": 20
+      },
+      "realistic": {
+        "classes": 378,
+        "records": 469,
+        "empty_classes": 20
+      }
+    },
+    "focused_fixture": "pair endpoints, unquantized reload, original default Wind, named-key iteration, absent list and exception stack restoration",
+    "probe_boundary": "Actual installed device tables plus synthetic stable descriptor identities; does not exercise native class resource/refcount construction or gameplay."
+  },
+  "limitations": [
+    "This is retained initialized-field storage and typed descriptor borrowing, not a full native gun-class/fire-record construction or binary ABI replacement.",
+    "Unsupported malformed fire-table shapes throw rather than fabricate fields; both installed arcade and realistic device tables passed.",
+    "Existing cadence still consumes the lower ReloadTime endpoint; random paired cadence and second-ammo behavior remain outside this packet.",
+    "First-record scalar values now use original float32 conversion rather than flattened integer quantization; missing Wind now follows original 0.1f instead of zero.",
+    "Native effect/refcount fields are unobserved padding; no destructor or native ownership consumer may use these projections.",
+    "Game execution and visual/gameplay validation were not run, per worker instructions."
+  ]
+}

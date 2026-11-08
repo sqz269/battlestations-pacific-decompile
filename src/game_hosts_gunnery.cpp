@@ -516,6 +516,124 @@ private:
     std::unique_ptr<std::uint8_t, Free> sentinel_;
 };
 
+// Chain 758: retained, read-only projections of the DeviceClass fire array.
+// bsp.py show 007327b0, 00732C77..00732CCF: lua_next order, one 48h-byte
+// record per Bullet value, not a numeric-index scan. 007313E0 reads each
+// record's Throw/Wind, ReloadTime pair, BarrelDelayTime and Bullet reference.
+// Only those initialized fields and the class's +74h/+78h array header are
+// exposed here. Unobserved bytes are padding, not constructed native objects;
+// no native destructor/refcount operation may consume these projections.
+// The pointees are the existing stable, mission-owned typed bullet descriptors.
+class GunClassFireRecords final {
+public:
+    struct Record {
+        std::byte unobserved_00[4];
+        float throw_04;
+        float wind_08;
+        std::byte unobserved_0c[0x1c];
+        float reload_28;
+        float reload_2c;
+        float barrel_delay_30;
+        const bsp::WeaponClassDescriptor* bullet_34;
+        std::byte unobserved_38[0x10];
+    };
+    static_assert(offsetof(Record, reload_28) == 0x28);
+    static_assert(offsetof(Record, bullet_34) == 0x34);
+    static_assert(sizeof(Record) == 0x48);
+
+    template<class Resolve>
+    GunClassFireRecords(lua_State* state, int id, Resolve&& resolve) {
+        if (state == nullptr) throw std::logic_error("Gun class requires the live mission Lua state");
+        struct Restore {
+            lua_State* state;
+            int top;
+            ~Restore() { ::lua_settop(state, top); }
+        } restore{state, ::lua_gettop(state)};
+        ::lua_getfield(state, LUA_GLOBALSINDEX, "DeviceClass");
+        if (::lua_type(state, -1) != LUA_TTABLE)
+            throw std::logic_error("Gun class requires the authored DeviceClass table");
+        ::lua_pushinteger(state, id);
+        ::lua_gettable(state, -2);
+        if (::lua_type(state, -1) != LUA_TTABLE)
+            throw std::logic_error("Gun class requires its authored DeviceClass row");
+        ::lua_getfield(state, -1, "Bullet");
+        if (lua_isnil(state, -1)) return; // 00732C60: absent Bullet leaves the array empty.
+        if (::lua_type(state, -1) != LUA_TTABLE)
+            throw std::logic_error("Gun class Bullet field is not an iterable table");
+        const int table = ::lua_gettop(state);
+        ::lua_pushnil(state);
+        while (::lua_next(state, table) != 0) {
+            if (::lua_type(state, -1) != LUA_TTABLE)
+                throw std::logic_error("Gun class Bullet value is not a fire-record table");
+            Record record;
+            const auto number = [&](const char* key) {
+                ::lua_getfield(state, -1, key);
+                const float value = bsp::lua_number_float32_00b66270(::lua_tonumber(state, -1));
+                ::lua_pop(state, 1);
+                return value;
+            };
+            ::lua_getfield(state, -1, "Wind");
+            // 00731425 uses D7A2F0 only for nil. Verified saved-program bytes
+            // at D7A2F0: CD CC CC 3D (0.1f), not the flatten's former zero.
+            record.wind_08 = lua_isnil(state, -1) ? 0.1f
+                : bsp::lua_number_float32_00b66270(::lua_tonumber(state, -1));
+            ::lua_pop(state, 1);
+            record.throw_04 = number("Throw");
+            ::lua_getfield(state, -1, "ReloadTime");
+            // 0073151E..00731580: scalar, otherwise indices 1 and 2 of the pair.
+            // Keep the native float32 spill; do not quantize via BSPGun's
+            // integer milli-scaled copy. No random draw occurs in this read.
+            if (::lua_type(state, -1) == LUA_TNUMBER) {
+                record.reload_28 = bsp::lua_number_float32_00b66270(::lua_tonumber(state, -1));
+                record.reload_2c = record.reload_28;
+            } else if (::lua_type(state, -1) == LUA_TTABLE) {
+                ::lua_pushinteger(state, 1);
+                ::lua_gettable(state, -2);
+                record.reload_28 = bsp::lua_number_float32_00b66270(::lua_tonumber(state, -1));
+                ::lua_pop(state, 1);
+                ::lua_pushinteger(state, 2);
+                ::lua_gettable(state, -2);
+                record.reload_2c = bsp::lua_number_float32_00b66270(::lua_tonumber(state, -1));
+                ::lua_pop(state, 1);
+            } else {
+                throw std::logic_error("Gun fire-record ReloadTime is neither scalar nor pair");
+            }
+            ::lua_pop(state, 1);
+            record.barrel_delay_30 = number("BarrelDelayTime");
+            ::lua_getfield(state, -1, "Bullet");
+            const int bullet_id = bsp::lua_number_integer_00b66290(::lua_tonumber(state, -1),
+                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE);
+            ::lua_pop(state, 1);
+            record.bullet_34 = resolve(bullet_id);
+            records_.push_back(record);
+            ::lua_pop(state, 1); // preserve lua_next's actual key, discard only its value.
+        }
+        image_.records_74 = records_.empty() ? nullptr : records_.data();
+        image_.count_78 = static_cast<std::int32_t>(records_.size());
+    }
+    GunClassFireRecords(const GunClassFireRecords&) = delete;
+    GunClassFireRecords& operator=(const GunClassFireRecords&) = delete;
+
+    const Record* first_record() const {
+        return static_cast<const Record*>(
+            bsp::cc13_seg48U_gun_current_mode_record_00731050(&image_));
+    }
+    const bsp::WeaponClassDescriptor* first_bullet() const {
+        return static_cast<const bsp::WeaponClassDescriptor*>(
+            bsp::cc13_seg48U_gun_current_bullet_00731040(&image_));
+    }
+private:
+    struct Header {
+        std::byte unobserved_00[0x74];
+        const Record* records_74{nullptr};
+        std::int32_t count_78{0};
+    };
+    static_assert(offsetof(Header, records_74) == 0x74);
+    static_assert(offsetof(Header, count_78) == 0x78);
+    std::vector<Record> records_;
+    Header image_;
+};
+
 // Reuse the native lane reductions on the loaded collision model's vertices
 // and retained bounds. bsp.py show 007AE330/007AE3E0 --asm: both read z/y/x
 // before writing the result; ties and unordered comparisons select operand b,
@@ -6020,6 +6138,9 @@ struct GameGunneryHost::Impl {
         bsp::gameplay_seg53_cc13::WaterMineClassFields water_mine;
     };
     std::map<int, BulletClassDescriptorEntry> bullet_class_descriptors;
+    // Declared after the descriptor cache: fire-record borrows retire first.
+    std::map<int, std::unique_ptr<GunClassFireRecords>> gun_class_fire_record_cache;
+    const GunClassFireRecords& gun_class_fire_records(int id);
     UnresolvedBulletClassResources bullet_class_resources;
     unsigned long long bullet_class_descriptor_loads{0};
     const BulletClassDescriptorEntry& bullet_class_descriptor(int id);
@@ -6953,20 +7074,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            end\n"
         "            f[q .. 'barrels'] = bn\n"
         "            if type(b1) == 'table' then\n"
-        "              f[q .. 'bullet'] = num(b1.Bullet, 1) or -1\n"
-        // LATENT GUARD. 007313E0 reads ReloadTime as a PAIR into +28h/+2Ch and
-        // 00BD2F10 draws between them per shot; when a row authors a scalar the
-        // reader writes it to both ends, which is every row in this installation.
-        // But num() returns nil for a table, so a paired ReloadTime would leave
-        // `reload` at 0 here and the gun would fire every fixed step. Nothing
-        // authors a pair today, so this changes no current behaviour.
-        // docs/GUN_SHOT_CADENCE.md divergence 9.
-        "              local rt1 = b1.ReloadTime\n"
-        "              if type(rt1) == 'table' then rt1 = rt1[1] end\n"
-        "              f[q .. 'reload'] = num(rt1, 1000) or 0\n"
-        "              f[q .. 'bdelay'] = num(b1.BarrelDelayTime, 1000) or 0\n"
-        "              f[q .. 'throw'] = num(b1.Throw, 1000000) or 0\n"
-        "              f[q .. 'wind'] = num(b1.Wind, 1000000) or 0\n"
         // bulletclasses.lua publishes the arcade or realistic table under the
         // global `Bullets`; `BulletClass` is accepted as well so a differently
         // named installation still reads.
@@ -7462,17 +7569,26 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     }
                 }
             }
-            gun.bullet_class = flat(type_id, make("bullet"), -1);
-            gun.reload_time = flat_scaled(type_id, make("reload"), kMilliScale, 0.0f);
-            gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
-            gun.throw_amount = flat_scaled(type_id, make("throw"), kAngleScale, 0.0f);
-            gun.wind_amount = flat_scaled(type_id, make("wind"), kAngleScale, 0.0f);
+            // Chain 758: read record zero from the actual retained DeviceClass
+            // Bullet iteration. These are the same first-record selectors used
+            // by 00A08460, not the gun's mutable selected-ammo cursor +3F8h.
+            const GunClassFireRecords& fire_records = gun_class_fire_records(gun.device_class);
+            const auto* const first_record = fire_records.first_record(); // 00731050
+            const auto* const first_bullet = fire_records.first_bullet(); // 00731040
+            gun.bullet_class = first_bullet != nullptr ? first_bullet->bullet_id : -1;
+            if (first_record != nullptr) {
+                // Keep the existing cadence policy: the lower endpoint of a
+                // ReloadTime pair; choosing a random endpoint is a separate gap.
+                gun.reload_time = first_record->reload_28;
+                gun.barrel_delay_time = first_record->barrel_delay_30;
+                gun.throw_amount = first_record->throw_04;
+                gun.wind_amount = first_record->wind_08;
+            }
             // Goal 5 chain 696: V0 (+50h) and Range (+68h) of the class
             // descriptor, which the flatten's milli-scaled copies (rounded to
             // 1/1000, no authored value finer) used to carry.
-            if (gun.bullet_class >= 0) {
-                const bsp::WeaponClassDescriptor& gun_class =
-                    bullet_class_descriptor(gun.bullet_class).descriptor;
+            if (first_bullet != nullptr) {
+                const bsp::WeaponClassDescriptor& gun_class = *first_bullet;
                 gun.muzzle_speed = gun_class.muzzle_speed;
                 gun.max_range = gun_class.range;
             } else {
@@ -16422,6 +16538,17 @@ GameGunneryHost::Impl::bullet_class_descriptor(int id) {
         static_cast<double>(entry.descriptor.blast_range), bullet_class_resources.effects,
         bullet_class_resources.icons, bullet_class_resources.decals);
     return bullet_class_descriptors.emplace(id, std::move(entry)).first->second;
+}
+
+const GunClassFireRecords& GameGunneryHost::Impl::gun_class_fire_records(int id) {
+    const auto found = gun_class_fire_record_cache.find(id);
+    if (found != gun_class_fire_record_cache.end()) return *found->second;
+    auto records = std::make_unique<GunClassFireRecords>(lua.mission_lua_state(), id,
+        [this](int bullet_id) -> const bsp::WeaponClassDescriptor* {
+            const auto& entry = bullet_class_descriptor(bullet_id);
+            return entry.row_present && entry.class_found ? &entry.descriptor : nullptr;
+        });
+    return *gun_class_fire_record_cache.emplace(id, std::move(records)).first->second;
 }
 
 // Packet cc9_lua53_kamikaze_impact: the plane's crash class (unit+730h, class
