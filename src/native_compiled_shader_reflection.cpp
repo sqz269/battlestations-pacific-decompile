@@ -1,5 +1,6 @@
 #include "bsp/native_compiled_shader_reflection.hpp"
 #include "bsp/native_shader_global_readers.hpp"
+#include "bsp/render_fx_cc13.hpp"
 #include <d3dx9shader.h>
 #include <array>
 #include <cstring>
@@ -223,7 +224,13 @@ void reflect_native_compiled_shader_00b3aea0(const std::uint32_t* bytecode,
                 if (definition) {
                     const auto first_id = native_shader_constant_semantic_00b5b830(*definition);
                     require(first_id < 0x36, "system semantic is outside the actual54-byte binding arrays");
-                    if (current<std::uint8_t>(&owner, 8u + first_id) != 0xff) accepted = false;
+                    // bsp.py show 00b343c0 --asm: MOVZX byte [ECX+index+8].
+                    // The existing body reads the same actual 88h reflection
+                    // owner and registry-derived semantic, after the range guard.
+                    // This replaces the inline load; no projected binding map.
+                    if (cc13_render1::reflection_map8_at_00b343c0(
+                            reinterpret_cast<const std::uint8_t*>(&owner), first_id) != 0xff)
+                        accepted = false;
                     else {
                         const auto index = static_cast<std::uint8_t>(current<UINT>(&descriptor.RegisterIndex));
                         const auto count = static_cast<std::uint8_t>(current<UINT>(&descriptor.RegisterCount));

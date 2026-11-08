@@ -1,0 +1,19 @@
+{
+  "goal": 5,
+  "chain": 915,
+  "slot": "g5-w2",
+  "rows": [
+    {
+      "native": "00b343c0",
+      "status": "wired",
+      "host_site": "src/native_compiled_shader_reflection.cpp: reflect_native_compiled_shader_00b3aea0",
+      "evidence": "Actual NativeCompiledShaderStorage owner and registry semantic after the existing bounds check; replaces the inline owner+8+semantic byte load. Original MOVZX byte [ECX+index+8] verified with bsp.py show 00b343c0 --asm. Existing C++ interface, no new original-ABI or game-validation claim."
+    },
+    {
+      "native": "00b34570",
+      "status": "skipped",
+      "host_site": "src/native_compiled_shader_reflection.cpp: reflect_native_compiled_shader_00b3aea0",
+      "reason": "Missing an index-before-count publication site: this reflection caller writes map3E before map8, while the existing setter writes map8 before map3E."
+    }
+  ]
+}
