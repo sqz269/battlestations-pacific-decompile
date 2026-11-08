@@ -10,6 +10,7 @@ extern "C" {
 #include "bsp/flak_note_seg36_37_argon.hpp"
 #include "bsp/pool_pool01_cc13.hpp"
 #include "bsp/airfield_taxi.hpp"
+#include "bsp/projectile_kinds.hpp"
 
 namespace bsp::game {  // namespace
 
@@ -9319,67 +9320,99 @@ bool GameUnitsHost::plane_holds_rack_round_007b9140(std::size_t unit_index) {
     return false;
 }
 
+namespace {
+// Goal 5 chain 968: borrow the existing BSPGun-ordered rack collection. The
+// body owns selection/iteration; these virtuals retain the host's established
+// live equipment, round-census and reload projections. No native plane clone.
+template<class Owner>
+struct PlaneRackQueryBinding final : bsp::cc13_seg47::WeaponRackQueryHost {
+    using Raw = bsp::cc13_seg47::Raw;
+    Owner& owner;
+    GameUnitSlot& unit;
+    const std::vector<PlaneOrdnanceRack>& racks;
+
+    PlaneRackQueryBinding(Owner& o, GameUnitSlot& u)
+        : owner(o), unit(u), racks(o.ordnance_racks(u)) {}
+
+    std::int32_t weapon_rack_count(Raw) override {
+        return static_cast<std::int32_t>(racks.size());
+    }
+    Raw weapon_rack(Raw, std::int32_t index) override {
+        return bsp::cc13_seg47::raw(
+            const_cast<PlaneOrdnanceRack*>(&racks.at(static_cast<std::size_t>(index))));
+    }
+    bool rack_vcall_20c(Raw rack) override {
+        const auto& r = *reinterpret_cast<const PlaneOrdnanceRack*>(rack.p);
+        // 006E3570 is the negation of the same held-round query used by
+        // 007B9140. Preserve the prior labelled omission of unread class 0.
+        return r.class_id != 0 && !owner.plane_rack_holds_round(unit, r);
+    }
+    Raw rack_vcall_descriptor_220(Raw rack, std::int32_t loadout) override {
+        // 007B9230 asks the selected rack with flag 1. Re-resolve THAT rack's
+        // current Equipment, including a changed loadout, as the old host did.
+        if (loadout != 1) throw std::logic_error("unexpected first-rack descriptor query flag");
+        PlaneOrdnanceRack first = *reinterpret_cast<const PlaneOrdnanceRack*>(rack.p);
+        const int device = owner.rack_equipment_device(unit, unit.row.type_id,
+            first.platform_key, first.device_class);
+        const std::string type = owner.lua.read_device_class_string(device, "Type");
+        first.device_class = device;
+        first.class_id = owner.read_device_bullet_class_id(device);
+        first.authored_ammo = owner.rack_equipment_ammo(unit, unit.row.type_id, first.platform_key);
+        if (type == "BombPlatform") {
+            first.multi = false;
+            first.authored_ammo = owner.rack_positive_bag_round(unit, first.authored_ammo);
+            owner.plane_rack_census(unit);
+            const auto found = std::find_if(unit.rack_identity_per_rack.begin(),
+                unit.rack_identity_per_rack.end(), [&](const SingleRackCensusIdentity& identity) {
+                    return identity.platform_key == first.platform_key && identity.device_class == device;
+                });
+            if (found == unit.rack_identity_per_rack.end())
+                throw std::logic_error("first rack has no current equipment identity");
+            first.single_index = static_cast<int>(found - unit.rack_identity_per_rack.begin());
+        } else if (type == "MultiBombPlatform") {
+            first.multi = true;
+            first.single_index = -1;
+        } else {
+            throw std::logic_error("first rack current equipment is not a supported rack");
+        }
+        int bullet_id = owner.read_device_bullet_id(device);
+        if (!owner.plane_rack_holds_round(unit, first)) {
+            // 006E4086..006E40D7 (bsp.py show 006e4060 --asm): flag 1 admits
+            // the configured descriptor when live 00E17BF2 is set and its
+            // vslot8 answers 2Ah. Single-player scripts can set that flag.
+            const bool reload = lua_device_reload_enabled_00e17bf2();
+            const bool bomb_family = reload && owner.gunnery != nullptr
+                && owner.gunnery->weapon_class_descriptor(bullet_id, 0x2a) != nullptr;
+            bullet_id = empty_rack_configured_bullet_id(reload, bullet_id, bomb_family);
+        }
+        if (bullet_id < 0) return bsp::cc13_seg47::raw(nullptr);
+        const auto* descriptor = owner.gunnery != nullptr
+            ? owner.gunnery->weapon_class_descriptor(bullet_id) : nullptr;
+        if (descriptor == nullptr)
+            throw std::logic_error("loaded first rack has no retained projectile descriptor");
+        return bsp::cc13_seg47::raw(const_cast<bsp::WeaponClassDescriptor*>(descriptor));
+    }
+};
+} // namespace
+
 bool GameUnitsHost::plane_any_rack_empty_007b92e0(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size() || !host.slots[unit_index]) return false;
-    GameUnitSlot& s = *host.slots[unit_index];
-    // 007B92E0-007B931A: the +994h racks at +974h in order, each asked
-    // vtable[20Ch]; the first true answers. 006E3570 (single rack) is
-    // vtable[21Ch](2Ah) + ammo +484h == 0, the negation of the round test
-    // plane_holds_rack_round_007b9140 makes per rack (same LABELLED counts).
-    // A rack whose projectile class the host could not read (class 0) is
-    // skipped, as plane_holds_rack_round_007b9140 skips it; the image asks it.
-    for (const PlaneOrdnanceRack& r : host.ordnance_racks(s)) {
-        if (r.class_id == 0) continue;
-        if (!host.plane_rack_holds_round(s, r)) return true;
-    }
-    return false;
+    GameUnitSlot& unit = *host.slots[unit_index];
+    PlaneRackQueryBinding<Impl> binding(host, unit);
+    return bsp::cc13_seg47::weapon_controller_any_slot_answers_20c_007b92e0(
+        binding, bsp::cc13_seg47::raw(&unit));
 }
 
 int GameUnitsHost::plane_first_rack_bullet_id(std::size_t unit_index) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size() || !host.slots[unit_index]) return -1;
     GameUnitSlot& unit = *host.slots[unit_index];
-    const auto& racks = host.ordnance_racks(unit);
-    if (racks.empty()) return -1; // 007B9230: +994h <= 0.
-    // 007B9230 queries element zero even when a later rack holds a torpedo.
-    // Retain the established BSPGun-order projection, and resolve THAT slot's
-    // current Equipment rather than treating the first general gun as a rack.
-    PlaneOrdnanceRack first = racks.front();
-    const int device = host.rack_equipment_device(unit, unit.row.type_id,
-        first.platform_key, first.device_class);
-    const std::string type = host.lua.read_device_class_string(device, "Type");
-    first.device_class = device;
-    first.class_id = host.read_device_bullet_class_id(device);
-    first.authored_ammo = host.rack_equipment_ammo(unit, unit.row.type_id, first.platform_key);
-    if (type == "BombPlatform") {
-        first.multi = false;
-        first.authored_ammo = host.rack_positive_bag_round(unit, first.authored_ammo);
-        host.plane_rack_census(unit);
-        const auto found = std::find_if(unit.rack_identity_per_rack.begin(),
-            unit.rack_identity_per_rack.end(), [&](const SingleRackCensusIdentity& identity) {
-                return identity.platform_key == first.platform_key && identity.device_class == device;
-            });
-        if (found == unit.rack_identity_per_rack.end())
-            throw std::logic_error("first rack has no current equipment identity");
-        first.single_index = static_cast<int>(found - unit.rack_identity_per_rack.begin());
-    } else if (type == "MultiBombPlatform") {
-        first.multi = true;
-        first.single_index = -1;
-    } else {
-        throw std::logic_error("first rack current equipment is not a supported rack");
-    }
-    const int bullet_id = host.read_device_bullet_id(device);
-    if (host.plane_rack_holds_round(unit, first)) return bullet_id;
-    // bsp.py show 006e4060 --asm, 006E4086..006E40D7: query flag 1 admits
-    // the configured +3F8h/+34h descriptor when owner slot1E4 (006D1F40's
-    // LIVE 00E17BF2) is set and descriptor vslot8 answers 2Ah. SP missions
-    // can enable this flag (usn_19_coralus.lua:64); do not infer it from mode.
-    const bool reload = lua_device_reload_enabled_00e17bf2();
-    GameGunneryHost* const owner = reload ? gunnery() : nullptr;
-    const bool bomb_family = owner != nullptr
-        && owner->weapon_class_descriptor(bullet_id, 0x2a) != nullptr;
-    return empty_rack_configured_bullet_id(reload, bullet_id, bomb_family);
+    PlaneRackQueryBinding<Impl> binding(host, unit);
+    const auto* descriptor = static_cast<const bsp::WeaponClassDescriptor*>(
+        bsp::cc13_seg47::weapon_controller_first_slot_descriptor_007b9230(
+            binding, bsp::cc13_seg47::raw(&unit)));
+    return descriptor != nullptr ? descriptor->bullet_id : -1;
 }
 
 int GameUnitsHost::plane_reload_bomb_platforms_007c1d80(std::size_t unit_index) {

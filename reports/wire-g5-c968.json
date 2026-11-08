@@ -1,0 +1,278 @@
+{
+  "goal": 5,
+  "chain": 968,
+  "slot": "g5-w1",
+  "owner": "agent/g5-w1",
+  "baseline_head": "ded36701de",
+  "summary": {
+    "wired_functions": [
+      "007b9230",
+      "007b92e0"
+    ],
+    "readiness_wired_before": 10831,
+    "readiness_wired_after": 10832,
+    "entry_reachable_reconstructed_before": 5718,
+    "entry_reachable_reconstructed_after": 5720,
+    "note": "Readiness text count increases by one because 007B92E0 was already a same-address host-method match. Both canonical bodies gain a reachable direct call."
+  },
+  "built": "WeaponRackQueryHost source slice and shared live per-plane rack adapter; removed the old host selection/iteration paths.",
+  "validation": {
+    "baseline_build": "PASS all 4 existing checks; local/output/c968-baseline-build.log",
+    "final_build": "PASS all 4 existing checks; local/output/c968-build.log",
+    "call_graph": "PASS each canonical body has one reachable direct call from the changed GameUnitsHost method; local/output/c968-who-after.log",
+    "existing_torpedo_regression": "PASS tests/wire_g5_c826_torpedo_probe.cpp via unchanged local/c826-torpedo-probe.cmd; Win32 /MANIFEST:EMBED; local/output/c968-torpedo-probe.log",
+    "float_math": "No float arithmetic changes; moved the existing descriptor/ammo adapter logic without changing its scalar operations."
+  },
+  "limitations": [
+    "No game run, visual/gameplay validation or original binary ABI compatibility is claimed.",
+    "The existing BSPGun ordering, unread class-0 omission and labelled held-round fallbacks remain source-host boundaries.",
+    "The first-rack descriptor lookup now returns the retained gunnery descriptor through the body; missing positive-ID descriptors retain the existing caller error policy."
+  ],
+  "rows": [
+    {
+      "native": "007b9230",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_first_rack_bullet_id -> cc13_seg47::weapon_controller_first_slot_descriptor_007b9230",
+      "real_state": "Borrowed BSPGun-ordered ordnance_racks of the actual GameUnitSlot; element zero resolves current Equipment, per-rack held-round census, live 00E17BF2 reload flag and the retained gunnery WeaponClassDescriptor.",
+      "evidence": "bsp.py show 007b9230: signed count > 0, first inline rack, vslot220(1). bsp.py show 006e4060 --asm: existing empty-rack configured-descriptor admission at 006E4086..006E40D7.",
+      "original_abi": "ECX=weapon controller, EAX=descriptor or zero, RET; new C++ host interface is source-only.",
+      "called_before": false,
+      "called_after": true,
+      "call_sites_after": 1
+    },
+    {
+      "native": "007b92e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::plane_any_rack_empty_007b92e0 -> cc13_seg47::weapon_controller_any_slot_answers_20c_007b92e0",
+      "real_state": "Same actual per-unit ordnance collection and live plane_rack_holds_round query. The canonical body owns iteration, count rereads and first-true short circuit.",
+      "evidence": "bsp.py show 007b92e0: rack+20C calls in order, return at first true, count reread after each false result.",
+      "original_abi": "ECX=weapon controller, AL=any slot answer, RET; new C++ host interface is source-only.",
+      "called_before": false,
+      "called_after": true,
+      "call_sites_after": 1,
+      "readiness_note": "Already textually wired before this change through a same-address host method; the canonical reconstructed body had no linked call."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime::set_all_paused",
+      "reason": "Already has a reached call using the published sound alternate owner and real stream channels; no new wiring needed."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp: scale_sound_instance_volume_00a79880",
+      "reason": "Already has reached calls from the existing sound runtime; no new wiring needed."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated ship AI registration",
+      "reason": "Missing a retained native 2268h brain owner and the complete Cc13Seg67bHost constructor/lifetime contract; current controller is a host projection."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::landing_request_006c54c0",
+      "reason": "Missing the native landing block slot/message/observer domain; existing indexed queue explicitly leaves the original slot-state tail unapplied."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "Missing the flak-alternate ammunition record producer, retained references and its native tree-copy ownership adapter."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62.cpp: unit_clear_vector660_0095d3c0",
+      "reason": "Missing the actual unit+660h vector of 44h records and its Seg62Host resize/destruction services."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen advance_ticker",
+      "reason": "Missing the owned award queue and widget/text consumer required by the native HUD-root ticker body."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate movie-camera toggle",
+      "reason": "Missing the original spectate screen/camera owner and Fe5Host target-selection services; current toggle remains a record."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate movie-camera toggle",
+      "reason": "Missing the original spectate screen/camera owner and Fe5Host target-selection services; current toggle remains a record."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate exit_free_camera_overlay",
+      "reason": "Missing the native interface screen-stack and level-three collapse services; current callback remains a record."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset callbacks",
+      "reason": "Missing a reached movie-mover screen owner for the native reset fields; the inspected AddPosition-only adapter explicitly rejects these callbacks."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset callbacks",
+      "reason": "Missing a reached movie-mover screen owner for the native reset fields; the inspected AddPosition-only adapter explicitly rejects these callbacks."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset callbacks",
+      "reason": "Missing a reached movie-mover screen owner for the native reset fields; the inspected AddPosition-only adapter explicitly rejects these callbacks."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: MovieCameraNewHost reset callbacks",
+      "reason": "Missing a reached movie-mover screen owner for the native reset fields; the inspected AddPosition-only adapter explicitly rejects these callbacks."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::ground_state_from_locked_007ca3f0",
+      "reason": "Missing the actual impulse-state fields and retained entity pose/matrix owner consumed by the raw reset body."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Missing the parsed per-mode ClassPairRow table and its live spawn-composition consumer."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: ai_group_recon_ratio_00a2c3d0",
+      "reason": "Missing the live per-member reconnaissance-value producer and the matching original group-scoring consumer."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "Missing the original request weight, threat-record collection and support-source list at a reached spawn consumer."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message delivery",
+      "reason": "Missing the presence-zero clear-message producer and retained per-slot path ownership; inspected live messages add path points."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "Missing a reached wire-descriptor owner/initialization consumer; current host commands use separate target state."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: extra camera clip-plane setters",
+      "reason": "Missing an original reached extra-plane set/clear consumer with the retained CameraClipPlaneState; no new clip-plane operation is justified."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: extra camera clip-plane setters",
+      "reason": "Missing an original reached extra-plane set/clear consumer with the retained CameraClipPlaneState; no new clip-plane operation is justified."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: engine-movie clock",
+      "reason": "Missing the reached engine-movie owner and real EngineMovieClock transport; decoded video and HUD movie cameras are different owners."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: engine-movie clock",
+      "reason": "Missing the reached engine-movie owner and real EngineMovieClock transport; decoded video and HUD movie cameras are different owners."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "Missing the live cloud-manager owner and frame/instance consumer; this legacy-named reconstruction is only the cloud-frame arithmetic slice."
+    },
+    {
+      "native": "00b72270",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: find_node_by_name_00b72270",
+      "reason": "Missing a retained SceneRoots/SceneNode tree and original name-lookup services at the inspected process consumer."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "The established original consumer is the excluded debug inspector; a single-player gameplay consumer was not established."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing the live command-menu item collection and ordering consumer corresponding to the native linked list; director queues are separate state."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: set_unit_order_ring_param_b_0080da00",
+      "reason": "Missing the saved-entity Lua restoration producer for toTurn; the existing live ring alone does not justify a new rudder reset."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "Missing the original nonzero unit+B04h correction producer that admits the alternate-frame branch."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0",
+      "reason": "Missing a reached WeaponViewHost rotation adapter with the actual weapon-view pose, pivot and axis."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall queue_call",
+      "reason": "Missing a frame-job-thread enqueue producer with the actual LuaVariantRecord argument vector; current mission calls execute on the main thread."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: MissionLuaResultSink lifetime",
+      "reason": "No reached owning MissionLuaResultSink/vector lifetime adapter was established for the current main-thread interpreter in this pass."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp: MissionLuaResultSink lifetime",
+      "reason": "No reached owning MissionLuaResultSink/vector lifetime adapter was established for the current main-thread interpreter in this pass."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: deferred named-call queue",
+      "reason": "Missing the frame-job-thread deferred-call producer and retained MissionLuaCallQueueNode ownership domain."
+    },
+    {
+      "native": "004b1330",
+      "status": "skipped",
+      "host_site": "src/native_soldier_registry_lifetime.cpp: get_native_soldier_registry_004b1330",
+      "reason": "Missing a reached NativeSoldierClassConstructionAccess with the authentic singleton manager publication, registry tree and allocator domain."
+    },
+    {
+      "native": "007ee720",
+      "status": "skipped",
+      "host_site": "src/cc15_seg48.cpp: cc15_seg48_plane_squadron_first_member_df4_entry_007ee720",
+      "reason": "Missing the same-domain raw squadron member task-stack publications and real task-vslot20 services; current host assumes readiness."
+    }
+  ]
+}
