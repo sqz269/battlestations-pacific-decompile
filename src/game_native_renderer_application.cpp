@@ -161,6 +161,7 @@
 #include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_render_resources_remap.hpp"
 #include "bsp/native_game_grid.hpp"
+#include "bsp/game_host_flag_cloth.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_vertex_position_read.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
@@ -1085,6 +1086,9 @@ GameNativeModelDomain& GameNativeRendererApplication::model_domain() {
 }
 NativeGameGridContext& GameNativeRendererApplication::game_grid_context() noexcept {
     return impl_->game_grids.context;
+}
+GameHostFlagClothServices& GameNativeRendererApplication::flag_cloth_services() noexcept {
+    return impl_->game_grids.cloth;
 }
 const volatile std::uint32_t*
 GameNativeRendererApplication::borrow_gui_material_destruction_profile_00d5e520() {

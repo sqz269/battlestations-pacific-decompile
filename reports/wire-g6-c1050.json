@@ -1,0 +1,83 @@
+{
+  "chain": 1050,
+  "goal": 6,
+  "owner": "agent/g6-w10",
+  "candidate": "src/objectives_seg57_argon.cpp",
+  "tier": 1,
+  "result": "partial_host_services_built_no_offered_rows_wired",
+  "rows": [
+    {
+      "native": "0070a710",
+      "status": "skipped",
+      "host_site": "src/game_host_flag_cloth.cpp: GameHostFlagClothServices::upload_vertices (prepared consumer; not invoked by the live frame hook)",
+      "reason": "climb: 0070A710 <- 008E2560 <- F88C20 hook slot+0Ch 00737870 <- hook construction 00737830/inlined 0073E4EA..0073E501 <- required deleting destructor 007378B0 (stopped: no reconstructed src body, only library_instantiation_out_of_scope ledger entry); its E19B08/04/0C grids additionally require 0070BD70 <- 004DDB90 <- application 0073E150..0073E1A1, whose actual game owner/context composition is absent."
+    },
+    {
+      "native": "0070aa70",
+      "status": "skipped",
+      "host_site": "src/game_host_flag_cloth.cpp: GameHostFlagClothServices::update_wave (prepared consumer; not invoked by the live frame hook)",
+      "reason": "climb: 0070AA70 <- 008E2560 <- F88C20 hook slot+0Ch 00737870 <- hook construction 00737830/inlined 0073E4EA..0073E501 <- required deleting destructor 007378B0 (stopped: no reconstructed src body, only library_instantiation_out_of_scope ledger entry); its E19B08/04/0C grids and game+648 DWORD frame counter require 0070BD70 <- 004DDB90 <- application 0073E150..0073E1A1, whose actual game owner/context composition is absent."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GameHostFlagClothServices, partial concrete normal/vector/vertex services for the shared native cloth grids",
+      "where": "src/game_native_renderer_grid.inc:11",
+      "status": "constructed_as_part_of_the_existing_application_renderer_graph",
+      "producers": [
+        "GameGridGraph constructs the service alongside its existing NativeGameGridContext; the service only borrows references and performs no native allocation or grid construction.",
+        "GameNativeRendererApplication::flag_cloth_services returns this same retained service.",
+        "GameNativeStringProcess::particle_manager_00f8c274 supplies the actual manager publication created by 00AF0B10 in ordinary application startup; each upload guard reloads its +30h tracked section.",
+        "NativeGameGridContext supplies the existing logical stream profile, mapping, physical lock and actual renderer domain used by 0070B330."
+      ],
+      "rows": ["0070a710", "0070aa70"],
+      "climb": [
+        "0070A710 vertex upload <- concrete VertexStreamCalls over NativeGameGridContext <- existing GameGridGraph/application renderer (completed services only).",
+        "0070AA70 normals/vector calls <- existing 00709CF0/0042B260 bodies through GameHostFlagClothServices <- existing GameGridGraph/application renderer (completed services only).",
+        "0070A710/0070AA70 real inputs <- E19B08/E19B04/E19B0C native 84h grids <- 0070BD70/0070B330 <- 004DDB90 sites 004DDFF0/004DE029/004DE062 <- 0073D410 game allocation/zero/name/constructor sites 0073E150/0073E163/0073E1A1 (application game owner and contexts remain uncomposed).",
+        "0070A710/0070AA70 frame dispatch <- 008E2560 <- 00737870 <- F88C20 derived hook 00737830, inlined at 0073E4EA..0073E501 <- required registered-owner deletion 007378B0 (stopped: no reconstructed C++ body; retained existing 00736F70 unregister body is not the deleting wrapper)."
+      ]
+    }
+  ],
+  "target_layout": {
+    "type": "NativeGameGridStorage (84h), viewed through existing FlagClothLayout; not the 19Ch per-unit FlagModel constructed by 0070BFC0",
+    "constructor": "0070bd70",
+    "initialization": "0070BD70 initializes descriptor/dimensions/angle/UV/wind/frame word, calls 0070B330, then derives anchor orientation; 0070B330 copies the descriptor, allocates/fills six CPU arrays, calculates normals and creates/maps the actual vertex/index streams.",
+    "fields": [
+      {"offset": "04", "width": 4, "meaning": "point count"},
+      {"offset": "08/0C/10/14/18/1C", "width_each": 4, "meaning": "positions, temporary positions, velocities, temporary velocities, forces, normals pointers"},
+      {"offset": "20", "width": 12, "meaning": "wind XYZ"},
+      {"offset": "2C", "width": 4, "meaning": "angle"},
+      {"offset": "3C/40", "width_each": 4, "meaning": "columns/rows"},
+      {"offset": "4C/50/54/58/5C/60", "width_each": 4, "meaning": "stiffness/damping/velocity drag/gravity/horizontal and vertical rest lengths"},
+      {"offset": "64/68/6C/70", "width_each": 4, "meaning": "UV bounds"},
+      {"offset": "74", "width": 4, "meaning": "bit copy of integer game+648 frame word, also copied to E19B10"},
+      {"offset": "78", "width": 4, "meaning": "actual logical vertex-stream pointer"},
+      {"object": "vertex stream", "offset": "08/0C/10/1C/28/34/38/3C/40/44", "width_each": 4, "meaning": "mapped data/stride/position/normal/UV/color/channel offsets"},
+      {"object": "particle manager F8C274", "offset": "30", "width": 4, "meaning": "tracked critical-section pointer; native depth DWORD at section+18"}
+    ]
+  },
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed all 4 existing CTests before edits",
+    "final_build": "scripts/build.ps1 passed all 4 existing CTests after adapter construction; local/flag-cloth-build.log",
+    "offered_rows_called_before": 0,
+    "offered_rows_called_after": 0,
+    "call_graph_before": {"reconstructed_called": 5762, "reconstructed_linked": 6476},
+    "call_graph_after": {"reconstructed_called": 5763, "reconstructed_linked": 6477},
+    "call_graph_caveat": "The extra graph address is conservative vtable reachability through the newly constructed normal-call service, not a claimed new real-state wiring. Neither offered gap body is linked/called. GameGridGraph has one reachable CALL to the new service constructor.",
+    "checks": [
+      "python tools/bsp.py show for both gaps, native grid constructor/init, game constructor, frame process, hook constructor and required deleting destructor",
+      "0070AA70 assembly verifies game+648 DWORD loads/stores at 0070AA75/94/97; adapter bit-copies the counter rather than converting it numerically",
+      "008E2560 assembly verifies update order E19B08, E19B04, E19B0C, followed by the three uploads in the same order",
+      "live Ghidra xrefs to E19B08 confirm constructor WRITE 004DE03C, update/attach READs, and game-destruction READ/WRITE",
+      "python tools/call_graph.py and who for 0070A710, 0070AA70 and GameHostFlagClothServices",
+      "git diff --check"
+    ],
+    "limits": "Build/source/call-graph evidence only; no game launch, live native grid use, new original-ABI claim, or runtime upload/wave verification. Existing provisional gap-body math was not changed."
+  },
+  "coordination": {
+    "startup_cpp": "Initial src/game_hosts.cpp dependency claim was refused by agent/g6-w12, then acquired on foreground retry; it was inspected but not edited.",
+    "startup_header": "include/bsp/game_hosts.hpp dependency claim was refused by agent/g6-w8; no edit attempted. The independent missing-body stop at 007378B0 ended this climb before that header was needed.",
+    "assumption": "Kept the existing presentation-RNG interface unbound until its actual caller exists; no generator or seed was invented. The native game/frame-hook ownership work remains a prerequisite to using these services."
+  }
+}

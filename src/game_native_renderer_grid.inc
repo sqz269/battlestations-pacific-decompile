@@ -8,6 +8,7 @@ struct GameGridGraph {
  GuiTextNativeRendererServices graphics;
  NativeGameGridCpuCalls cpu;
  NativeGameGridContext context;
+ GameHostFlagClothServices cloth;
 
  GameGridGraph(DestructionGraph& g,DeviceGraph& d,TextureLoadingGraph& textures,
   NativeVertexDeclarationCacheContext& declarations,NativeStringStorage& strings,
@@ -23,7 +24,8 @@ struct GameGridGraph {
      game_native_geometry_globals().zero_vector_00f87574()[2],
      *static_cast<const double*>(g.profiles.data.data_at(0xce3d28,8)),
      *static_cast<const double*>(g.profiles.data.data_at(0xd7a3a0,8)),
-     static_cast<const char*>(g.profiles.data.data_at(0xcfd4e4,11))}} {
+     static_cast<const char*>(g.profiles.data.data_at(0xcfd4e4,11))}},
+   cloth(context,game_native_string_process().particle_manager_00f8c274()) {
    // The source application's explicit pool-header preimage above is not a
    // recovered native default. Grid index flags=1 never consume that input.
    require_gui_text_native_renderer_domain(graphics,renderer,strings,textures.geometry.actual_owners());

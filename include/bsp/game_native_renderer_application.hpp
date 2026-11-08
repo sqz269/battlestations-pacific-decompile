@@ -67,6 +67,7 @@ struct NativeNodeBaseDestructionContext;
 class NativeNodeSceneChildDispatch;
 }
 namespace bsp::game {
+class GameHostFlagClothServices;
 struct GameNativeMaterialCompilerOwners;
 struct GameNativeMaterialCompilerSources;
 struct GameNativeMaterialEffectOwners;
@@ -225,6 +226,10 @@ public:
     // release grids before draining this renderer. Uses the same VFS strings,
     // declaration cache, stream owners and live process vector as the graph.
     NativeGameGridContext& game_grid_context() noexcept;
+    // Same grid/stream services and actual particle-manager lock, retained by
+    // this renderer. Does not create the application game's three grids or
+    // install its F88C20 frame hook; those remain the application owner's job.
+    GameHostFlagClothServices& flag_cloth_services() noexcept;
     // Ready-only admission/view of this renderer's SAME verified read-only
     // D5E520 {BD30E0,B194B0} profile and canonical geometry/actual-owner domain.
     // No native work, pool, cache or callable table is created. Retain this
