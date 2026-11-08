@@ -4,6 +4,12 @@
 
 namespace bsp {
 
+// 00AAB7F0: ECX points at the actual pool+28h table header, plain RET.
+// Free its nonnull data pointer without clearing the header. This address
+// entry reuses msvc9_containers::free_pointer's existing algorithm; it is a
+// source interface, not a native register-ABI thunk.
+void free_native_gui_button_pool_table_00aab7f0(void* actual_table) noexcept;
+
 // Button's Mit vector takes its actual pool+28h {data,count,capacity} header.
 // Names are hypotheses. AAB8E0/AABC70/AABD00 use ECX=header, one stack
 // argument, RET4; AAB930 uses ECX=header, RET. These C++ entries reuse the

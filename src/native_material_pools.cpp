@@ -3,6 +3,7 @@
 #include "bsp/native_gui_model_pool_table.hpp"
 #include "bsp/native_gui_grid_pool_table.hpp"
 #include "bsp/native_gui_button_pool_table.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/native_gui_movie_pool_table.hpp"
 #include "bsp/native_gui_sound_pool_table.hpp"
 #include "bsp/native_gui_icon_pool_table.hpp"
@@ -717,6 +718,13 @@ template<> void NativeGuiWidgetPool<GuiSoundPoolTraits>::destroy() {
 // bsp.py show 00AAB8E0/00AAB930/00AABC70/00AABD00: address entries for
 // Button's existing reconstructed Mit vector operations, formerly source
 // aliases of the Widget specialization. Retain one capacity/copy/free engine.
+__declspec(noinline) void free_native_gui_button_pool_table_00aab7f0(
+    void* actual_table) noexcept {
+    // bsp.py show 00AAB7F0 --asm: MOV EAX,[ECX]; TEST/JZ; free(EAX); RET.
+    // Reuse its former shared source body; the slot is deliberately not cleared.
+    gui_widgets_cc13::msvc9_containers::free_pointer(static_cast<void**>(actual_table));
+}
+
 __declspec(noinline) void set_native_gui_button_pool_table_capacity_00aab8e0(
     NativeGuiPoolSlabTable& table, std::uint32_t capacity) {
     native_gui_pool_table_set_capacity_00aa6fa0(table, capacity);
@@ -751,6 +759,14 @@ template<> void* NativeGuiWidgetPool<GuiButtonPoolTraits>::allocate() {
     return allocate_slot<GuiButtonPoolTraits,
         &NativeGuiWidgetPool<GuiButtonPoolTraits>::initialize_slab,
         &push_native_gui_button_pool_slab_00aabc70>(storage_);
+}
+
+template<> void NativeGuiWidgetPool<GuiButtonPoolTraits>::destroy() {
+    // AAB9F0 inlines AAB7F0's null-tested table free after the slab frees,
+    // before critical-section teardown and E188B4 unlink. CE0A30 reaches this
+    // retained F8BD00 owner; replace the generic table free rather than repeat it.
+    destroy_pool<GuiButtonPoolTraits,
+        &free_native_gui_button_pool_table_00aab7f0>(allocator_list_, storage_);
 }
 
 // bsp.py show ACEF70/ACF860: publish capacity before allocating, copy DWORD
