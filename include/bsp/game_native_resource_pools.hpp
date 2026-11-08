@@ -7,6 +7,7 @@
 #include "bsp/native_model_pool.hpp"
 #include "bsp/native_group_pool.hpp"
 #include "bsp/directional_light_pool.hpp"
+#include "bsp/native_point_light_pool.hpp"
 
 #include <mutex>
 
@@ -15,7 +16,7 @@ namespace bsp::game {
 // Canonical source storage for the distinct 0108FFB0 camera, 0108FFF8 mesh, 010901D4 section
 // and 0109022C hierarchy pools, plus the separate 01090054 model and 0109008C
 // model-base node pools, 0108FF58 plain-node and 010902F4 group pools, and the
-// separate 01090154 directional-light pool.
+// separate 01090154 directional-light and 0109011C point-light pools.
 // All use the existing E188B4 allocator domain;
 // F8D3E4 remains a different material-parameter pool. Native startup owns
 // each real CRT exit callback.
@@ -35,6 +36,7 @@ public:
     int initialize_plain_node_once_00cd7d10();
     int initialize_group_once_00cd8460();
     int initialize_directional_light_once_00cd8080();
+    int initialize_point_light_once_00cd8060();
     NativeCameraPool& camera_pool_0108ffb0();
     NativeMeshPool& mesh_pool_0108fff8();
     NativeMeshSectionPool& section_pool_010901d4();
@@ -52,6 +54,7 @@ public:
     // Explicit startup only; no light, scene/type identity or normal-host
     // activation is implied. Return every payload slot before CRT CE0EB0.
     DirectionalLightPool& directional_light_pool_01090154();
+    NativePointLightPool& point_light_pool_0109011c();
 
 private:
     friend GameNativeResourcePoolProcess& game_native_resource_pool_process();
@@ -105,6 +108,13 @@ private:
     DirectionalLightPool directional_light_;
     StartupState directional_light_state_{StartupState::unattempted};
     int directional_light_registration_status_{};
+
+    // Native CD8060 constructs this distinct owner and registers CE0EA0.
+    // Keep its source storage and dispatch companion alive through CRT exit.
+    NativePointLightPoolStorage point_light_storage_0109011c_{};
+    NativePointLightPool point_light_;
+    StartupState point_light_state_{StartupState::unattempted};
+    int point_light_registration_status_{};
 };
 
 // Construct the shared allocator owner and this process object before native

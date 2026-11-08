@@ -1,4 +1,5 @@
 #include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/native_point_light_pool_table.hpp"
 
 #include "bsp/native_camera_pool_table.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -91,6 +92,10 @@ bool is_pointer_array_routine(std::uint32_t address) noexcept {
 }
 
 void allocate_pointer_array(std::uint32_t address, PointerArray& a, std::int32_t n) {
+    if (address == 0x00B7ADE0) {
+        allocate_native_point_light_pool_table_00b7ade0({&a}, static_cast<std::uint32_t>(n));
+        return;
+    }
     if (address == 0x00B72900) {
         allocate_native_mesh_pool_table_00b72900(
             {reinterpret_cast<std::byte*>(&a)}, static_cast<std::uint32_t>(n));
@@ -136,6 +141,10 @@ void push_back_pointer_array(std::uint32_t address, PointerArray& a, void* value
 }
 
 void reserve_pointer_array(std::uint32_t address, PointerArray& a, std::uint32_t n) {
+    if (address == 0x00B7B4A0) {
+        reserve_native_point_light_pool_table_00b7b4a0({&a}, n);
+        return;
+    }
     if (address == 0x00B72F10) {
         reserve_native_mesh_pool_table_00b72f10({reinterpret_cast<std::byte*>(&a)}, n);
         return;
