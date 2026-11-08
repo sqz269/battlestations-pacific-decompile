@@ -78,6 +78,7 @@
 #include "bsp/cc13_sweepA3.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/native_input_action_configuration.hpp"
+#include "bsp/native_input_action_listener_owner.hpp"
 #include "bsp/unit_motion.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/input_tick.hpp"
@@ -8482,10 +8483,36 @@ public:
         return false;
     }
     int interface_id() override { return owner_.summary.applied_interface_id; }
-    bool action_byte(int, int) override {
-        // The action records' device state ([record+2Ch]+0Bh/+10h): no device
-        // drives an in-mission action here. Recorded once per update.
-        return false;
+    bool action_byte(int action, int byte_offset) override {
+        // Goal 6 chain 995. bsp.py show 00527260, 00527412..005275FA:
+        // each query calls 004BEC00, then reads one BYTE from the actual
+        // listener at [[owner+4]+30h*action+2Ch]+0Bh/+10h. This is listener
+        // state, not a device byte or the menu's injected InputActionState.
+        // 00698A10 -> 00A93C80 -> 00A92B70 creates these 24h listeners;
+        // 004E4A63..72 -> 00A92C40 -> 00A91A50 fills their flags BEFORE the
+        // existing menu/HUD dispatch (GameFrameHost::game_on_move). Borrow
+        // the SAME owner on every query: configuration reload can replace
+        // both the 30h records and their retained listeners. No extra poll,
+        // allocation, reference or second copy survives this call.
+        if (byte_offset != 0x0B && byte_offset != 0x10)
+            throw std::logic_error("unit-pick queried an unsupported listener byte");
+        const auto* const input = static_cast<const bsp::NativeInputActionOwnerStorage*>(
+            owner_.menu.input_context_manager().current_owner());
+        static_assert(sizeof(void*) == 4);
+        static_assert(sizeof(bsp::NativeInputActionListenerStorage) == 0x24);
+        const std::byte* records;
+        std::uint32_t count;
+        std::memcpy(&records, input->bytes + 4, sizeof records);  // owner+4, DWORD
+        std::memcpy(&count, input->bytes + 8, sizeof count);      // owner+8, DWORD
+        if (action < 0 || static_cast<std::uint32_t>(action) >= count || !records)
+            throw std::logic_error("unit-pick requires its configured native action records");
+        const bsp::NativeInputActionListenerStorage* listener;
+        std::memcpy(&listener, records + 0x30 * action + 0x2C, sizeof listener);
+        if (!listener)
+            throw std::logic_error("unit-pick requires its configured native action listener");
+        const bool flag = listener->bytes[byte_offset] != std::byte{0};
+        owner_.done("UnitPickScreen::input_record_bytes", 0x00527419u);
+        return flag;
     }
     bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
     void reset_c0_00525170() override {
@@ -8569,9 +8596,6 @@ const std::vector<float>& GameHudHost::Impl::lock_radius_multipliers() {
 
 void GameHudHost::update_unit_pick_screen_00527260(float seconds) {
     Impl& impl = *impl_;
-    // 00527419..005275D5 read the action records' device bytes directly
-    // (CEh, CFh, D0h's neighbours D1h/D3h/D4h/D5h); one record per update.
-    impl.record("UnitPickScreen::input_record_bytes", 0x00527419u);
     UnitPickBinding binding(impl);
     bsp::unit_pick_screen_update_00527260(impl.unit_pick, binding, seconds);
     impl.done("UnitPickScreen::update", 0x00527260u);
