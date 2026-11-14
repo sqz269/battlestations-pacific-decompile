@@ -3986,6 +3986,10 @@ struct GameGunneryHost::Impl {
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
+    // Diagnostic (lane B aa-share fix): the round's aa_band, set beside round_bullet_class.
+    int round_aa_band{-1};
+    unsigned long long aa_band_rounds[7]{};
+    unsigned long long aa_band_hits[7]{};
     // Packet cc9_ship_fire_flooding: record+30h / +34h of the direct impact the
     // segment query returned, set by run_projectiles around apply_hit only.
     int impact_shape_kind{0x0A};
@@ -4105,6 +4109,7 @@ struct GameGunneryHost::Impl {
         std::vector<bsp::HitPartEntry> parts;   // record+3Ch / +40h, copied
         int team_id{-1};
         int round_bullet_class{-1};
+        int round_aa_band{-1};                  // diagnostic, lane B aa-share fix
         int impact_shape_kind{0x0A};
         int impact_hull_segment{-1};
         long long impact_device_gun{-1};        // cc13-gunC C1: record+0h a device
@@ -10738,11 +10743,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 static_cast<double>(gun.throw_amount * 57.2957795f),
                 units.skill_level(owner_unit), seat, static_cast<double>(m * 57.2957795f));
         }
+        int aa_band = -1;   // diagnostic, lane B aa-share fix
         if constexpr (kBulletThrowBound) {
             // Packet cc9_bullet_throw: 0073031D..0073075E.
             int seat = -1;
             const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat, mode1);
             ++throw_by_seat[seat >= 0 ? seat : kThrowSeatCount];
+            if (seat == kThrowAaGunner) {
+                static const float kAaBandEdges[5] = {100.0f, 200.0f, 350.0f, 500.0f, 750.0f};
+                if (!(lead_distance >= 0.0f)) {
+                    aa_band = 6;
+                } else {
+                    aa_band = 0;
+                    while (aa_band < 5 && lead_distance >= kAaBandEdges[aa_band]) ++aa_band;
+                }
+                ++aa_band_rounds[aa_band];
+            }
             if (!(magnitude > 0.0f)) {
                 ++throw_zero_shots;                                   // 00730525 JBE
             } else if (gun.bullet_sub_type == 0x0A) {
@@ -10801,6 +10817,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         shot.owner_side = units.unit_side_0054(owner_unit);
         shot.team_id_1c = shot_team_id_0072c0f2(gun, owner_unit);
         shot.bullet_class = gun.bullet_class;
+        shot.aa_band = aa_band;
         float launch_speed = gun.muzzle_speed;
         int launch_sub_type = 0;
         if (kArtilleryClassSpeedBound && gun.artillery_class) {
@@ -11920,8 +11937,10 @@ bool GameGunneryHost::Impl::depth_charge_advance_006fcd20(GameProjectileRow& sho
         static_cast<double>(shot.life));
     shot.fate = 3;
     round_bullet_class = shot.bullet_class;
+    round_aa_band = shot.aa_band;
     apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, no_dir);
     round_bullet_class = -1;
+    round_aa_band = -1;
     done("DepthCharge::advance_in_water_006fcd20", 0x006fcd20u);
     shot.alive = false;
     return true;
@@ -12318,6 +12337,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     const float at[3] = {fuze.point[0], fuze.point[1], fuze.point[2]};
                     shot.fate = 3;
                     round_bullet_class = shot.bullet_class;
+                    round_aa_band = shot.aa_band;
                     // 0080A94E: 00470350 SetShot(record, [rocket+3DCh] = the rocket)
                     // before 0084BC60. The shot is non-null, so record+14h =
                     // shot->vtable[54h]() = 006E2820 HullDamageBase, one 00BD2F10
@@ -12332,6 +12352,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                     apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
                         no_dir);
                     round_bullet_class = -1;
+                    round_aa_band = -1;
                     done("Rocket::proximity_fuze_0080a55d", 0x0080a55du);
                     shot.alive = false;
                     continue;
@@ -12513,8 +12534,10 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             }
             this->record("Landscape::on_hit_0087f9a0", 0x0087f9a0u);
             round_bullet_class = shot.bullet_class;
+            round_aa_band = shot.aa_band;
             apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
             round_bullet_class = -1;
+            round_aa_band = -1;
             shot.alive = false;
             continue;
         }
@@ -12538,6 +12561,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             }
             done("Projectile::on_impact_0084bc60", 0x0084bc60u);
             round_bullet_class = shot.bullet_class;
+            round_aa_band = shot.aa_band;
             if constexpr (kHullElementSegmentBound) {
                 impact_shape_kind = record.shape_kind;
                 impact_hull_segment = record.hull_segment;
@@ -12601,6 +12625,7 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             // has no Blast, which is that same gate.
             apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
             round_bullet_class = -1;
+            round_aa_band = -1;
             shot.alive = false;
             continue;
         }
@@ -12668,9 +12693,11 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 ++summary.expired;
                 shot.fate = 5;
                 round_bullet_class = shot.bullet_class;
+                round_aa_band = shot.aa_band;
                 apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, at,
                     no_dir, true);
                 round_bullet_class = -1;
+                round_aa_band = -1;
                 done("FlakProjectile::expiry_detonate_0070c3c8", 0x0070c3c8u);
                 shot.alive = false;
                 continue;
@@ -12761,8 +12788,10 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                             ++flak_bursts;
                             shot.fate = 3;
                             round_bullet_class = shot.bullet_class;
+                            round_aa_band = shot.aa_band;
                             apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, burst, no_dir);
                             round_bullet_class = -1;
+                            round_aa_band = -1;
                             done("FlakProjectile::detonate_0070c210", 0x0070c210u);
                             shot.alive = false;
                             continue;
@@ -13421,10 +13450,12 @@ void GameGunneryHost::Impl::queue_deferred_hit(DeferredHit&& node) {
 // own copy of the record and its part array.
 void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
     const int saved_class = round_bullet_class;
+    const int saved_aa_band = round_aa_band;
     const int saved_kind = impact_shape_kind;
     const int saved_segment = impact_hull_segment;
     const long long saved_device_gun = impact_device_gun;
     round_bullet_class = node.round_bullet_class;
+    round_aa_band = node.round_aa_band;
     impact_shape_kind = node.impact_shape_kind;
     impact_hull_segment = node.impact_hull_segment;
     impact_device_gun = node.impact_device_gun;
@@ -13472,6 +13503,7 @@ void GameGunneryHost::Impl::dispatch_deferred_hit(const DeferredHit& node) {
             static_cast<double>(before - after), static_cast<double>(after));
     }
     round_bullet_class = saved_class;
+    round_aa_band = saved_aa_band;
     impact_shape_kind = saved_kind;
     impact_hull_segment = saved_segment;
     impact_device_gun = saved_device_gun;
@@ -13518,6 +13550,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
             }
             node.team_id = team_id;
             node.round_bullet_class = round_bullet_class;
+            node.round_aa_band = round_aa_band;
             node.impact_shape_kind = impact_shape_kind;
             node.impact_hull_segment = impact_hull_segment;
             node.impact_device_gun = impact_device_gun;
@@ -13686,6 +13719,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     binding.set_hit(hit);
     const float before = target.health;
     notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
+    if (round_aa_band >= 0 && units.unit_is_kind_of(victim, 0x0f)) ++aa_band_hits[round_aa_band];
     bsp::apply_ship_hit_record_00826f10(binding, hit, view);
     ++summary.ship_hit_records;
     ++summary.dispatched_hits;
@@ -20131,6 +20165,13 @@ void GameGunneryHost::report() {
             host.throw_by_seat[kThrowDepthCharge], host.throw_by_seat[kThrowArtillery],
             host.throw_by_seat[kThrowPilot], host.throw_by_seat[kThrowSeatCount],
             kBulletThrowBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa seat bands rounds=%llu/%llu/%llu/%llu/%llu/%llu/%llu "
+            "plane_hits=%llu/%llu/%llu/%llu/%llu/%llu/%llu (lead distance <100, <200, <350, <500, <750, "
+            ">=750 BSP m, none; diagnostic, lane B aa-share fix)",
+            host.aa_band_rounds[0], host.aa_band_rounds[1], host.aa_band_rounds[2], host.aa_band_rounds[3],
+            host.aa_band_rounds[4], host.aa_band_rounds[5], host.aa_band_rounds[6],
+            host.aa_band_hits[0], host.aa_band_hits[1], host.aa_band_hits[2], host.aa_band_hits[3],
+            host.aa_band_hits[4], host.aa_band_hits[5], host.aa_band_hits[6]);
         host.log.notef("summary mission gunnery muzzle offsets shots=%llu fallbacks=%llu "
             "mean_shift=%.2f max_shift=%.2f bound=%d (00730762/00859550, packet cc9_muzzle_offsets)",
             host.muzzle_offset_shots, host.muzzle_offset_fallbacks,

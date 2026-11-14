@@ -638,6 +638,10 @@ struct GameProjectileRow {
     std::size_t owner_unit{0};        // one based
     int owner_side{0};
     int bullet_class{-1};
+    // Diagnostic (lane B aa-share fix, 2026-11-14): an AA gunner seat round's band of
+    // 00901C20's lead distance at the throw (0..5: <100, <200, <350, <500, <750, >=750
+    // BSP m; 6: no lead distance); -1 for every other round. Counts only.
+    int aa_band{-1};
     bsp::ProjectileFlightState flight{};
     float position[3]{};
     float life{0.0f};
